@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en" data-mode="light" data-theme="basecamp" data-sidebar="expanded">
+<head>
+<!--VT_NO_FLASH-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theme Preview · ViaTek Design</title>
+<meta name="description" content="Every @viatek/design component in all 12 ViaTek themes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="__VT_BASE__/tokens.css">
+<link rel="stylesheet" href="/theme-preview/components.css">
+<style>
+  [data-mode="light"] .vt-i-moon, [data-mode="dark"] .vt-i-sun { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Lucide icons (ISC license), stroke 1.8 via .vt-icon -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-panel-left-close" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></symbol>
+  <symbol id="i-panel-left-open" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/></symbol>
+  <symbol id="i-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></symbol>
+  <symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</svg>
+
+<a class="vt-sr-only" href="#overview">Skip to content</a>
+
+<div class="vt-app">
+  <!-- 6.1 Sidebar -->
+  <aside id="vt-sidebar" class="vt-sidebar" data-vt-sidebar aria-label="Sidebar">
+    <a class="vt-identity" href="#overview" aria-label="Theme Preview, ViaTek">
+      <span class="vt-app-tile" aria-hidden="true">P</span>
+      <span class="vt-identity-text">
+        <span class="vt-app-name">Theme Preview</span>
+        <span class="vt-app-org">VIATEK</span>
+      </span>
+    </a>
+    <nav class="vt-nav" aria-label="Primary">
+      <div class="vt-nav-section">
+        <div class="vt-nav-label">Overview</div>
+        <a class="vt-nav-item" href="#overview" aria-current="page"><svg class="vt-icon"><use href="#i-dashboard"/></svg><span class="vt-nav-text">Overview</span></a>
+        <a class="vt-nav-item" href="#palettes"><svg class="vt-icon"><use href="#i-grid"/></svg><span class="vt-nav-text">All 12 themes</span></a>
+      </div>
+      <div class="vt-nav-section">
+        <button class="vt-nav-label" type="button" aria-expanded="true" aria-controls="nav-components">Components<svg class="vt-icon vt-icon-sm vt-chevron"><use href="#i-chevron-down"/></svg></button>
+        <div class="vt-nav-group" id="nav-components">
+          <a class="vt-nav-item" href="#kpis"><svg class="vt-icon"><use href="#i-gauge"/></svg><span class="vt-nav-text">KPI tiles</span></a>
+          <a class="vt-nav-item" href="#charts"><svg class="vt-icon"><use href="#i-chart"/></svg><span class="vt-nav-text">Charts</span></a>
+          <a class="vt-nav-item" href="#tables"><svg class="vt-icon"><use href="#i-table"/></svg><span class="vt-nav-text">Tables</span><span class="vt-nav-badge">2</span></a>
+          <a class="vt-nav-item" href="#pills"><svg class="vt-icon"><use href="#i-circle-dot"/></svg><span class="vt-nav-text">Status pills</span></a>
+          <button class="vt-nav-item" type="button" aria-expanded="false" aria-controls="nav-controls-sub"><svg class="vt-icon"><use href="#i-sliders"/></svg><span class="vt-nav-text">Controls</span><svg class="vt-icon vt-chevron"><use href="#i-chevron-right"/></svg></button>
+          <div class="vt-subnav" id="nav-controls-sub" hidden>
+            <a class="vt-nav-item vt-nav-sub" href="#buttons"><span class="vt-nav-text">Buttons</span></a>
+            <a class="vt-nav-item vt-nav-sub" href="#forms"><span class="vt-nav-text">Forms</span></a>
+            <a class="vt-nav-item vt-nav-sub" href="#segmented"><span class="vt-nav-text">Segmented control</span></a>
+          </div>
+          <a class="vt-nav-item" href="#type"><svg class="vt-icon"><use href="#i-type"/></svg><span class="vt-nav-text">Typography</span></a>
+        </div>
+      </div>
+      <div class="vt-nav-section">
+        <div class="vt-nav-label">Settings</div>
+        <a class="vt-nav-item" href="#appearance"><svg class="vt-icon"><use href="#i-settings"/></svg><span class="vt-nav-text">Appearance</span></a>
+      </div>
+    </nav>
+    <div class="vt-sidebar-foot vt-mono vt-muted" style="font-size:11px">@viatek/design v__VT_VERSION__</div>
+  </aside>
+
+  <div class="vt-main">
+    <!-- 6.2 Top bar -->
+    <header class="vt-topbar">
+      <button class="vt-icon-btn vt-sidebar-toggle" type="button" data-vt-sidebar-toggle aria-controls="vt-sidebar" aria-expanded="true" aria-label="Collapse sidebar">
+        <svg class="vt-icon vt-i-close"><use href="#i-panel-left-close"/></svg>
+        <svg class="vt-icon vt-i-open"><use href="#i-panel-left-open"/></svg>
+      </button>
+      <nav class="vt-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="#overview" id="crumb-section">Theme preview</a></li>
+          <li><span aria-current="page" id="crumb-page">Overview</span></li>
+        </ol>
+      </nav>
+      <div class="vt-topbar-right">
+        <div class="vt-fresh-group" aria-label="Data freshness">
+          <span class="vt-fresh"><span class="vt-dot vt-dot--success" aria-hidden="true"></span>Autotask 13m</span>
+          <span class="vt-fresh"><span class="vt-dot vt-dot--warning" aria-hidden="true"></span>IT Glue 4h stale</span>
+          <span class="vt-fresh"><span class="vt-dot vt-dot--danger" aria-hidden="true"></span>Datto failed</span>
+        </div>
+        <span class="vt-topbar-divider" aria-hidden="true"></span>
+        <div class="vt-segmented" role="radiogroup" aria-label="Scope" data-segmented>
+          <button type="button" role="radio" aria-checked="true">Team</button>
+          <button type="button" role="radio" aria-checked="false">Me</button>
+        </div>
+        <button class="vt-btn vt-btn--secondary vt-date" type="button" aria-label="Date range: Oct 13 to Nov 11, 2026">
+          <svg class="vt-icon vt-icon-sm"><use href="#i-calendar"/></svg>Oct 13 to Nov 11
+        </button>
+        <!-- 8.1 Quick theme toggle -->
+        <div class="vt-popover-wrap">
+          <button class="vt-icon-btn" type="button" id="theme-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="theme-menu" aria-label="Theme">
+            <svg class="vt-icon vt-i-sun"><use href="#i-sun"/></svg>
+            <svg class="vt-icon vt-i-moon"><use href="#i-moon"/></svg>
+          </button>
+          <div class="vt-menu" id="theme-menu" hidden>
+            <div class="vt-label" id="theme-menu-label">Mode</div>
+            <div class="vt-segmented" role="radiogroup" aria-labelledby="theme-menu-label" data-mode-control>
+              <button type="button" role="radio" data-value="system"><svg class="vt-icon vt-icon-sm"><use href="#i-monitor"/></svg>System</button>
+              <button type="button" role="radio" data-value="light"><svg class="vt-icon vt-icon-sm"><use href="#i-sun"/></svg>Light</button>
+              <button type="button" role="radio" data-value="dark"><svg class="vt-icon vt-icon-sm"><use href="#i-moon"/></svg>Dark</button>
+            </div>
+            <div class="vt-small" data-current-theme></div>
+            <a class="vt-menu-link" href="#appearance" data-close-menu>Theme settings…</a>
+          </div>
+        </div>
+        <a class="vt-icon-btn" href="__VT_BASE__/SPEC.md" aria-label="Help: design spec"><svg class="vt-icon"><use href="#i-help"/></svg></a>
+      </div>
+    </header>
+
+    <!-- 6.3 Content -->
+    <main class="vt-content" id="main">
+
+      <div class="vt-page-header" id="overview">
+        <div>
+          <h1 class="vt-page-title">Theme preview</h1>
+          <p class="vt-page-meta"><span class="vt-mono">v__VT_VERSION__</span> · <span data-current-theme-name>Basecamp</span> · 6 light and 6 dark themes · sample data</p>
+        </div>
+        <div class="vt-actions">
+          <a class="vt-btn vt-btn--secondary" href="__VT_BASE__/tokens.css" download><svg class="vt-icon"><use href="#i-download"/></svg>tokens.css</a>
+          <a class="vt-btn vt-btn--primary" href="#appearance">Choose a theme</a>
+        </div>
+      </div>
+
+      <!-- 7.2 KPI tiles -->
+      <section class="vt-section" id="kpis" aria-labelledby="kpis-h">
+        <h2 class="vt-sr-only" id="kpis-h">KPI tiles</h2>
+        <div class="vt-kpi-grid">
+          <article class="vt-kpi vt-kpi--success">
+            <div class="vt-kpi-head"><span class="vt-label">Team utilization</span><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="About team utilization"><svg class="vt-icon vt-icon-sm"><use href="#i-info"/></svg></button></div>
+            <div class="vt-kpi-value">69.4%</div>
+            <svg class="vt-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22 L10 18 L20 20 L30 12 L40 15 L50 9 L60 14 L70 8 L80 10 L90 5 L100 6"/></svg>
+            <div class="vt-delta vt-delta--good">↗ +16.6 pts</div>
+            <div class="vt-kpi-cap">vs previous period · target 65%</div>
+          </article>
+          <article class="vt-kpi">
+            <div class="vt-kpi-head"><span class="vt-label">Billable hours</span><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="About billable hours"><svg class="vt-icon vt-icon-sm"><use href="#i-info"/></svg></button></div>
+            <div class="vt-kpi-value">835.7<small>h</small></div>
+            <svg class="vt-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 16 L10 14 L20 17 L30 13 L40 15 L50 12 L60 13 L70 11 L80 14 L90 12 L100 13"/></svg>
+            <div class="vt-delta">→ +0.4%</div>
+            <div class="vt-kpi-cap">vs previous period</div>
+          </article>
+          <article class="vt-kpi vt-kpi--warning">
+            <div class="vt-kpi-head"><span class="vt-label">Offline endpoints</span><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="About offline endpoints"><svg class="vt-icon vt-icon-sm"><use href="#i-info"/></svg></button></div>
+            <div class="vt-kpi-value">7</div>
+            <svg class="vt-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 L10 6 L20 5 L30 9 L40 8 L50 12 L60 11 L70 16 L80 15 L90 19 L100 20"/></svg>
+            <div class="vt-delta vt-delta--good">↘ -5 endpoints</div>
+            <div class="vt-kpi-cap">vs previous period · target 5 or fewer</div>
+          </article>
+          <article class="vt-kpi vt-kpi--danger">
+            <div class="vt-kpi-head"><span class="vt-label">Overdue tickets</span><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="About overdue tickets"><svg class="vt-icon vt-icon-sm"><use href="#i-info"/></svg></button></div>
+            <div class="vt-kpi-value">14</div>
+            <svg class="vt-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 L10 21 L20 18 L30 19 L40 15 L50 16 L60 12 L70 13 L80 9 L90 8 L100 6"/></svg>
+            <div class="vt-delta vt-delta--bad">↗ +3 tickets</div>
+            <div class="vt-kpi-cap">vs previous period · target 0</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7.8 Charts + side panel -->
+      <section class="vt-grid-2" id="charts" aria-label="Charts">
+        <article class="vt-panel">
+          <div class="vt-panel-head">
+            <div>
+              <h3 class="vt-h3">Utilization trend</h3>
+              <p class="vt-small">Daily team utilization. Weekends are gaps, not zeros.</p>
+            </div>
+            <a class="vt-btn vt-btn--ghost" href="#tables">Utilization ↗</a>
+          </div>
+          <ul class="vt-legend" aria-label="Legend">
+            <li><span class="vt-swatch" style="background:var(--vt-series-1)"></span>This period</li>
+            <li><span class="vt-swatch vt-swatch--dash" style="border-top-color:var(--vt-series-1)"></span>Previous period</li>
+            <li><span class="vt-swatch vt-swatch--dash"></span>Target 75%</li>
+          </ul>
+          <div class="vt-chart" id="trend-chart" role="img" aria-label="Line chart of daily team utilization from Oct 13 to Nov 11, 2026, compared with the previous period and a 75% target."></div>
+        </article>
+        <article class="vt-panel">
+          <div class="vt-panel-head">
+            <div>
+              <h3 class="vt-h3">Hours by client</h3>
+              <p class="vt-small">Last 30 days, by work type</p>
+            </div>
+          </div>
+          <ul class="vt-legend" aria-label="Legend" id="bars-legend"></ul>
+          <div class="vt-bars" id="bars"></div>
+          <div style="margin-top:18px" class="vt-label">Series order 1 to 8</div>
+          <div class="vt-series-chips" style="margin-top:8px" aria-label="Chart series colors 1 to 8">
+            <span class="vt-series-chip" style="background:var(--vt-series-1)"></span><span class="vt-series-chip" style="background:var(--vt-series-2)"></span><span class="vt-series-chip" style="background:var(--vt-series-3)"></span><span class="vt-series-chip" style="background:var(--vt-series-4)"></span><span class="vt-series-chip" style="background:var(--vt-series-5)"></span><span class="vt-series-chip" style="background:var(--vt-series-6)"></span><span class="vt-series-chip" style="background:var(--vt-series-7)"></span><span class="vt-series-chip" style="background:var(--vt-series-8)"></span>
+          </div>
+        </article>
+      </section>
+
+      <!-- 7.4 Tables -->
+      <section class="vt-section" id="tables" aria-labelledby="tables-h">
+        <div class="vt-table-card">
+          <div class="vt-table-strip">
+            <h2 class="vt-label" id="tables-h" style="margin:0">Tickets</h2>
+            <div class="vt-actions">
+              <button class="vt-icon-btn" type="button" aria-label="Filter tickets"><svg class="vt-icon"><use href="#i-filter"/></svg></button>
+              <a class="vt-btn vt-btn--ghost" href="#tables">View all</a>
+            </div>
+          </div>
+          <div class="vt-table-scroll">
+            <table class="vt-table">
+              <thead>
+                <tr><th scope="col">Ticket</th><th scope="col">Client</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col" class="vt-num">Hours</th><th scope="col" class="vt-num">Cost</th><th scope="col"><span class="vt-sr-only">Actions</span></th></tr>
+              </thead>
+              <tbody>
+                <tr class="vt-attn--danger">
+                  <td><span class="vt-data">T20261104.0031</span><span class="vt-cell-sub">Firewall firmware update</span></td>
+                  <td>Front Range Dental</td>
+                  <td><span class="vt-pill vt-pill--danger">overdue</span></td>
+                  <td class="vt-data">Nov 4, 2026</td>
+                  <td class="vt-num">3.5 h</td>
+                  <td class="vt-num">$612.50</td>
+                  <td><div class="vt-row-actions"><button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Log held</button><button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Reschedule</button></div></td>
+                </tr>
+                <tr class="vt-attn--warning">
+                  <td><span class="vt-data">T20261109.0012</span><span class="vt-cell-sub">Backup job failed on FS01</span></td>
+                  <td>Pikes Peak Title</td>
+                  <td><span class="vt-pill vt-pill--danger">failed</span></td>
+                  <td class="vt-data">Nov 10, 2026 · 5:43 PM MT</td>
+                  <td class="vt-num">1.0 h</td>
+                  <td class="vt-num">$175.00</td>
+                  <td><div class="vt-row-actions"><button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Retry</button><button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Skip</button></div></td>
+                </tr>
+                <tr>
+                  <td><span class="vt-data">T20261110.0047</span><span class="vt-cell-sub">New user onboarding</span></td>
+                  <td>Boulder Creek Law</td>
+                  <td><span class="vt-pill vt-pill--warning">in progress</span></td>
+                  <td class="vt-data">Nov 11, 2026</td>
+                  <td class="vt-num">2.25 h</td>
+                  <td class="vt-num">$393.75</td>
+                  <td><div class="vt-row-actions"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button></div></td>
+                </tr>
+                <tr aria-selected="true">
+                  <td><span class="vt-data">T20261111.0003</span><span class="vt-cell-sub">Selected row · M365 license audit</span></td>
+                  <td>Aspen Grove Clinic</td>
+                  <td><span class="vt-pill vt-pill--info">queued</span></td>
+                  <td class="vt-data">Nov 11, 2026</td>
+                  <td class="vt-num">0.0 h</td>
+                  <td class="vt-num">$0.00</td>
+                  <td><div class="vt-row-actions"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td><span class="vt-data">T20261028.0019</span><span class="vt-cell-sub">Printer driver rollout</span></td>
+                  <td>Mesa Verde Supply</td>
+                  <td><span class="vt-pill vt-pill--success">finished</span></td>
+                  <td class="vt-data">Oct 28, 2026</td>
+                  <td class="vt-num">6.75 h</td>
+                  <td class="vt-num">$1,204.50</td>
+                  <td><div class="vt-row-actions"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td><span class="vt-data">T20261031.0008</span><span class="vt-cell-sub">Quarterly business review prep</span></td>
+                  <td>Glacier Point HOA</td>
+                  <td><span class="vt-pill vt-pill--muted">draft</span></td>
+                  <td class="vt-data">Oct 31, 2026</td>
+                  <td class="vt-num">0.5 h</td>
+                  <td class="vt-num">$87.50</td>
+                  <td><div class="vt-row-actions"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7.3 Status pills + 7.5 panel -->
+      <section class="vt-grid-even" id="pills" aria-label="Status pills">
+        <article class="vt-panel">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Status pills</h3><p class="vt-small">The shared word-to-color table. Add a word here before using it.</p></div></div>
+          <table class="vt-table vt-token-table">
+            <thead><tr><th scope="col">Token</th><th scope="col">Words</th></tr></thead>
+            <tbody>
+              <tr><td class="vt-data">success</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--success">finished</span><span class="vt-pill vt-pill--success">healthy</span><span class="vt-pill vt-pill--success">done</span><span class="vt-pill vt-pill--success">synced</span></div></td></tr>
+              <tr><td class="vt-data">warning</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--warning">in progress</span><span class="vt-pill vt-pill--warning">waiting</span><span class="vt-pill vt-pill--warning">stale</span><span class="vt-pill vt-pill--warning">due soon</span></div></td></tr>
+              <tr><td class="vt-data">danger</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--danger">failed</span><span class="vt-pill vt-pill--danger">overdue</span><span class="vt-pill vt-pill--danger">escalated</span><span class="vt-pill vt-pill--danger">offline</span></div></td></tr>
+              <tr><td class="vt-data">info</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--info">queued</span><span class="vt-pill vt-pill--info">new</span><span class="vt-pill vt-pill--info">info</span><span class="vt-pill vt-pill--info">scheduled</span></div></td></tr>
+              <tr><td class="vt-data">text-muted</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--muted">draft</span><span class="vt-pill vt-pill--muted">skipped</span><span class="vt-pill vt-pill--muted">n/a</span></div></td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="vt-panel">
+          <div class="vt-panel-head">
+            <div><h3 class="vt-h3">Panel</h3><p class="vt-small">Surface, 1px border, radius-lg, 18px 20px padding. No gradients, no colored edges.</p></div>
+            <a class="vt-btn vt-btn--ghost" href="#charts">Charts ↗</a>
+          </div>
+          <p style="margin:0 0 12px">Body text sits at 14px Inter. <a href="#appearance">Links use the link token</a> and pass 4.5:1 on bg and surface. <span class="vt-muted">Muted text is for secondary copy.</span></p>
+          <div class="vt-label" style="margin-bottom:8px">Freshness</div>
+          <div class="vt-pill-row" style="gap:16px">
+            <span class="vt-fresh"><span class="vt-dot vt-dot--success" aria-hidden="true"></span>Autotask 13m</span>
+            <span class="vt-fresh"><span class="vt-dot vt-dot--warning" aria-hidden="true"></span>IT Glue 4h stale</span>
+            <span class="vt-fresh"><span class="vt-dot vt-dot--danger" aria-hidden="true"></span>Datto failed</span>
+          </div>
+          <div class="vt-label" style="margin:18px 0 8px">Keyboard</div>
+          <p class="vt-small" style="color:var(--vt-text)">Press <span class="vt-kbd">[</span> to collapse or expand the sidebar. Hover a collapsed icon for its tooltip.</p>
+        </article>
+      </section>
+
+      <!-- 7.1 Buttons -->
+      <section class="vt-panel" id="buttons" aria-labelledby="buttons-h">
+        <div class="vt-panel-head"><div><h3 class="vt-h3" id="buttons-h">Buttons</h3><p class="vt-small">One primary per view. Primary text always uses on-primary, never white.</p></div></div>
+        <div class="vt-actions" style="gap:10px">
+          <button class="vt-btn vt-btn--primary" type="button"><svg class="vt-icon"><use href="#i-plus"/></svg>Log touchpoint</button>
+          <button class="vt-btn vt-btn--secondary" type="button"><svg class="vt-icon"><use href="#i-refresh"/></svg>Sync now</button>
+          <button class="vt-btn vt-btn--secondary" type="button">Export</button>
+          <button class="vt-btn vt-btn--ghost" type="button">View all</button>
+          <button class="vt-btn vt-btn--danger" type="button"><svg class="vt-icon"><use href="#i-trash"/></svg>Delete session</button>
+          <button class="vt-btn vt-btn--secondary" type="button" disabled>Disabled</button>
+          <span class="vt-topbar-divider" aria-hidden="true"></span>
+          <button class="vt-icon-btn" type="button" aria-label="Refresh"><svg class="vt-icon"><use href="#i-refresh"/></svg></button>
+          <button class="vt-icon-btn" type="button" aria-label="Filter"><svg class="vt-icon"><use href="#i-filter"/></svg></button>
+          <button class="vt-icon-btn" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button>
+        </div>
+        <div class="vt-actions" style="gap:10px;margin-top:12px">
+          <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Log held</button>
+          <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Skip</button>
+          <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Reschedule</button>
+          <span class="vt-small">Row actions at 32px</span>
+        </div>
+      </section>
+
+      <!-- 7.6 Forms + 7.7 Segmented -->
+      <section class="vt-grid-2" aria-label="Forms and segmented controls">
+        <article class="vt-panel" id="forms">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Forms</h3><p class="vt-small">Label above, help below, every input has a real label.</p></div></div>
+          <form class="vt-form-grid" onsubmit="return false">
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-client">Client</label>
+              <input class="vt-input" id="f-client" type="text" placeholder="Search clients" aria-describedby="f-client-help">
+              <span class="vt-help" id="f-client-help">Matches Autotask company names.</span>
+            </div>
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-type">Work type</label>
+              <select class="vt-select" id="f-type"><option>Billable</option><option>Non-billable</option><option>Travel</option></select>
+            </div>
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-ip">Device IP</label>
+              <input class="vt-input vt-mono" id="f-ip" type="text" value="10.20.4.311" aria-invalid="true" aria-describedby="f-ip-err">
+              <span class="vt-error" id="f-ip-err"><svg class="vt-icon vt-icon-sm"><use href="#i-alert"/></svg>Enter a valid IPv4 address.</span>
+            </div>
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-hours">Hours</label>
+              <input class="vt-input vt-mono" id="f-hours" type="text" inputmode="decimal" value="2.25">
+              <span class="vt-help">Rounded to 0.25 h.</span>
+            </div>
+            <div class="vt-field" style="grid-column:1/-1">
+              <label class="vt-check"><input type="checkbox" checked>Notify the client contact</label>
+              <label class="vt-check"><input type="checkbox">Mark as billable</label>
+            </div>
+          </form>
+        </article>
+        <article class="vt-panel" id="segmented">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Segmented control</h3><p class="vt-small">Scope and mode toggles.</p></div></div>
+          <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+            <div class="vt-segmented" role="radiogroup" aria-label="Scope example" data-segmented>
+              <button type="button" role="radio" aria-checked="true">Team</button>
+              <button type="button" role="radio" aria-checked="false">Me</button>
+              <button type="button" role="radio" aria-checked="false">Client</button>
+            </div>
+            <div class="vt-segmented" role="radiogroup" aria-label="Period example" data-segmented>
+              <button type="button" role="radio" aria-checked="false">7d</button>
+              <button type="button" role="radio" aria-checked="true">30d</button>
+              <button type="button" role="radio" aria-checked="false">90d</button>
+              <button type="button" role="radio" aria-checked="false">YTD</button>
+            </div>
+            <p class="vt-small">Track: 1px border, radius-md, 3px padding. Selected: primary-soft fill, text, 600.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Type scale (section 2) -->
+      <section class="vt-panel" id="type" aria-labelledby="type-h">
+        <div class="vt-panel-head"><div><h3 class="vt-h3" id="type-h">Typography</h3><p class="vt-small">Space Grotesk for titles, Inter for UI, JetBrains Mono for data.</p></div></div>
+        <div>
+          <div class="vt-type-row"><span class="vt-label">title · 28</span><span style="font:var(--vt-text-title)">Operations overview</span></div>
+          <div class="vt-type-row"><span class="vt-label">h2 · 20</span><span style="font:var(--vt-text-h2)">Utilization by technician</span></div>
+          <div class="vt-type-row"><span class="vt-label">h3 · 15</span><span style="font:var(--vt-text-h3)">Hours by client</span></div>
+          <div class="vt-type-row"><span class="vt-label">body · 14</span><span style="font:var(--vt-text-body)">Start guided cleanup to review stale configurations.</span></div>
+          <div class="vt-type-row"><span class="vt-label">small · 13</span><span style="font:var(--vt-text-small);color:var(--vt-text-muted)">Last synced 13 min ago · 4 sources</span></div>
+          <div class="vt-type-row"><span class="vt-label">label · 11</span><span class="vt-label">Team utilization</span></div>
+          <div class="vt-type-row"><span class="vt-label">kpi · 32</span><span class="vt-kpi-value">69.4%</span></div>
+          <div class="vt-type-row"><span class="vt-label">data · 13</span><span style="font:var(--vt-text-data);font-variant-numeric:tabular-nums">T20261104.0031 · 10.20.4.31 · $1,204.50 · Nov 11, 2026 5:43 PM MT</span></div>
+        </div>
+      </section>
+
+      <!-- All 12 themes -->
+      <section class="vt-section" id="palettes" aria-labelledby="palettes-h">
+        <div class="vt-section-head">
+          <div>
+            <h2 class="vt-h2" id="palettes-h">All 12 themes</h2>
+            <p class="vt-small" style="margin-top:4px">Each card renders the components with its own data-mode and data-theme. Status and chart colors change only with mode.</p>
+          </div>
+        </div>
+        <div class="vt-matrix" id="matrix"></div>
+      </section>
+
+      <!-- 8.2 Full picker -->
+      <section class="vt-section" id="appearance" aria-labelledby="appearance-h">
+        <div class="vt-section-head">
+          <div>
+            <h2 class="vt-h2" id="appearance-h">Appearance</h2>
+            <p class="vt-small" style="margin-top:4px">Pick a favorite light theme and a favorite dark theme. Mode decides which one is showing.</p>
+          </div>
+          <div class="vt-segmented" role="radiogroup" aria-label="Mode" data-mode-control>
+            <button type="button" role="radio" data-value="system"><svg class="vt-icon vt-icon-sm"><use href="#i-monitor"/></svg>System</button>
+            <button type="button" role="radio" data-value="light"><svg class="vt-icon vt-icon-sm"><use href="#i-sun"/></svg>Light</button>
+            <button type="button" role="radio" data-value="dark"><svg class="vt-icon vt-icon-sm"><use href="#i-moon"/></svg>Dark</button>
+          </div>
+        </div>
+        <div class="vt-preview-note" id="preview-note" role="status" hidden>
+          <svg class="vt-icon"><use href="#i-info"/></svg>
+          <span id="preview-note-text"></span>
+          <button class="vt-btn vt-btn--ghost vt-btn--sm" type="button" id="preview-end" style="margin-left:auto"></button>
+        </div>
+        <div class="vt-panel" style="display:flex;flex-direction:column;gap:22px">
+          <div class="vt-picker-group">
+            <div class="vt-label" id="pick-light-label">Light theme</div>
+            <div class="vt-picker-grid" role="radiogroup" aria-labelledby="pick-light-label" data-picker="light"></div>
+          </div>
+          <div class="vt-picker-group">
+            <div class="vt-label" id="pick-dark-label">Dark theme</div>
+            <div class="vt-picker-grid" role="radiogroup" aria-labelledby="pick-dark-label" data-picker="dark"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sync footer strip -->
+      <footer class="vt-sync-strip" aria-label="Sync status">
+        <span class="vt-fresh"><span class="vt-dot vt-dot--success" aria-hidden="true"></span>Autotask synced 13m</span>
+        <span class="vt-fresh"><span class="vt-dot vt-dot--warning" aria-hidden="true"></span>IT Glue stale 4h</span>
+        <span class="vt-fresh"><span class="vt-dot vt-dot--danger" aria-hidden="true"></span>Datto failed 2d</span>
+        <span class="vt-sync-note">Sample data · Nov 11, 2026 5:43 PM MT</span>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<template id="specimen-tpl">
+  <article class="vt-specimen">
+    <div class="vt-specimen-head">
+      <span class="vt-app-tile" aria-hidden="true">V</span>
+      <div><div class="vt-theme-name" data-name></div><div class="vt-theme-note" data-note></div></div>
+      <span class="vt-label" data-modelabel></span>
+    </div>
+    <div class="vt-specimen-body">
+      <div class="vt-specimen-nav">
+        <div class="vt-nav-label">Work</div>
+        <span class="vt-nav-item" aria-current="page"><svg class="vt-icon"><use href="#i-dashboard"/></svg><span class="vt-nav-text">Today</span></span>
+        <span class="vt-nav-item"><svg class="vt-icon"><use href="#i-table"/></svg><span class="vt-nav-text">Worklist</span><span class="vt-nav-badge">40</span></span>
+        <span class="vt-nav-item"><svg class="vt-icon"><use href="#i-calendar"/></svg><span class="vt-nav-text">Schedule</span></span>
+        <div class="vt-nav-label">Admin</div>
+        <span class="vt-nav-item"><svg class="vt-icon"><use href="#i-settings"/></svg><span class="vt-nav-text">Settings</span></span>
+      </div>
+      <div class="vt-specimen-main">
+        <div class="vt-kpi vt-kpi--success">
+          <span class="vt-label">Utilization</span>
+          <span class="vt-kpi-value">69.4%</span>
+          <svg class="vt-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22 L12 18 L24 20 L36 12 L48 15 L60 9 L72 13 L84 7 L100 5"/></svg>
+          <span class="vt-delta vt-delta--good">↗ +16.6 pts</span>
+        </div>
+        <div class="vt-specimen-row">
+          <span class="vt-btn vt-btn--primary">Primary</span>
+          <span class="vt-btn vt-btn--secondary">Secondary</span>
+        </div>
+        <div class="vt-specimen-row">
+          <span class="vt-btn vt-btn--ghost">Ghost</span>
+          <span class="vt-btn vt-btn--danger">Danger</span>
+        </div>
+      </div>
+    </div>
+    <div class="vt-pill-row">
+      <span class="vt-pill vt-pill--success">finished</span><span class="vt-pill vt-pill--warning">in progress</span><span class="vt-pill vt-pill--danger">failed</span><span class="vt-pill vt-pill--info">queued</span><span class="vt-pill vt-pill--muted">draft</span>
+    </div>
+    <div class="vt-table-card">
+      <table class="vt-table">
+        <thead><tr><th scope="col">Ticket</th><th scope="col">Status</th><th scope="col" class="vt-num">Cost</th></tr></thead>
+        <tbody>
+          <tr class="vt-attn--danger"><td class="vt-data">T1104.0031</td><td><span class="vt-pill vt-pill--danger">overdue</span></td><td class="vt-num">$612.50</td></tr>
+          <tr><td class="vt-data">T1028.0019</td><td><span class="vt-pill vt-pill--success">done</span></td><td class="vt-num">$1,204.50</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vt-specimen-row" style="flex-wrap:nowrap">
+      <span class="vt-input" style="display:flex;align-items:center;color:var(--vt-text-muted)">Search clients</span>
+      <span class="vt-segmented"><button type="button" tabindex="-1" aria-pressed="true">Team</button><button type="button" tabindex="-1" aria-pressed="false">Me</button></span>
+    </div>
+    <div class="vt-specimen-links">
+      <a href="#appearance" tabindex="-1">Link text</a>
+      <span class="vt-muted">Muted text</span>
+      <span class="vt-fresh"><span class="vt-dot vt-dot--success"></span>13m</span>
+      <span class="vt-fresh"><span class="vt-dot vt-dot--danger"></span>failed</span>
+    </div>
+    <div class="vt-series-chips" aria-hidden="true">
+      <span class="vt-series-chip" style="background:var(--vt-series-1)"></span><span class="vt-series-chip" style="background:var(--vt-series-2)"></span><span class="vt-series-chip" style="background:var(--vt-series-3)"></span><span class="vt-series-chip" style="background:var(--vt-series-4)"></span><span class="vt-series-chip" style="background:var(--vt-series-5)"></span><span class="vt-series-chip" style="background:var(--vt-series-6)"></span><span class="vt-series-chip" style="background:var(--vt-series-7)"></span><span class="vt-series-chip" style="background:var(--vt-series-8)"></span>
+    </div>
+  </article>
+</template>
+
+<script type="module" src="/theme-preview/preview.js"></script>
+</body>
+</html>
