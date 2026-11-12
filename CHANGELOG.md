@@ -3,6 +3,15 @@
 All notable changes to `@viatek/design`. Versions follow semver (see SPEC.md 3.4):
 patch for fixes, minor for new components or themes, major when apps must change code.
 
+## v1.1.0 · Nov 12, 2026
+
+- `src/components.css` (new, exported as `@viatek/design/components.css` and hosted at `/v1.1.0/components.css`): the app shell (sidebar with collapse, drawer, tooltips and flyouts; top bar; content area), buttons, KPI tiles, status pills, tables, panels, forms, segmented control, chart chrome and the theme picker from SPEC.md sections 6 to 8. Previously these lived only in the preview page. Load it after `tokens.css`.
+- `/theme-preview` now uses the hosted `components.css`; only its specimen matrix styles stay in `preview/preview.css`.
+- SPEC.md 3.1 to 3.3: hosted URLs are `https://viatek-design.vercel.app/v<version>/...`, install from `github:sidlpayne/viatek-design#v1.1.0`.
+- `npm run check` also scans `src/components.css` for hard-coded colors and em dashes.
+
+No changes to `tokens.css`, `theme.js`, `sidebar.js`, `no-flash.js` or the Tailwind preset. Apps on v1.0.0 keep working unchanged.
+
 ## v1.0.0 · Nov 11, 2026
 
 First release.

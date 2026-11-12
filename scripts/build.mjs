@@ -1,5 +1,5 @@
 // Builds dist/ for Vercel:
-//   dist/v<version>/{tokens.css,theme.js,sidebar.js,no-flash.js,SPEC.md,CHANGELOG.md}   (hosted, immutable)
+//   dist/v<version>/{tokens.css,components.css,theme.js,sidebar.js,no-flash.js,SPEC.md,CHANGELOG.md}   (hosted, immutable)
 //   dist/v<older>/...                     (every frozen release in releases/, so old links keep working)
 //   dist/theme-preview/                    (the /theme-preview page)
 //
@@ -17,7 +17,7 @@ const pkg = JSON.parse(await readFile(r('package.json'), 'utf8'));
 const version = pkg.version;
 const tag = `v${version}`;
 const base = `/${tag}`;
-const HOSTED = [['src/tokens.css', 'tokens.css'], ['src/theme.js', 'theme.js'], ['src/sidebar.js', 'sidebar.js'], ['src/no-flash.js', 'no-flash.js'], ['SPEC.md', 'SPEC.md'], ['CHANGELOG.md', 'CHANGELOG.md']];
+const HOSTED = [['src/tokens.css', 'tokens.css'], ['src/components.css', 'components.css'],['src/theme.js', 'theme.js'], ['src/sidebar.js', 'sidebar.js'], ['src/no-flash.js', 'no-flash.js'], ['SPEC.md', 'SPEC.md'], ['CHANGELOG.md', 'CHANGELOG.md']];
 
 const dist = r('dist');
 await rm(dist, { recursive: true, force: true });
@@ -70,5 +70,5 @@ for (const f of await readdir(r('preview'))) {
 }
 
 console.log(`built dist/ for @viatek/design ${tag}`);
-console.log(`  ${base}/tokens.css, theme.js, sidebar.js, no-flash.js, SPEC.md`);
+console.log(`  ${base}/tokens.css, components.css, theme.js, sidebar.js, no-flash.js, SPEC.md`);
 console.log('  /theme-preview');

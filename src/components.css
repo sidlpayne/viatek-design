@@ -1,6 +1,7 @@
 /*
- * /theme-preview component styles.
- * Reference implementation of SPEC.md sections 6 and 7, built only from --vt-* tokens.
+ * @viatek/design · components.css (SPEC.md sections 6, 7 and 8)
+ * The app shell (sidebar, top bar, content), components and theme picker, built only from --vt-* tokens.
+ * Load after tokens.css. sidebar.js relies on the class and attribute names used here.
  * Hard-coded colors are not allowed in this file (SPEC.md 3.6).
  */
 
@@ -441,51 +442,3 @@ button.vt-nav-label:hover { color: var(--vt-text); }
 .vt-preview-note[hidden] { display: none; }
 .vt-preview-note .vt-icon { color: var(--vt-info); }
 
-/* ------------------------------------------------------------------ */
-/* Palette matrix: each specimen carries its own data-mode/data-theme  */
-/* ------------------------------------------------------------------ */
-.vt-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 14px; }
-.vt-specimen {
-  background: var(--vt-bg); color: var(--vt-text);
-  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-xl);
-  padding: 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0;
-}
-.vt-specimen-head { display: flex; align-items: center; gap: 10px; }
-.vt-specimen-head .vt-app-tile { width: 28px; height: 28px; font-size: 14px; border-radius: 7px; }
-.vt-specimen-head .vt-theme-name { font-size: 14px; }
-.vt-specimen-head .vt-label { margin-left: auto; font-size: 10px; }
-.vt-specimen-body { display: grid; grid-template-columns: 132px 1fr; gap: 10px; }
-.vt-specimen-nav { background: var(--vt-sidebar-bg); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-md); padding: 6px; display: flex; flex-direction: column; gap: 2px; }
-.vt-specimen-nav .vt-nav-label { padding: 4px 6px 2px; font-size: 9px; }
-.vt-specimen-nav .vt-nav-item { min-height: 28px; padding: 0 8px; font-size: 12px; gap: 6px; }
-.vt-specimen-nav .vt-icon { width: 13px; height: 13px; }
-.vt-specimen-nav .vt-nav-badge { min-width: 18px; height: 15px; font-size: 9.5px; padding: 0 4px; }
-.vt-specimen-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.vt-specimen .vt-kpi { padding: 10px 12px; gap: 3px; }
-.vt-specimen .vt-kpi-value { font-size: 22px; }
-.vt-specimen .vt-label { font-size: 9.5px; }
-.vt-specimen .vt-delta { font-size: 11px; }
-.vt-specimen .vt-spark { height: 18px; }
-.vt-specimen .vt-btn { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
-.vt-specimen .vt-btn--ghost { padding: 0 6px; }
-.vt-specimen .vt-pill { height: 19px; font-size: 10.5px; padding: 0 6px; }
-.vt-specimen .vt-pill-row { gap: 5px; }
-.vt-specimen .vt-input { height: 30px; font-size: 12px; padding: 0 10px; }
-.vt-specimen .vt-segmented button { height: 22px; font-size: 11px; padding: 0 8px; }
-.vt-specimen .vt-table th { padding: 6px 8px; font-size: 9.5px; }
-.vt-specimen .vt-table td { padding: 7px 8px; font-size: 12px; }
-.vt-specimen .vt-table .vt-num, .vt-specimen .vt-table .vt-data { font-size: 11.5px; }
-.vt-specimen .vt-series-chip { height: 14px; border-radius: 4px; }
-.vt-specimen-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.vt-specimen-links { display: flex; gap: 10px; align-items: center; font-size: 12px; flex-wrap: wrap; }
-@media (max-width: 420px) {
-  .vt-matrix { grid-template-columns: minmax(0, 1fr); }
-  .vt-specimen-body { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* Spec reference blocks */
-.vt-token-table td:first-child { white-space: nowrap; }
-.vt-kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border: 1px solid var(--vt-border); border-bottom-width: 2px; border-radius: 5px; font: 600 11px/1 var(--vt-font-mono); background: var(--vt-surface-2); color: var(--vt-text); }
-.vt-type-row { display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 10px 0; border-top: 1px solid var(--vt-border); }
-.vt-type-row:first-child { border-top: 0; padding-top: 0; }
-@media (max-width: 640px) { .vt-type-row { grid-template-columns: minmax(0, 1fr); gap: 4px; } }

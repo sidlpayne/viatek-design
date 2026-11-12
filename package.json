@@ -1,6 +1,6 @@
 {
   "name": "@viatek/design",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ViaTek app design system: tokens, theme switching, sidebar shell and the /theme-preview page.",
   "license": "UNLICENSED",
   "repository": {
@@ -14,6 +14,7 @@
   ],
   "exports": {
     "./tokens.css": "./src/tokens.css",
+    "./components.css": "./src/components.css",
     "./theme.js": "./src/theme.js",
     "./sidebar.js": "./src/sidebar.js",
     "./no-flash.js": "./src/no-flash.js",

@@ -75,6 +75,7 @@ viatek-design/
   CHANGELOG.md          # one entry per release
   src/
     tokens.css          # every CSS variable in section 4
+    components.css      # app shell, components and theme picker (sections 6 to 8), tokens only
     theme.js            # theme switching (section 5)
     sidebar.js          # collapse behavior (section 6.1a)
     no-flash.js         # source of the inline <head> snippet (section 5.1, 6.1a)
@@ -83,17 +84,17 @@ viatek-design/
   vercel.json           # deploys preview/ and the hosted files (3.3)
 ```
 
-`package.json` exports `./tokens.css`, `./theme.js`, `./sidebar.js`, `./no-flash.js`, `./tailwind-preset.js` and `./SPEC.md`.
+`package.json` exports `./tokens.css`, `./components.css`, `./theme.js`, `./sidebar.js`, `./no-flash.js`, `./tailwind-preset.js` and `./SPEC.md`.
 
 ### 3.2 How a JavaScript app uses it (Next.js, Vite, Astro)
 
 Install from a version tag, never from a branch:
 
 ```bash
-npm install github:<github-org>/viatek-design#v1.0.0
+npm install github:sidlpayne/viatek-design#v1.1.0
 ```
 
-Then import `@viatek/design/tokens.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`.
+Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`.
 
 Each app's `CLAUDE.md` gets this block so every Claude Code session follows the shared spec:
 
@@ -106,16 +107,18 @@ If a component is missing, add it to the viatek-design repo first, then upgrade 
 
 ### 3.3 How a non-JavaScript app uses it (Streamlit, n8n-generated HTML, plain pages)
 
-`viatek-design` is deployed to Vercel (for example `design.viatek.net`) and serves versioned files:
+`viatek-design` is deployed to the Vercel project `viatek-design` and serves versioned files from its production URL:
 
 ```
-https://design.viatek.net/v1.0.0/tokens.css
-https://design.viatek.net/v1.0.0/theme.js
-https://design.viatek.net/v1.0.0/sidebar.js
-https://design.viatek.net/theme-preview
+https://viatek-design.vercel.app/v1.1.0/tokens.css
+https://viatek-design.vercel.app/v1.1.0/components.css
+https://viatek-design.vercel.app/v1.1.0/theme.js
+https://viatek-design.vercel.app/v1.1.0/sidebar.js
+https://viatek-design.vercel.app/v1.1.0/no-flash.js
+https://viatek-design.vercel.app/theme-preview
 ```
 
-Link the versioned path. Do not link an unversioned "latest" path, because a change would then ship to every app without testing. Streamlit apps inject the stylesheet link and set `data-mode`/`data-theme` with a small HTML component. Emailed HTML cannot use CSS variables: inline the Basecamp hex values there.
+Use only `viatek-design.vercel.app`, never a per-deployment URL (`viatek-design-<hash>-....vercel.app`): those change every deploy and can sit behind Vercel login. Do not rename or delete the Vercel project, because every linked app would break. Link the versioned path. Do not link an unversioned "latest" path, because a change would then ship to every app without testing. Streamlit apps inject the stylesheet link and set `data-mode`/`data-theme` with a small HTML component. Emailed HTML cannot use CSS variables: inline the Basecamp hex values there.
 
 ### 3.4 Releasing a change
 

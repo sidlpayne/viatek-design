@@ -54,13 +54,14 @@ console.log(rows.length ? rows.join('\n') : '  all pairs pass 4.5:1');
 
 // Preview hygiene
 const previewDir = path.join(root, 'preview');
-for (const f of await readdir(previewDir)) {
-  const text = await readFile(path.join(previewDir, f), 'utf8');
+const files = [...(await readdir(previewDir)).map((f) => `preview/${f}`), 'src/components.css'];
+for (const f of files) {
+  const text = await readFile(path.join(root, f), 'utf8');
   const lines = text.split('\n');
   lines.forEach((line, i) => {
-    if (line.includes('—')) { console.log(`FAIL  em dash in preview/${f}:${i + 1}`); failures++; }
+    if (line.includes('—')) { console.log(`FAIL  em dash in ${f}:${i + 1}`); failures++; }
     if (/(^|[^&\w])#[0-9a-fA-F]{3,8}\b(?![-\w])/.test(line.replace(/href="#[^"]*"/g, '')) || /\brgba?\(/.test(line)) {
-      console.log(`FAIL  hard-coded color in preview/${f}:${i + 1}: ${line.trim().slice(0, 100)}`); failures++;
+      console.log(`FAIL  hard-coded color in ${f}:${i + 1}: ${line.trim().slice(0, 100)}`); failures++;
     }
   });
 }
