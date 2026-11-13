@@ -92,8 +92,28 @@ button.vt-nav-label:hover { color: var(--vt-text); }
   background: var(--vt-primary); color: var(--vt-on-primary);
   font: 600 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums;
 }
+/* Plain count (v1.2.0): for counts that are information, not a call to action. The solid badge above is for action counts. */
+.vt-nav-count {
+  margin-left: auto; padding-left: 8px;
+  font: 500 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted);
+}
+.vt-nav-item[aria-current="page"] .vt-nav-count { color: var(--vt-text); }
 .vt-subnav { display: flex; flex-direction: column; gap: 2px; }
 .vt-nav-sub { padding-left: 38px; min-height: 32px; font-size: 13.5px; }
+
+/* Split item (v1.2.0): the label is a link to the page, the chevron button opens its sub-items. */
+.vt-nav-split { position: relative; display: flex; align-items: center; }
+.vt-nav-split > .vt-nav-item { padding-right: 40px; }
+.vt-nav-expander {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  border: 0; border-radius: var(--vt-radius-sm); background: transparent;
+  color: var(--vt-text-muted); cursor: pointer;
+}
+.vt-nav-expander:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-nav-split > .vt-nav-item[aria-current="page"] ~ .vt-nav-expander:hover { background: color-mix(in srgb, var(--vt-primary) 14%, var(--vt-surface)); }
+.vt-nav-expander .vt-icon { width: 14px; height: 14px; transition: transform var(--vt-dur) var(--vt-ease); }
+.vt-nav-expander[aria-expanded="true"] .vt-icon { transform: rotate(90deg); }
 .vt-sidebar-foot { margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--vt-border); white-space: nowrap; }
 
 /* 6.1a Collapsed (desktop only; the drawer always shows the full sidebar) */
@@ -104,7 +124,11 @@ button.vt-nav-label:hover { color: var(--vt-text); }
   [data-sidebar="collapsed"] .vt-sidebar .vt-nav-text,
   [data-sidebar="collapsed"] .vt-sidebar .vt-nav-item > .vt-chevron,
   [data-sidebar="collapsed"] .vt-sidebar .vt-subnav,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-expander,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-count,
   [data-sidebar="collapsed"] .vt-sidebar .vt-sidebar-foot,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-expander,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-count,
   [data-sidebar-anim="expanding"] .vt-sidebar .vt-identity-text,
   [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-label,
   [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-text,
@@ -117,7 +141,8 @@ button.vt-nav-label:hover { color: var(--vt-text); }
     content: ""; display: block; height: 1px; background: var(--vt-border); margin: 10px 4px;
   }
   [data-sidebar="collapsed"] .vt-sidebar .vt-nav-section:first-child { padding-top: 10px; }
-  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-item { justify-content: center; min-height: 40px; padding: 0; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-item,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-split > .vt-nav-item { justify-content: center; min-height: 40px; padding: 0; }
   [data-sidebar="collapsed"] .vt-sidebar .vt-nav-badge {
     position: absolute; top: 9px; left: calc(50% + 5px);
     width: 8px; height: 8px; min-width: 0; padding: 0; font-size: 0; color: transparent;
@@ -176,6 +201,10 @@ button.vt-nav-label:hover { color: var(--vt-text); }
   font: 500 14px/1.2 var(--vt-font-sans);
 }
 .vt-flyout-item:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-flyout-item .vt-nav-text { flex: 1 1 auto; }
+.vt-flyout-item .vt-icon { margin-right: 10px; }
+.vt-flyout-item .vt-nav-badge, .vt-flyout-item .vt-nav-count { margin-left: auto; }
+.vt-flyout-item--parent { border-bottom: 1px solid var(--vt-border); border-radius: var(--vt-radius-md) var(--vt-radius-md) 0 0; margin-bottom: 4px; font-weight: 600; }
 .vt-flyout-item[aria-current="page"] { background: var(--vt-primary-soft); color: var(--vt-text); font-weight: 600; box-shadow: inset 3px 0 0 var(--vt-primary); }
 
 /* 6.2 Top bar */
@@ -298,6 +327,20 @@ button.vt-nav-label:hover { color: var(--vt-text); }
 .vt-pill--info    { --pill: var(--vt-info);    background: var(--vt-info-soft); }
 .vt-pill--muted   { --pill: var(--vt-text-muted); background: var(--vt-surface-2); }
 .vt-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Tag (v1.2.0): a neutral label for things that are not a status (keep, archive, active, bucket names).
+   Keeps the text's own case. Never colored. */
+.vt-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 8px; border-radius: var(--vt-radius-sm);
+  font: 500 12px/1 var(--vt-font-mono); white-space: nowrap;
+  color: var(--vt-text); background: var(--vt-surface-2); border: 1px solid var(--vt-border);
+}
+.vt-tag .vt-icon { width: 12px; height: 12px; color: var(--vt-text-muted); }
+
+/* Empty cell value (v1.2.0): a muted hyphen, never an em dash.
+   <span class="vt-null"><span aria-hidden="true">-</span><span class="vt-sr-only">none</span></span> */
+.vt-null { color: var(--vt-text-muted); }
 
 /* ------------------------------------------------------------------ */
 /* 7.4 Tables                                                          */
@@ -442,3 +485,206 @@ button.vt-nav-label:hover { color: var(--vt-text); }
 .vt-preview-note[hidden] { display: none; }
 .vt-preview-note .vt-icon { color: var(--vt-info); }
 
+/* ------------------------------------------------------------------ */
+/* 7.9 Alert banner (v1.2.0)                                           */
+/* ------------------------------------------------------------------ */
+/* <div class="vt-alert vt-alert--warning" role="status">
+     <svg class="vt-icon">...</svg>
+     <div class="vt-alert-body"><p class="vt-alert-title">Stale data</p><p>Sync before acting.</p></div>
+     <div class="vt-alert-actions"><button class="vt-btn vt-btn--secondary vt-btn--sm">Sync now</button></div>
+   </div>
+   role="alert" only for errors that appear after a user action; role="status" otherwise. */
+.vt-alert {
+  --alert: var(--vt-info);
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border-radius: var(--vt-radius-md);
+  background: color-mix(in srgb, var(--alert) var(--vt-tint), var(--vt-surface));
+  border: 1px solid color-mix(in srgb, var(--alert) 40%, var(--vt-surface));
+  color: var(--vt-text); font-size: 14px; line-height: 1.45;
+}
+.vt-alert > .vt-icon { color: var(--alert); margin-top: 1px; }
+.vt-alert--success { --alert: var(--vt-success); }
+.vt-alert--warning { --alert: var(--vt-warning); }
+.vt-alert--danger  { --alert: var(--vt-danger); }
+.vt-alert--info    { --alert: var(--vt-info); }
+.vt-alert-body { flex: 1 1 auto; min-width: 0; }
+.vt-alert-body p { margin: 0; }
+.vt-alert-body p + p { margin-top: 2px; }
+.vt-alert-title { font-weight: 600; }
+.vt-alert-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: -4px 0; }
+.vt-alert[hidden] { display: none; }
+
+/* ------------------------------------------------------------------ */
+/* 7.10 Dialog (v1.2.0): native <dialog> opened with showModal()       */
+/* ------------------------------------------------------------------ */
+/* <dialog class="vt-dialog" aria-labelledby="d-title">
+     <form method="dialog">
+       <header class="vt-dialog-head"><h2 class="vt-dialog-title" id="d-title">Archive 12 devices?</h2>
+         <button class="vt-icon-btn" value="cancel" aria-label="Close">x icon</button></header>
+       <div class="vt-dialog-body">...</div>
+       <footer class="vt-dialog-foot"><button class="vt-btn vt-btn--secondary" value="cancel">Cancel</button>
+         <button class="vt-btn vt-btn--danger" value="confirm">Archive 12</button></footer>
+     </form>
+   </dialog>
+   Apps using Radix or shadcn put these classes on their Overlay (.vt-dialog-scrim) and Content (.vt-dialog). */
+.vt-dialog {
+  width: min(480px, calc(100vw - 32px)); max-height: calc(100vh - 64px);
+  margin: auto; padding: 0; overflow: auto;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-xl);
+  box-shadow: var(--vt-shadow-lg);
+}
+.vt-dialog--wide { width: min(720px, calc(100vw - 32px)); }
+.vt-dialog::backdrop { background: var(--vt-scrim); }
+.vt-dialog-scrim { position: fixed; inset: 0; z-index: 70; background: var(--vt-scrim); }
+.vt-dialog:not(dialog) { position: fixed; z-index: 71; inset: 0; height: fit-content; }
+.vt-dialog > form { display: contents; }
+.vt-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 0; }
+.vt-dialog-head .vt-icon-btn { margin: -6px -8px 0 0; }
+.vt-dialog-title { margin: 0; font: var(--vt-text-h3); color: var(--vt-text); }
+.vt-dialog-body { padding: 10px 20px 4px; font-size: 14px; line-height: 1.5; color: var(--vt-text); display: flex; flex-direction: column; gap: 12px; }
+.vt-dialog-body p { margin: 0; }
+.vt-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 16px 20px 18px; }
+@media (prefers-reduced-motion: no-preference) {
+  .vt-dialog[open] { animation: vt-dialog-in var(--vt-dur) var(--vt-ease); }
+  @keyframes vt-dialog-in { from { opacity: 0; transform: translateY(6px) scale(.98); } }
+}
+
+/* ------------------------------------------------------------------ */
+/* 7.11 Help popover (v1.2.0): the "?" next to a label                 */
+/* ------------------------------------------------------------------ */
+/* <span class="vt-popover-wrap">
+     <button class="vt-icon-btn vt-icon-btn--sm" aria-expanded="false" aria-controls="h1" aria-label="About match rules">?</button>
+     <div class="vt-popover" id="h1" role="dialog" aria-labelledby="h1-t" hidden>
+       <p class="vt-popover-title" id="h1-t">Match rules</p><p>...</p><a href="..." class="vt-menu-link">Read more</a>
+     </div>
+   </span>
+   Close on Escape and outside click. Apps with Radix or Floating UI keep it for positioning and add these classes. */
+.vt-popover {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 50;
+  width: max-content; max-width: 320px; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); box-shadow: var(--vt-shadow-md);
+  font-size: 13px; line-height: 1.45; text-align: left; white-space: normal;
+}
+.vt-popover[hidden] { display: none; }
+.vt-popover--end { left: auto; right: 0; }
+.vt-popover p { margin: 0; }
+.vt-popover-title { font-weight: 600; font-size: 13px; }
+.vt-popover .vt-menu-link { margin-top: 2px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.12 Toast (v1.2.0)                                                 */
+/* ------------------------------------------------------------------ */
+/* Bottom-right stack, 4s for success and info, errors stay until closed. Status is in the icon AND the words.
+   Sonner: <Toaster position="bottom-right" toastOptions={{ unstyled: true, classNames: {
+     toast: 'vt-toast', title: 'vt-toast-title', description: 'vt-toast-desc',
+     actionButton: 'vt-btn vt-btn--secondary vt-btn--sm', cancelButton: 'vt-btn vt-btn--ghost vt-btn--sm',
+     closeButton: 'vt-icon-btn vt-icon-btn--sm', icon: 'vt-toast-icon' } }} />
+   Sonner sets data-type="success|error|warning|info" on the toast; those map to status colors below. */
+.vt-toast-stack { position: fixed; right: 20px; bottom: 20px; z-index: 80; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.vt-toast {
+  --toast: var(--vt-text-muted);
+  display: flex; align-items: flex-start; gap: 10px;
+  width: min(380px, calc(100vw - 32px)); padding: 12px 14px;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg);
+  box-shadow: var(--vt-shadow-lg), inset 3px 0 0 var(--toast);
+  font: 400 14px/1.4 var(--vt-font-sans);
+}
+.vt-toast--success, .vt-toast[data-type="success"] { --toast: var(--vt-success); }
+.vt-toast--warning, .vt-toast[data-type="warning"] { --toast: var(--vt-warning); }
+.vt-toast--danger,  .vt-toast[data-type="error"]   { --toast: var(--vt-danger); }
+.vt-toast--info,    .vt-toast[data-type="info"], .vt-toast[data-type="loading"] { --toast: var(--vt-info); }
+.vt-toast > .vt-icon, .vt-toast-icon { color: var(--toast); flex: none; margin-top: 1px; }
+.vt-toast-body { flex: 1 1 auto; min-width: 0; }
+.vt-toast-title { font-weight: 600; margin: 0; }
+.vt-toast-desc { margin: 2px 0 0; font-size: 13px; color: var(--vt-text-muted); }
+.vt-toast .vt-icon-btn { margin: -6px -8px -6px 0; }
+
+/* ------------------------------------------------------------------ */
+/* 7.13 Tabs and filter chips (v1.2.0)                                 */
+/* ------------------------------------------------------------------ */
+/* View tabs are navigation:
+   <nav class="vt-tabs" aria-label="Views"><a class="vt-tab" href="?view=all" aria-current="page">All <span class="vt-tab-count">312</span></a>...</nav>
+   For in-page panels use role="tablist" and role="tab" with aria-selected="true" instead of aria-current. */
+.vt-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--vt-border); overflow-x: auto; scrollbar-width: thin; }
+.vt-tab {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  height: 40px; padding: 0 12px; margin-bottom: -1px;
+  border: 0; border-bottom: 2px solid transparent; background: none;
+  font: 500 14px/1 var(--vt-font-sans); color: var(--vt-text-muted);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.vt-tab:hover { color: var(--vt-text); border-bottom-color: var(--vt-border); }
+.vt-tab[aria-current="page"], .vt-tab[aria-selected="true"] { color: var(--vt-text); font-weight: 600; border-bottom-color: var(--vt-primary); }
+.vt-tab-count {
+  min-width: 22px; height: 18px; padding: 0 6px; display: inline-grid; place-items: center;
+  border-radius: var(--vt-radius-full); background: var(--vt-surface-2);
+  font: 500 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted);
+}
+.vt-tab[aria-current="page"] .vt-tab-count, .vt-tab[aria-selected="true"] .vt-tab-count { background: var(--vt-primary-soft); color: var(--vt-text); }
+
+/* Filter chips toggle a filter or field on and off. Links use aria-current="true", buttons aria-pressed="true". */
+.vt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.vt-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 12px; border-radius: var(--vt-radius-full);
+  border: 1px solid var(--vt-border); background: var(--vt-surface);
+  font: 500 13px/1 var(--vt-font-sans); color: var(--vt-text);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.vt-chip:hover { background: var(--vt-surface-2); }
+.vt-chip .vt-icon { width: 14px; height: 14px; }
+.vt-chip .vt-chip-check { display: none; }
+.vt-chip[aria-pressed="true"], .vt-chip[aria-current="true"] {
+  background: var(--vt-primary-soft); border-color: var(--vt-primary); font-weight: 600;
+}
+.vt-chip[aria-pressed="true"] .vt-chip-check, .vt-chip[aria-current="true"] .vt-chip-check { display: block; }
+.vt-chip-count { font: 500 11px/1 var(--vt-font-mono); color: var(--vt-text-muted); font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------ */
+/* 7.14 Disclosure, empty state, pager (v1.2.0)                        */
+/* ------------------------------------------------------------------ */
+/* <details class="vt-disclosure"><summary>How this works</summary><div class="vt-disclosure-body">...</div></details> */
+.vt-disclosure { align-self: start; border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); background: var(--vt-surface); }
+.vt-disclosure > summary {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px;
+  font: 600 14px/1.3 var(--vt-font-sans); color: var(--vt-text); cursor: pointer; list-style: none;
+  border-radius: var(--vt-radius-lg);
+}
+.vt-disclosure > summary::-webkit-details-marker { display: none; }
+.vt-disclosure > summary::before {
+  content: ""; width: 7px; height: 7px; flex: none; margin: 0 2px;
+  border-right: 1.8px solid var(--vt-text-muted); border-bottom: 1.8px solid var(--vt-text-muted);
+  transform: rotate(-45deg); transition: transform var(--vt-dur) var(--vt-ease);
+}
+.vt-disclosure[open] > summary::before { transform: rotate(45deg); }
+.vt-disclosure > summary:hover { background: var(--vt-surface-2); }
+.vt-disclosure-body { padding: 4px 16px 16px 35px; font-size: 14px; line-height: 1.55; color: var(--vt-text); }
+.vt-disclosure-body > :first-child { margin-top: 0; }
+.vt-disclosure-body > :last-child { margin-bottom: 0; }
+.vt-disclosure--plain { border: 0; background: none; }
+.vt-disclosure--plain > summary { padding: 0 6px; min-height: 36px; }
+.vt-disclosure--plain .vt-disclosure-body { padding: 4px 6px 8px 25px; }
+
+/* <div class="vt-empty"><svg class="vt-icon">...</svg><p class="vt-empty-title">No duplicates found</p><p>...</p><button ...>Run a scan</button></div> */
+.vt-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  padding: 32px 20px; border: 1px dashed var(--vt-border); border-radius: var(--vt-radius-lg);
+  color: var(--vt-text-muted); font-size: 14px; line-height: 1.45;
+}
+.vt-empty > .vt-icon { width: 24px; height: 24px; margin-bottom: 4px; }
+.vt-empty p { margin: 0; max-width: 46ch; }
+.vt-empty-title { color: var(--vt-text); font-weight: 600; }
+.vt-empty .vt-btn { margin-top: 8px; }
+.vt-table-card .vt-empty { border: 0; border-radius: 0; }
+
+/* <nav class="vt-pager" aria-label="Pages"><span class="vt-pager-range">1 to 50 of 312</span>
+     <a class="vt-btn vt-btn--secondary vt-btn--sm" aria-disabled="true">Previous</a>
+     <a class="vt-btn vt-btn--secondary vt-btn--sm" href="?page=2">Next</a></nav> */
+.vt-pager { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 10px 12px; }
+.vt-table-card .vt-pager { border-top: 1px solid var(--vt-border); }
+.vt-pager-range { margin-right: auto; font: var(--vt-text-data); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); }
+.vt-pager [aria-disabled="true"] { opacity: .5; pointer-events: none; }

@@ -91,10 +91,10 @@ viatek-design/
 Install from a version tag, never from a branch:
 
 ```bash
-npm install github:sidlpayne/viatek-design#v1.1.0
+npm install github:sidlpayne/viatek-design#v1.2.0
 ```
 
-Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`.
+Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`. Tailwind v4 has no JS config by default: add a `tailwind.config.js` that holds only that preset line and point to it from the global stylesheet with `@config "../tailwind.config.js";`.
 
 Each app's `CLAUDE.md` gets this block so every Claude Code session follows the shared spec:
 
@@ -110,11 +110,11 @@ If a component is missing, add it to the viatek-design repo first, then upgrade 
 `viatek-design` is deployed to the Vercel project `viatek-design` and serves versioned files from its production URL:
 
 ```
-https://viatek-design.vercel.app/v1.1.0/tokens.css
-https://viatek-design.vercel.app/v1.1.0/components.css
-https://viatek-design.vercel.app/v1.1.0/theme.js
-https://viatek-design.vercel.app/v1.1.0/sidebar.js
-https://viatek-design.vercel.app/v1.1.0/no-flash.js
+https://viatek-design.vercel.app/v1.2.0/tokens.css
+https://viatek-design.vercel.app/v1.2.0/components.css
+https://viatek-design.vercel.app/v1.2.0/theme.js
+https://viatek-design.vercel.app/v1.2.0/sidebar.js
+https://viatek-design.vercel.app/v1.2.0/no-flash.js
 https://viatek-design.vercel.app/theme-preview
 ```
 
@@ -196,6 +196,8 @@ Apps never hard-code a hex color. Every color comes from a `--vt-*` variable. Be
 
   --vt-shadow-sm: 0 1px 2px rgba(16,24,40,.06);
   --vt-shadow-md: 0 1px 2px rgba(16,24,40,.06), 0 12px 32px rgba(16,24,40,.08);
+  --vt-shadow-lg: 0 2px 4px rgba(16,24,40,.08), 0 24px 56px rgba(16,24,40,.18); /* dialogs, toasts */
+  --vt-scrim: rgba(16,24,40,.45);  /* dialog backdrop */
   --vt-tint: 9%;   /* used for pill/alert backgrounds */
 }
 
@@ -218,6 +220,8 @@ Apps never hard-code a hex color. Every color comes from a `--vt-*` variable. Be
 
   --vt-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
   --vt-shadow-md: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.35);
+  --vt-shadow-lg: 0 2px 4px rgba(0,0,0,.5), 0 24px 64px rgba(0,0,0,.55);
+  --vt-scrim: rgba(0,0,0,.6);
   --vt-tint: 12%;
 }
 ```
@@ -491,8 +495,10 @@ Apps that do not use Supabase auth use localStorage only.
 - **Nav item:** height 36px min, padding 0 10px, radius `--vt-radius-md`, 17px stroke icon (1.8 stroke, Lucide set) plus a label in Inter 14px/500, inactive color `--vt-text` at 78% (`color-mix(in srgb, var(--vt-text) 78%, var(--vt-bg))`).
 - **Active item:** fill `--vt-primary-soft`, text `--vt-text`, weight 600, plus a 3px bar on the left edge in `--vt-primary` (`box-shadow: inset 3px 0 0 var(--vt-primary)`). Set `aria-current="page"`.
 - **Hover:** fill `--vt-surface-2`.
-- **Count badge** (for example Envoy's Worklist 40): right-aligned mono 11px pill, fill `--vt-primary`, text `--vt-on-primary`.
+- **Count badge** (for example Envoy's Worklist 40): right-aligned mono 11px pill, fill `--vt-primary`, text `--vt-on-primary`. Use it only for counts that ask for action (items waiting on the user).
+- **Plain count** (`.vt-nav-count`): right-aligned mono 11px in `--vt-text-muted`, no fill. Use it for counts that are information, such as the number of records in each view.
 - **Sub-items** with a `›` chevron expand inline, indented 28px.
+- **Split item:** when the parent is also a page, the label is a link to that page and a separate 28px chevron button on the right opens the sub-items (`.vt-nav-split` with `.vt-nav-item` and `.vt-nav-expander`). One click on the label navigates, as before. When the parent is not a page, the whole row is the button.
 - On screens narrower than 900px the sidebar becomes an off-canvas drawer opened from the top-bar menu button.
 
 ### 6.1a Collapsing (required in every app)
@@ -508,7 +514,7 @@ Apps that do not use Supabase auth use localStorage only.
 - Nav items are icon-only, 40px tall and centered. The active item keeps its `--vt-primary-soft` fill and 3px left bar.
 - Every item keeps its accessible name (`aria-label` on the link) and shows a tooltip with the label on hover and keyboard focus, placed to the right, after a 300ms delay.
 - Count badges become an 8px dot in `--vt-primary` at the icon's top-right corner, and the count moves into the tooltip ("Worklist · 40").
-- Collapsible section chevrons and sub-items are hidden. Clicking an icon that has sub-items opens a flyout menu to the right with the section label and its sub-items.
+- Collapsible section chevrons and sub-items are hidden. Clicking an icon that has sub-items opens a flyout menu to the right with the section label and its sub-items. For a split item, the flyout lists the parent page first, then its sub-items. Plain counts are hidden and move into the tooltip like badge counts.
 
 **Behavior**
 - Animate width with `transition: width var(--vt-dur) var(--vt-ease)`. Skip the animation when `prefers-reduced-motion` is set. Hide labels at the start of collapsing and show them at the end of expanding so text never wraps mid-animation.
@@ -575,15 +581,19 @@ Envoy's orange "Go" and "Touch" buttons become standard Primary buttons. The "Lo
 - Inline-flex, height 22px, padding 0 8px, radius `--vt-radius-sm`, mono 12px/500, lowercase text (Reconciliator style: `in progress`, `finished`).
 - Text `--vt-<status>`, fill `--vt-<status>-soft`, 1px border `color-mix(in srgb, var(--vt-<status>) 40%, var(--vt-surface))`.
 
-| Meaning | Token |
-|---|---|
-| finished, healthy, done, synced | success |
-| in progress, waiting, stale, due soon | warning |
-| failed, overdue, escalated, offline | danger |
-| queued, new, info, scheduled | info |
-| draft, skipped, n/a | `--vt-text-muted` |
+| Meaning | Token | Words |
+|---|---|---|
+| Done, good | success | finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online |
+| Working or needs a look | warning | in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working |
+| Failed or overdue | danger | failed, overdue, escalated, offline, agent failed |
+| Not started yet | info | queued, new, info, scheduled, to do, ready to send |
+| Not applicable | `--vt-text-muted` (`.vt-pill--muted`) | draft, skipped, n/a, cancelled, unknown, not a problem |
 
-Every app must use the same word-to-color mapping. Add a word to this table before using it in an app.
+**Severity** uses the same pill: `critical` danger, `high` warning, `medium` info, `low` muted.
+
+Every app must use the same word-to-color mapping. Add a word to this table before using it in an app. A word that names an ongoing action (`running`, `sending`) is warning; the finished form of the same action (`succeeded`, `sent`) is success.
+
+**Tag** (`.vt-tag`): a neutral label for words that describe a thing instead of reporting its status, such as `keep`, `archive`, `active`, `inactive`, `deleted`, `suspended`, `not in Pulse`, `never matched`, evidence labels and bucket names. Same size as a pill, mono 12px/500, `--vt-text` on `--vt-surface-2` with a 1px `--vt-border` border, and it keeps the word's own case. Tags are never colored. If a tag starts to mean "this needs action", it is a status and goes in the table above.
 
 ### 7.4 Tables
 
@@ -594,6 +604,8 @@ Every app must use the same word-to-color mapping. Add a word to this table befo
 - Dates, times, numbers, costs, IDs: mono 13px, numbers right-aligned.
 - **Attention row** (overdue, failed): 3px left edge in `--vt-danger` or `--vt-warning` (inset box-shadow on the row), plus a status pill. Use only for rows that need action, never for decoration.
 - Row actions (Envoy's Log held / Skip / Reschedule): Secondary buttons at 32px height, right-aligned, wrap on narrow screens.
+- **Empty cells** show a muted hyphen (`.vt-null`), never an em dash and never a blank cell: `<span class="vt-null"><span aria-hidden="true">-</span><span class="vt-sr-only">none</span></span>`.
+- Long tables page with the **pager** (7.14) under the table, inside the card.
 
 ### 7.5 Panels / cards
 
@@ -620,6 +632,45 @@ Track: 1px border, radius-md, padding 3px. Selected segment: fill `--vt-primary-
 - One y-axis per chart. Never a dual axis.
 - Show a legend whenever there are 2 or more series. Hover tooltips on every chart. Weekends or no-data days are gaps, not drops to zero.
 - Charts re-read CSS variables on the `viatek:theme` event (Chart.js, Recharts and ECharts do not do this on their own).
+
+Sections 7.9 to 7.14 were added in v1.2.0. Full markup for each is in the comments in `components.css` and on `/theme-preview`.
+
+### 7.9 Alert banner (`.vt-alert`)
+
+For conditions on the page: stale data, a failed sign-in, a job error, a guide note.
+
+- Radius-md, padding 12px 14px, fill `color-mix(<status> var(--vt-tint), --vt-surface)`, 1px border at 40% status. Text `--vt-text` 14px, optional bold title on the first line, 17px status icon on the left, optional small Secondary button on the right.
+- Variants: `--info`, `--success`, `--warning`, `--danger`, using the same meanings as 7.3. Stale data is warning. A failed sync or sign-in is danger.
+- `role="status"`, except errors that appear right after a user action, which get `role="alert"`.
+- Not for success after an action: that is a toast (7.12).
+
+### 7.10 Dialog (`.vt-dialog`)
+
+For confirming bulk or destructive actions, and short forms.
+
+- Native `<dialog>` opened with `showModal()` (focus trap, Escape and the backdrop come for free). Apps on Radix or shadcn put `.vt-dialog-scrim` on the overlay and `.vt-dialog` on the content.
+- Width 480px (`--wide` 720px), fill `--vt-surface`, 1px border, radius-xl, `--vt-shadow-lg`. Backdrop `--vt-scrim`.
+- Header: title in `--vt-text-h3` that asks the question with the count ("Archive 12 devices?") and a close icon button. Body: 14px, says what will happen and whether it can be undone. Footer, right-aligned: Secondary "Cancel", then the confirm button named after the action ("Archive 12"), Danger if destructive, otherwise Primary.
+
+### 7.11 Help popover (`.vt-popover`)
+
+The `?` next to a label. A 28px icon button (`aria-expanded`, `aria-controls`) opens a box under it: max-width 320px, fill `--vt-surface`, 1px border, radius-lg, `--vt-shadow-md`, padding 12px 14px. Inside: a 13px/600 title, 13px text and an optional "Read more" link. Closes on Escape, outside click or the button. Tooltips (`.vt-tooltip`) stay for one-line labels only.
+
+### 7.12 Toast (`.vt-toast`)
+
+For results of an action the user just took ("Job started", "Saved"). Bottom-right stack, width 380px, fill `--vt-surface`, 1px border, radius-lg, `--vt-shadow-lg`, a 3px left edge and icon in the status color, title 14px/600 and optional 13px muted description. Success and info close after 4 seconds. Errors stay until closed. Apps using Sonner pass `unstyled: true` and the class names listed in `components.css`.
+
+### 7.13 Tabs and filter chips
+
+- **Tabs** (`.vt-tabs`, `.vt-tab`) switch between views of the same page. They are links with `aria-current="page"` when each view has its own URL, or `role="tab"` with `aria-selected` for in-page panels. Height 40px, 14px/500 muted text, selected: `--vt-text` 600 with a 2px `--vt-primary` underline. An optional count (`.vt-tab-count`) sits in a mono 11px pill.
+- **Filter chips** (`.vt-chip`) turn filters or fields on and off, several at a time. Height 30px, full radius, 1px border, 13px text. Selected: `--vt-primary-soft` fill, `--vt-primary` border, 600, and a check icon. Buttons use `aria-pressed`, links use `aria-current="true"`.
+- The segmented control (7.7) stays for choosing one of 2 to 4 options that change a setting, such as scope or mode.
+
+### 7.14 Disclosure, empty state, pager
+
+- **Disclosure** (`details.vt-disclosure`): "How this works" and similar fold-out text. Summary row 44px, 14px/600, chevron on the left. `--plain` drops the border for use inside a panel.
+- **Empty state** (`.vt-empty`): 1px dashed `--vt-border`, radius-lg, centered, optional 24px icon, a one-line title in `--vt-text` 600, one sentence of muted text saying why it is empty, and an optional button for the next step.
+- **Pager** (`.vt-pager`): under a table, inside its card. Mono range on the left (`1 to 50 of 312`), small Secondary "Previous" and "Next" buttons on the right. A disabled button gets `aria-disabled="true"`.
 
 ---
 
@@ -655,7 +706,7 @@ An icon button (sun/moon) that opens a small menu:
 
 ## 10. Content rules
 
-- No em dashes anywhere in UI copy. Use a period, comma, colon or " · ".
+- No em dashes anywhere in UI copy. Use a period, comma, colon or " · ". Empty table cells use a muted hyphen (7.4).
 - Sentence case for titles, buttons and labels ("Start guided cleanup", not "Start Guided Cleanup"). Exception: mono labels are UPPERCASE.
 - Dates: `Nov 11, 2026`. Times: `5:43 PM MT`. Relative times: `13m`, `4h`, `2d` in freshness chips, and `13 min ago` in sentences.
 - Hours: `835.7 h`. Percent: `69.4%`. Money: `$1,204.50`.

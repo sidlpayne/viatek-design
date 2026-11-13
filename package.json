@@ -1,6 +1,6 @@
 {
   "name": "@viatek/design",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "ViaTek app design system: tokens, theme switching, sidebar shell and the /theme-preview page.",
   "license": "UNLICENSED",
   "repository": {

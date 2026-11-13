@@ -10,7 +10,11 @@
  *   <aside id="vt-sidebar" class="vt-sidebar" data-vt-sidebar> ... </aside>
  *   <button data-vt-sidebar-toggle aria-controls="vt-sidebar"> ... </button>
  *   Nav links:        .vt-nav-item  with .vt-nav-text label and optional .vt-nav-badge
+ *                     or a plain .vt-nav-count for counts that are information only (v1.2.0)
  *   Sub-item parent:  button.vt-nav-item[aria-controls=<id of .vt-subnav>]
+ *   Split parent (v1.2.0), when the parent is also a page:
+ *     <div class="vt-nav-split"><a class="vt-nav-item" href> ... </a>
+ *       <button class="vt-nav-expander" aria-controls=<id of .vt-subnav> aria-expanded> chevron </button></div>
  *   Section toggle:   button.vt-nav-label[aria-controls=<id of .vt-nav-group>]
  *
  * State attributes this script writes on <html>:
@@ -52,11 +56,16 @@ function labelOf(item) {
   return (item.getAttribute('data-vt-label') || (text && text.textContent) || item.getAttribute('aria-label') || '').trim();
 }
 
+function countOf(item) {
+  const badge = item.querySelector('.vt-nav-badge, .vt-nav-count');
+  return badge ? badge.textContent.trim() : '';
+}
+
 function tooltipOf(item) {
   if (item.hasAttribute('data-vt-tooltip')) return item.getAttribute('data-vt-tooltip');
-  const badge = item.querySelector('.vt-nav-badge');
+  const count = countOf(item);
   const label = labelOf(item);
-  return badge && badge.textContent.trim() ? `${label} · ${badge.textContent.trim()}` : label;
+  return count ? `${label} · ${count}` : label;
 }
 
 /**
@@ -116,10 +125,16 @@ export function initSidebar(appId, options = {}) {
   // Nav items keep an accessible name when the label is hidden.
   sidebar.querySelectorAll('.vt-nav-item').forEach((item) => {
     if (!item.hasAttribute('aria-label')) {
-      const badge = item.querySelector('.vt-nav-badge');
+      const count = countOf(item);
       const label = labelOf(item);
-      item.setAttribute('aria-label', badge ? `${label}, ${badge.textContent.trim()}` : label);
+      item.setAttribute('aria-label', count ? `${label}, ${count}` : label);
     }
+  });
+  // Split items: the chevron button needs its own name.
+  sidebar.querySelectorAll('.vt-nav-split').forEach((row) => {
+    const link = row.querySelector('.vt-nav-item');
+    const btn = row.querySelector('.vt-nav-expander');
+    if (link && btn && !btn.hasAttribute('aria-label')) btn.setAttribute('aria-label', `${labelOf(link)} views`);
   });
 
   const isMobile = () => mobileMq.matches;
@@ -246,12 +261,13 @@ export function initSidebar(appId, options = {}) {
     flyout.remove();
     flyout = null;
     if (flyoutOwner) {
-      flyoutOwner.setAttribute('aria-expanded', flyoutOwner.getAttribute('data-vt-inline-expanded') || 'false');
+      if (flyoutOwner.matches('.vt-nav-split > .vt-nav-item')) flyoutOwner.removeAttribute('aria-expanded');
+      else flyoutOwner.setAttribute('aria-expanded', flyoutOwner.getAttribute('data-vt-inline-expanded') || 'false');
       if (restoreFocus) flyoutOwner.focus();
     }
     flyoutOwner = null;
   }
-  function openFlyout(owner, sub) {
+  function openFlyout(owner, sub, parentLink) {
     closeFlyout();
     hideTip();
     flyout = document.createElement('div');
@@ -263,10 +279,14 @@ export function initSidebar(appId, options = {}) {
     title.id = `${sub.id}-flyout-label`;
     flyout.setAttribute('aria-labelledby', title.id);
     flyout.appendChild(title);
-    sub.querySelectorAll('a, button').forEach((link) => {
+    // Split items list their own page first, so the flyout still reaches it in one click.
+    const links = Array.from(sub.querySelectorAll('a, button'));
+    if (parentLink) links.unshift(parentLink);
+    links.forEach((link) => {
       const clone = link.cloneNode(true);
-      clone.classList.remove('vt-nav-sub');
+      clone.classList.remove('vt-nav-sub', 'vt-nav-item');
       clone.classList.add('vt-flyout-item');
+      if (link === parentLink) clone.classList.add('vt-flyout-item--parent');
       clone.removeAttribute('aria-label');
       clone.removeAttribute('id');
       clone.addEventListener('click', () => {
@@ -298,6 +318,31 @@ export function initSidebar(appId, options = {}) {
       sectionBtn.setAttribute('aria-expanded', String(!open));
       if (group) group.hidden = open;
       return;
+    }
+
+    // Split item chevron: opens the sub-items inline. The label link next to it navigates as usual.
+    const expander = t.closest('.vt-nav-expander[aria-controls]');
+    if (expander) {
+      const sub = document.getElementById(expander.getAttribute('aria-controls'));
+      if (!sub) return;
+      e.preventDefault();
+      const open = expander.getAttribute('aria-expanded') === 'true';
+      expander.setAttribute('aria-expanded', String(!open));
+      sub.hidden = open;
+      return;
+    }
+
+    // Split item link while collapsed: the chevron is hidden, so the icon opens a flyout
+    // that lists the page itself first, then its sub-items.
+    const splitLink = t.closest('.vt-nav-split > .vt-nav-item');
+    if (splitLink && collapsedDesktop()) {
+      const btn = splitLink.parentElement.querySelector('.vt-nav-expander[aria-controls]');
+      const sub = btn && document.getElementById(btn.getAttribute('aria-controls'));
+      if (sub) {
+        e.preventDefault();
+        flyoutOwner === splitLink ? closeFlyout() : openFlyout(splitLink, sub, splitLink);
+        return;
+      }
     }
 
     // Parent item with sub-items.

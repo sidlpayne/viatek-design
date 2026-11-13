@@ -48,6 +48,13 @@
   <symbol id="i-filter" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
   <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-tabs" viewBox="0 0 24 24"><rect width="18" height="14" x="3" y="7" rx="2"/><path d="M3 11h18"/><path d="M8 7V3h8v4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
 </svg>
 
 <a class="vt-sr-only" href="#overview">Skip to content</a>
@@ -81,6 +88,16 @@
             <a class="vt-nav-item vt-nav-sub" href="#forms"><span class="vt-nav-text">Forms</span></a>
             <a class="vt-nav-item vt-nav-sub" href="#segmented"><span class="vt-nav-text">Segmented control</span></a>
           </div>
+          <div class="vt-nav-split">
+            <a class="vt-nav-item" href="#feedback"><svg class="vt-icon"><use href="#i-bell"/></svg><span class="vt-nav-text">Feedback</span></a>
+            <button class="vt-nav-expander" type="button" aria-expanded="false" aria-controls="nav-feedback-sub"><svg class="vt-icon"><use href="#i-chevron-right"/></svg></button>
+          </div>
+          <div class="vt-subnav" id="nav-feedback-sub" hidden>
+            <a class="vt-nav-item vt-nav-sub" href="#alerts"><span class="vt-nav-text">Alerts</span><span class="vt-nav-count">4</span></a>
+            <a class="vt-nav-item vt-nav-sub" href="#overlays"><span class="vt-nav-text">Dialog and popover</span><span class="vt-nav-count">2</span></a>
+            <a class="vt-nav-item vt-nav-sub" href="#toasts"><span class="vt-nav-text">Toasts</span><span class="vt-nav-count">3</span></a>
+          </div>
+          <a class="vt-nav-item" href="#navigation"><svg class="vt-icon"><use href="#i-tabs"/></svg><span class="vt-nav-text">Tabs and chips</span></a>
           <a class="vt-nav-item" href="#type"><svg class="vt-icon"><use href="#i-type"/></svg><span class="vt-nav-text">Typography</span></a>
         </div>
       </div>
@@ -288,13 +305,18 @@
                   <td>Glacier Point HOA</td>
                   <td><span class="vt-pill vt-pill--muted">draft</span></td>
                   <td class="vt-data">Oct 31, 2026</td>
-                  <td class="vt-num">0.5 h</td>
-                  <td class="vt-num">$87.50</td>
+                  <td class="vt-num"><span class="vt-null"><span aria-hidden="true">-</span><span class="vt-sr-only">none</span></span></td>
+                  <td class="vt-num"><span class="vt-null"><span aria-hidden="true">-</span><span class="vt-sr-only">none</span></span></td>
                   <td><div class="vt-row-actions"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="More actions"><svg class="vt-icon"><use href="#i-more"/></svg></button></div></td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <nav class="vt-pager" aria-label="Ticket pages">
+            <span class="vt-pager-range">1 to 6 of 48</span>
+            <a class="vt-btn vt-btn--secondary vt-btn--sm" aria-disabled="true">Previous</a>
+            <a class="vt-btn vt-btn--secondary vt-btn--sm" href="#tables">Next</a>
+          </nav>
         </div>
       </section>
 
@@ -305,13 +327,18 @@
           <table class="vt-table vt-token-table">
             <thead><tr><th scope="col">Token</th><th scope="col">Words</th></tr></thead>
             <tbody>
-              <tr><td class="vt-data">success</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--success">finished</span><span class="vt-pill vt-pill--success">healthy</span><span class="vt-pill vt-pill--success">done</span><span class="vt-pill vt-pill--success">synced</span></div></td></tr>
-              <tr><td class="vt-data">warning</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--warning">in progress</span><span class="vt-pill vt-pill--warning">waiting</span><span class="vt-pill vt-pill--warning">stale</span><span class="vt-pill vt-pill--warning">due soon</span></div></td></tr>
-              <tr><td class="vt-data">danger</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--danger">failed</span><span class="vt-pill vt-pill--danger">overdue</span><span class="vt-pill vt-pill--danger">escalated</span><span class="vt-pill vt-pill--danger">offline</span></div></td></tr>
-              <tr><td class="vt-data">info</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--info">queued</span><span class="vt-pill vt-pill--info">new</span><span class="vt-pill vt-pill--info">info</span><span class="vt-pill vt-pill--info">scheduled</span></div></td></tr>
-              <tr><td class="vt-data">text-muted</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--muted">draft</span><span class="vt-pill vt-pill--muted">skipped</span><span class="vt-pill vt-pill--muted">n/a</span></div></td></tr>
+              <tr><td class="vt-data">success</td><td><div class="vt-pill-row" data-pills="success">finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online</div></td></tr>
+              <tr><td class="vt-data">warning</td><td><div class="vt-pill-row" data-pills="warning">in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working</div></td></tr>
+              <tr><td class="vt-data">danger</td><td><div class="vt-pill-row" data-pills="danger">failed, overdue, escalated, offline, agent failed</div></td></tr>
+              <tr><td class="vt-data">info</td><td><div class="vt-pill-row" data-pills="info">queued, new, info, scheduled, to do, ready to send</div></td></tr>
+              <tr><td class="vt-data">text-muted</td><td><div class="vt-pill-row" data-pills="muted">draft, skipped, n/a, cancelled, unknown, not a problem</div></td></tr>
+              <tr><td class="vt-data">severity</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--danger">critical</span><span class="vt-pill vt-pill--warning">high</span><span class="vt-pill vt-pill--info">medium</span><span class="vt-pill vt-pill--muted">low</span></div></td></tr>
             </tbody>
           </table>
+          <div class="vt-label" style="margin:18px 0 8px">Tags · descriptive, never colored</div>
+          <div class="vt-pill-row">
+            <span class="vt-tag">keep</span><span class="vt-tag">archive</span><span class="vt-tag">active</span><span class="vt-tag">inactive</span><span class="vt-tag">deleted</span><span class="vt-tag">suspended</span><span class="vt-tag">not in Pulse</span><span class="vt-tag">never matched</span><span class="vt-tag"><svg class="vt-icon"><use href="#i-monitor"/></svg>docks &amp; monitors</span>
+          </div>
         </article>
         <article class="vt-panel">
           <div class="vt-panel-head">
@@ -350,6 +377,93 @@
           <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Skip</button>
           <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Reschedule</button>
           <span class="vt-small">Row actions at 32px</span>
+        </div>
+      </section>
+
+      <!-- 7.9 to 7.12 Feedback (v1.2.0) -->
+      <section class="vt-section" id="feedback" aria-labelledby="feedback-h">
+        <div class="vt-section-head"><h2 class="vt-h2" id="feedback-h">Feedback</h2><span class="vt-small">Alerts, dialog, help popover and toasts. Added in v1.2.0.</span></div>
+        <div class="vt-panel" id="alerts">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Alert banners</h3><p class="vt-small">Conditions on the page. Same meanings as the status pills.</p></div></div>
+          <div class="vt-section" style="gap:10px">
+            <div class="vt-alert vt-alert--warning" role="status">
+              <svg class="vt-icon"><use href="#i-triangle-alert"/></svg>
+              <div class="vt-alert-body"><p class="vt-alert-title">Stale data</p><p>IT Glue last synced 4h ago. Sync before acting on these matches.</p></div>
+              <div class="vt-alert-actions"><button class="vt-btn vt-btn--secondary vt-btn--sm" type="button"><svg class="vt-icon"><use href="#i-refresh"/></svg>Sync now</button></div>
+            </div>
+            <div class="vt-alert vt-alert--danger" role="status">
+              <svg class="vt-icon"><use href="#i-circle-x"/></svg>
+              <div class="vt-alert-body"><p class="vt-alert-title">Sign-in failed</p><p>Your Microsoft account is not in the ViaTek tenant. Sign in with your work account.</p></div>
+            </div>
+            <div class="vt-alert vt-alert--info" role="status">
+              <svg class="vt-icon"><use href="#i-info"/></svg>
+              <div class="vt-alert-body"><p>Guide note: devices retired in Datto stay in IT Glue until the next cleanup run.</p></div>
+            </div>
+            <div class="vt-alert vt-alert--success" role="status">
+              <svg class="vt-icon"><use href="#i-circle-check"/></svg>
+              <div class="vt-alert-body"><p class="vt-alert-title">All sources in sync</p><p>Autotask, IT Glue and Datto agree on 1,204 devices.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="vt-grid-even" id="overlays">
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Dialog</h3><p class="vt-small">Confirms bulk and destructive actions. Native dialog, scrim backdrop.</p></div></div>
+            <button class="vt-btn vt-btn--secondary" type="button" data-open-dialog="demo-dialog"><svg class="vt-icon"><use href="#i-trash"/></svg>Archive 12 devices</button>
+          </article>
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Help popover</h3><p class="vt-small">The "?" next to a label. Title, short text, optional link.</p></div></div>
+            <div class="vt-field-label" style="display:inline-flex;align-items:center;gap:4px">Match rules
+              <span class="vt-popover-wrap">
+                <button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-expanded="false" aria-controls="help-match" aria-label="About match rules"><svg class="vt-icon vt-icon-sm"><use href="#i-help"/></svg></button>
+                <div class="vt-popover" id="help-match" role="dialog" aria-labelledby="help-match-t" hidden>
+                  <p class="vt-popover-title" id="help-match-t">Match rules</p>
+                  <p>Devices match on serial number first, then on MAC address. Hostnames are only used when both are missing.</p>
+                  <a class="vt-menu-link" href="#overlays">Read more <svg class="vt-icon vt-icon-sm"><use href="#i-arrow-up-right"/></svg></a>
+                </div>
+              </span>
+            </div>
+          </article>
+        </div>
+        <div class="vt-panel" id="toasts">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Toasts</h3><p class="vt-small">Results of an action just taken. Bottom right. Errors stay until closed.</p></div></div>
+          <div class="vt-actions" style="margin-bottom:16px">
+            <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button" data-toast="success">Show success</button>
+            <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button" data-toast="info">Show info</button>
+            <button class="vt-btn vt-btn--secondary vt-btn--sm" type="button" data-toast="danger">Show error</button>
+          </div>
+          <div class="vt-pill-row" style="gap:12px;align-items:flex-start">
+            <div class="vt-toast vt-toast--success"><svg class="vt-icon"><use href="#i-circle-check"/></svg><div class="vt-toast-body"><p class="vt-toast-title">Job started</p><p class="vt-toast-desc">Device sync for 14 clients.</p></div></div>
+            <div class="vt-toast vt-toast--danger"><svg class="vt-icon"><use href="#i-circle-x"/></svg><div class="vt-toast-body"><p class="vt-toast-title">Job failed</p><p class="vt-toast-desc">Datto API returned 503. Try again in a few minutes.</p></div><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="Close"><svg class="vt-icon vt-icon-sm"><use href="#i-x"/></svg></button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7.13 and 7.14 Tabs, chips, disclosure, empty state (v1.2.0) -->
+      <section class="vt-panel" id="navigation" aria-labelledby="nav-h">
+        <div class="vt-panel-head"><div><h3 class="vt-h3" id="nav-h">Tabs, filter chips, disclosure and empty state</h3><p class="vt-small">Tabs switch views. Chips switch filters on and off, several at a time. Added in v1.2.0.</p></div></div>
+        <div class="vt-tabs" role="tablist" aria-label="Device views" data-tabs>
+          <button class="vt-tab" type="button" role="tab" aria-selected="true">All <span class="vt-tab-count">1,204</span></button>
+          <button class="vt-tab" type="button" role="tab" aria-selected="false">Mismatched <span class="vt-tab-count">37</span></button>
+          <button class="vt-tab" type="button" role="tab" aria-selected="false">Missing in IT Glue <span class="vt-tab-count">12</span></button>
+          <button class="vt-tab" type="button" role="tab" aria-selected="false">Retired <span class="vt-tab-count">0</span></button>
+        </div>
+        <div class="vt-label" style="margin:18px 0 8px">Fields to update</div>
+        <div class="vt-chips" data-chips>
+          <button class="vt-chip" type="button" aria-pressed="true"><svg class="vt-icon vt-chip-check"><use href="#i-check"/></svg>Serial</button>
+          <button class="vt-chip" type="button" aria-pressed="true"><svg class="vt-icon vt-chip-check"><use href="#i-check"/></svg>Hostname</button>
+          <button class="vt-chip" type="button" aria-pressed="false"><svg class="vt-icon vt-chip-check"><use href="#i-check"/></svg>Location</button>
+          <button class="vt-chip" type="button" aria-pressed="false"><svg class="vt-icon vt-chip-check"><use href="#i-check"/></svg>Contact <span class="vt-chip-count">8</span></button>
+        </div>
+        <div class="vt-grid-even" style="margin-top:20px">
+          <details class="vt-disclosure">
+            <summary>How this works</summary>
+            <div class="vt-disclosure-body"><p>Each night the sync reads devices from Datto and Autotask, matches them to IT Glue configurations, and lists anything that disagrees. Nothing changes in IT Glue until you approve it.</p></div>
+          </details>
+          <div class="vt-empty">
+            <svg class="vt-icon"><use href="#i-inbox"/></svg>
+            <p class="vt-empty-title">No retired devices</p>
+            <p>Devices show up here after Datto marks them retired.</p>
+          </div>
         </div>
       </section>
 
@@ -529,6 +643,24 @@
     </div>
   </article>
 </template>
+
+<dialog class="vt-dialog" id="demo-dialog" aria-labelledby="demo-dialog-t">
+  <form method="dialog">
+    <header class="vt-dialog-head">
+      <h2 class="vt-dialog-title" id="demo-dialog-t">Archive 12 devices?</h2>
+      <button class="vt-icon-btn" value="cancel" aria-label="Close"><svg class="vt-icon"><use href="#i-x"/></svg></button>
+    </header>
+    <div class="vt-dialog-body">
+      <p>These configurations move to the archived list in IT Glue. You can restore them for 30 days.</p>
+      <label class="vt-check"><input type="checkbox" checked> Also close their open Autotask tickets</label>
+    </div>
+    <footer class="vt-dialog-foot">
+      <button class="vt-btn vt-btn--secondary" value="cancel">Cancel</button>
+      <button class="vt-btn vt-btn--danger" value="confirm"><svg class="vt-icon"><use href="#i-trash"/></svg>Archive 12</button>
+    </footer>
+  </form>
+</dialog>
+<div class="vt-toast-stack" id="toast-stack" aria-live="polite"></div>
 
 <script type="module" src="/theme-preview/preview.js"></script>
 </body>

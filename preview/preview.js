@@ -295,6 +295,7 @@ drawTrend();
 const SECTION_OF = {
   overview: 'Theme preview', palettes: 'Theme preview', kpis: 'Components', charts: 'Components', tables: 'Components',
   pills: 'Components', buttons: 'Components', forms: 'Components', segmented: 'Components', type: 'Components', appearance: 'Settings',
+  feedback: 'Components', alerts: 'Feedback', overlays: 'Feedback', toasts: 'Feedback', navigation: 'Components',
 };
 function setActive(hash) {
   const id = (hash || '#overview').slice(1);
@@ -310,6 +311,66 @@ function setActive(hash) {
 }
 window.addEventListener('hashchange', () => setActive(location.hash));
 setActive(location.hash);
+
+/* ---------- v1.2.0 components ---------- */
+// Pill table rows are written as word lists so the preview matches SPEC.md 7.3 exactly.
+$$('[data-pills]').forEach((row) => {
+  const status = row.getAttribute('data-pills');
+  row.innerHTML = row.textContent.split(',').map((w) => `<span class="vt-pill vt-pill--${status}">${w.trim()}</span>`).join('');
+});
+
+$$('[data-open-dialog]').forEach((btn) => btn.addEventListener('click', () => {
+  const d = document.getElementById(btn.getAttribute('data-open-dialog'));
+  if (d && typeof d.showModal === 'function') d.showModal();
+}));
+$$('dialog.vt-dialog').forEach((d) => d.addEventListener('click', (e) => { if (e.target === d) d.close('cancel'); }));
+
+// Help popovers: toggle, Escape and outside click close.
+$$('.vt-popover-wrap > button[aria-controls]').forEach((btn) => {
+  const pop = document.getElementById(btn.getAttribute('aria-controls'));
+  const set = (open) => { btn.setAttribute('aria-expanded', String(open)); pop.hidden = !open; };
+  btn.addEventListener('click', () => set(pop.hidden));
+  document.addEventListener('click', (e) => { if (!pop.hidden && !btn.parentElement.contains(e.target)) set(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); } });
+});
+
+// Toasts: success and info close after 4s, errors stay until closed.
+const TOASTS = {
+  success: ['i-circle-check', 'Job started', 'Device sync for 14 clients.'],
+  info: ['i-info', 'Report queued', 'It will be ready to send in about 2 min.'],
+  danger: ['i-circle-x', 'Job failed', 'Datto API returned 503. Try again in a few minutes.'],
+};
+const stack = $('#toast-stack');
+$$('[data-toast]').forEach((btn) => btn.addEventListener('click', () => {
+  const kind = btn.getAttribute('data-toast');
+  const [icon, title, desc] = TOASTS[kind];
+  const el = document.createElement('div');
+  el.className = `vt-toast vt-toast--${kind}`;
+  el.setAttribute('role', kind === 'danger' ? 'alert' : 'status');
+  el.innerHTML = `<svg class="vt-icon"><use href="#${icon}"/></svg><div class="vt-toast-body"><p class="vt-toast-title">${title}</p><p class="vt-toast-desc">${desc}</p></div>
+    <button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="Close"><svg class="vt-icon vt-icon-sm"><use href="#i-x"/></svg></button>`;
+  el.querySelector('button').addEventListener('click', () => el.remove());
+  stack.appendChild(el);
+  if (kind !== 'danger') setTimeout(() => el.remove(), 4000);
+}));
+
+// Tabs (in-page, role="tab") and filter chips (aria-pressed).
+$$('[data-tabs]').forEach((list) => {
+  const tabs = $$('[role="tab"]', list);
+  tabs.forEach((tab, i) => {
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+    tab.addEventListener('click', () => tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; }));
+    tab.addEventListener('keydown', (e) => {
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      const next = tabs[(i + d + tabs.length) % tabs.length];
+      next.click(); next.focus();
+    });
+  });
+});
+$$('[data-chips] .vt-chip').forEach((chip) => chip.addEventListener('click', () => {
+  chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
+}));
 
 /* ---------- Keep everything in sync with theme changes ---------- */
 function syncAll() { syncModeControls(); syncPicker(); syncLabels(); drawTrend(); }

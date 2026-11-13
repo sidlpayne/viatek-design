@@ -18,7 +18,7 @@ module.exports = {
       },
       fontFamily: { display: v('font-display'), sans: v('font-sans'), mono: v('font-mono') },
       borderRadius: { sm: v('radius-sm'), md: v('radius-md'), lg: v('radius-lg'), xl: v('radius-xl') },
-      boxShadow: { sm: v('shadow-sm'), md: v('shadow-md') },
+      boxShadow: { sm: v('shadow-sm'), md: v('shadow-md'), lg: v('shadow-lg') },
     },
   },
 };

@@ -37,7 +37,10 @@ for (const id of themeIds) {
   for (const s of ['success', 'warning', 'danger', 'info']) {
     pairs.push([s, m[s], 'surface', t.surface, 4.5, true]);
     pairs.push([s, m[s], `${s}-soft`, mix(m[s], t.surface, m.tint), 4.5, false]);
+    pairs.push(['text', t.text, `${s}-soft (alert, v1.2.0)`, mix(m[s], t.surface, m.tint), 4.5, true]);
   }
+  pairs.push(['text', t.text, 'surface-2 (tag, v1.2.0)', t['surface-2'], 4.5, true]);
+  pairs.push(['text-muted', t['text-muted'], 'surface (toast desc, v1.2.0)', t.surface, 4.5, true]);
   pairs.push(['text-muted', t['text-muted'], 'surface-2', t['surface-2'], 4.5, false]);
   pairs.push(['on-danger', mode === 'light' ? '#FFFFFF' : t.bg, 'danger', m.danger, 4.5, false]);
   pairs.push(['text', t.text, 'primary-soft', t['primary-soft'], 4.5, false]);

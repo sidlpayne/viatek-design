@@ -3,6 +3,17 @@
 All notable changes to `@viatek/design`. Versions follow semver (see SPEC.md 3.4):
 patch for fixes, minor for new components or themes, major when apps must change code.
 
+## v1.2.0 · Nov 12, 2026
+
+Gaps found while migrating Reconciliator. Additive: apps on v1.1.0 keep working unchanged.
+
+- **New components** in `components.css` and SPEC.md 7.9 to 7.14: alert banner (`.vt-alert`), dialog (`.vt-dialog`, native `<dialog>` or Radix), help popover (`.vt-popover`), toast (`.vt-toast`, with Sonner class names), view tabs (`.vt-tabs`), filter chips (`.vt-chip`), disclosure (`details.vt-disclosure`), empty state (`.vt-empty`) and pager (`.vt-pager`).
+- **Status pills (7.3):** the table now lists 41 words, including job, report, cleanup, sync and network states, plus a severity scale. New neutral **tag** (`.vt-tag`) for descriptive labels that are not statuses.
+- **Tables (7.4):** empty cells use a muted hyphen (`.vt-null`), never an em dash.
+- **Sidebar (6.1, 6.1a):** split items (`.vt-nav-split`) where the label is a link and a separate chevron opens the sub-items, so a parent page still opens in one click. When collapsed, the flyout lists the parent page first. New plain count (`.vt-nav-count`) for counts that are information; the solid badge stays for action counts. `sidebar.js` handles both.
+- **Tokens:** `--vt-shadow-lg` and `--vt-scrim` (mode tokens, for dialogs and toasts). Tailwind preset adds `shadow-lg`.
+- SPEC.md 3.2: how to load the Tailwind preset in Tailwind v4 (`@config`).
+
 ## v1.1.0 · Nov 12, 2026
 
 - `src/components.css` (new, exported as `@viatek/design/components.css` and hosted at `/v1.1.0/components.css`): the app shell (sidebar with collapse, drawer, tooltips and flyouts; top bar; content area), buttons, KPI tiles, status pills, tables, panels, forms, segmented control, chart chrome and the theme picker from SPEC.md sections 6 to 8. Previously these lived only in the preview page. Load it after `tokens.css`.
