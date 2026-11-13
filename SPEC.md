@@ -1,6 +1,6 @@
 # ViaTek App Design System: Implementation Spec for Claude Code
 
-**Version:** 1.2.1 · November 13, 2026
+**Version:** 1.3.0 · November 13, 2026
 **Owner:** Sid Payne
 **Applies to:** every internal ViaTek app (Insight, Reconciliator, Envoy, Site Ranger, Keystone, Sec Audit, ConfigReport, and anything new)
 **To migrate an app:** use the prompt in section 14.1. It is the same for every app.
@@ -92,7 +92,7 @@ viatek-design/
 Install from a version tag, never from a branch:
 
 ```bash
-npm install github:sidlpayne/viatek-design#v1.2.1
+npm install github:sidlpayne/viatek-design#v1.3.0
 ```
 
 Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`. Tailwind v4 has no JS config by default: add a `tailwind.config.js` that holds only that preset line and point to it from the global stylesheet with `@config "../tailwind.config.js";`.
@@ -111,11 +111,11 @@ If a component is missing, add it to the viatek-design repo first, then upgrade 
 `viatek-design` is deployed to the Vercel project `viatek-design` and serves versioned files from its production URL:
 
 ```
-https://viatek-design.vercel.app/v1.2.1/tokens.css
-https://viatek-design.vercel.app/v1.2.1/components.css
-https://viatek-design.vercel.app/v1.2.1/theme.js
-https://viatek-design.vercel.app/v1.2.1/sidebar.js
-https://viatek-design.vercel.app/v1.2.1/no-flash.js
+https://viatek-design.vercel.app/v1.3.0/tokens.css
+https://viatek-design.vercel.app/v1.3.0/components.css
+https://viatek-design.vercel.app/v1.3.0/theme.js
+https://viatek-design.vercel.app/v1.3.0/sidebar.js
+https://viatek-design.vercel.app/v1.3.0/no-flash.js
 https://viatek-design.vercel.app/theme-preview
 ```
 
@@ -183,6 +183,7 @@ Apps never hard-code a hex color. Every color comes from a `--vt-*` variable. Be
   --vt-warning: #9A5800;
   --vt-danger:  #C0362C;
   --vt-info:    #1F5FD1;
+  --vt-band-good: #0B6B78;  /* score band "good" (7.18) */
 
   /* Chart series: assign in this order, never cycle */
   --vt-series-1: #2a78d6; /* blue */
@@ -208,6 +209,7 @@ Apps never hard-code a hex color. Every color comes from a `--vt-*` variable. Be
   --vt-warning: #FBBF24;
   --vt-danger:  #F87171;
   --vt-info:    #60A5FA;
+  --vt-band-good: #2DD4BF;
 
   --vt-series-1: #3987e5;
   --vt-series-2: #d95926;
@@ -334,6 +336,10 @@ Every theme defines the same 11 tokens:
   --vt-warning-soft: color-mix(in srgb, var(--vt-warning) var(--vt-tint), var(--vt-surface));
   --vt-danger-soft:  color-mix(in srgb, var(--vt-danger)  var(--vt-tint), var(--vt-surface));
   --vt-info-soft:    color-mix(in srgb, var(--vt-info)    var(--vt-tint), var(--vt-surface));
+  /* Score bands (7.18): mode-only, like status */
+  --vt-band-strong: var(--vt-success);  --vt-band-needs-work: var(--vt-warning);
+  --vt-band-at-risk: var(--vt-danger);  --vt-band-none: var(--vt-text-muted);
+  --vt-band-good-soft: color-mix(in srgb, var(--vt-band-good) var(--vt-tint), var(--vt-surface));
 }
 body {
   margin: 0;
@@ -365,6 +371,7 @@ module.exports = {
         warning: { DEFAULT: v('warning'), soft: v('warning-soft') },
         danger:  { DEFAULT: v('danger'),  soft: v('danger-soft') },
         info:    { DEFAULT: v('info'),    soft: v('info-soft') },
+        band: { strong: v('band-strong'), good: v('band-good'), 'good-soft': v('band-good-soft'), 'needs-work': v('band-needs-work'), 'at-risk': v('band-at-risk'), none: v('band-none') },
         series: Object.fromEntries([1,2,3,4,5,6,7,8].map(n => [n, v(`series-${n}`)])),
       },
       fontFamily: { display: v('font-display'), sans: v('font-sans'), mono: v('font-mono') },
@@ -528,8 +535,9 @@ Apps that do not use Supabase auth use localStorage only.
 
 - Height `--vt-topbar-h` (60px), bottom border `--vt-border`, background `--vt-bg`.
 - Left: a 36px collapse-sidebar icon button (`aria-label="Collapse sidebar"`), a breadcrumb (`Section › Page`, parent in `--vt-text-muted`, current page in `--vt-text` 600).
-- Right, in this order: data-freshness indicators, context controls (scope segmented control, date range), the quick theme toggle (section 8), a help link.
+- Right, in this order: environment badge (6.4, only when not on live data), data-freshness indicators, context controls (scope segmented control, date range), the quick theme toggle (section 8), help (a link, or an icon button that opens the help panel, 6.5), the user menu (6.4, last).
 - **Freshness indicator:** a 7px dot plus mono 12px text in `--vt-text-muted`, such as `● Autotask 13m`. Dot colors: `--vt-success` when fresh, `--vt-warning` when stale (each app defines its own stale threshold), `--vt-danger` when the sync failed. The text must say the state too (for example `Datto failed`), so the meaning never depends on color alone.
+- **Which feeds to show:** the ones the current page depends on. On pages that span all clients, show the app-wide feeds (for example `Watcher 2m`). Inside one client, show that client's feeds (for example `Audit 6h`). Each app sets its own stale thresholds and lists them in its `CLAUDE.md`.
 - The page title is NOT repeated in the top bar. It lives in the content area.
 
 ### 6.3 Content area
@@ -538,6 +546,26 @@ Apps that do not use Supabase auth use localStorage only.
 - **Page header:** title (Space Grotesk 600, 28px), a meta line beneath it (`--vt-text-small`, `--vt-text-muted`, segments joined with ` · `), and actions on the right (at most one primary button).
 - Vertical gap between sections: 22 to 24px.
 - Every page ends with the **sync footer strip** if the app syncs external data (mono 12px, freshness dots, bordered, radius-lg).
+
+Sections 6.4 to 6.6 and 7.15 to 7.24 were added in v1.3.0, from the Sec Audit and ConfigReport gap briefs. Full markup for each is in the comments in `components.css` and on `/theme-preview`.
+
+### 6.4 User menu and environment badge
+
+- **User menu** (`.vt-user-btn` + `.vt-menu.vt-menu--list`): the last item on the right of the top bar. A 28px avatar (`.vt-avatar`, initials or photo) and the user's name (hidden under 1100px). It opens a menu with a header (name, an `admin` tag if it applies, the sign-in email), then items (`.vt-menu-item`), a separator (`.vt-menu-sep`) and **Sign out** last. Use `aria-haspopup="menu"` and `aria-expanded`.
+- **List menus** (`.vt-menu--list`) are also used for row "more" menus. `.vt-menu-item--danger` for destructive items. The quick theme toggle (8.1) keeps the plain `.vt-menu`.
+- **Custom select lists** (comboboxes, shadcn Select) use `.vt-listbox` with `.vt-option` and a check icon on the chosen item. A native `.vt-select` is still the first choice. Use a custom list only when it needs search or more than about 15 options.
+- **Environment badge:** when the app is not on live data, a warning pill with an icon comes first on the right: `sample data`, `dev copy`, `sign-in off`. It never hides at narrow widths. It is a pill, not an alert banner, because it describes the whole app, not one page.
+
+### 6.5 Docked help panel (`.vt-helppanel`)
+
+- An in-app guide on the right: 440px, `--vt-surface`, 1px left border. Head the height of the top bar (title, a "Full guide" ghost link, close button), optional view tabs (7.13) and search field, then a scrolling body using `.vt-prose` (7.20).
+- It goes inside `.vt-app` after `.vt-main`. At 1536px and wider it docks: the content area gets narrower and keeps its 1280px max-width and left alignment. Below 1536px it overlays the page with `--vt-shadow-lg`. Both the sidebar and the panel can be open at once.
+- The top-bar help button becomes an icon button with `aria-expanded` and `aria-controls`. Escape and the close button close the panel and return focus to the button.
+
+### 6.6 Pages without the shell
+
+- **Sign-in and error pages** (sign in, not authorized, auth error, 404): `.vt-auth`, a centered 400px card (`.vt-auth-card`, radius-xl) with the identity block on top, an h2-size title, one line of text, an alert (7.9) for errors, and one Primary button (`.vt-btn--block`), such as "Sign in with Microsoft".
+- **Presentation views and pop-out windows** (a client-facing presentation, a 560px checklist popup): `.vt-bare`, a slim top strip (`.vt-bare-head`) with the 32px app tile, a title, and on the right the quick theme toggle and a close or back link. No sidebar, no breadcrumb. Content uses `.vt-content`, centered.
 
 ---
 
@@ -584,17 +612,21 @@ Envoy's orange "Go" and "Touch" buttons become standard Primary buttons. The "Lo
 
 | Meaning | Token | Words |
 |---|---|---|
-| Done, good | success | finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online |
-| Working or needs a look | warning | in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working |
-| Failed or overdue | danger | failed, overdue, escalated, offline, agent failed |
-| Not started yet | info | queued, new, info, scheduled, to do, ready to send |
-| Not applicable | `--vt-text-muted` (`.vt-pill--muted`) | draft, skipped, n/a, cancelled, unknown, not a problem |
+| Done, good | success | finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online, reviewed, resolved, verified fixed, pass, read, improved, final, linked, matched, travelling now |
+| Working or needs a look | warning | in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working, started, review, needs client, waiting for audit, not confirmed yet, awaiting approval, partly succeeded, partly read, needs consent, off, name match, not configured |
+| Failed or overdue | danger | failed, overdue, escalated, offline, agent failed, error, fail, incident, didn't stick, came back, new failure, worsened, couldn't be read, rejected |
+| Not started yet | info | queued, new, info, scheduled, to do, ready to send, ready, upcoming |
+| Not applicable | `--vt-text-muted` (`.vt-pill--muted`) | draft, skipped, n/a, cancelled, unknown, not a problem, false positive, accepted risk, informational, bypassed, not licensed, not watched yet, not read yet, ended, removed, expired, revoked |
 
-**Severity** uses the same pill: `critical` danger, `high` warning, `medium` info, `low` muted.
+Words added in v1.3.0, with the reason where it is not obvious: `accepted risk` and `false positive` are decisions, not problems, so muted. `off` is warning because it means a watcher that should be running is not. `came back` and `didn't stick` mean a fix failed, so danger. `ready` (generated, waiting for review) is info, like `ready to send`. `review` (has items to check before sending) is warning.
+
+**Severity** uses the same pill: `critical` danger, `high` warning, `medium` info, `low` muted, `info` muted. Medium is blue on purpose so every level looks different. Apps that show medium in yellow today change it.
+
+**Score bands** have their own pills (7.18): `strong`, `good`, `needs work`, `at risk`, `not scored`.
 
 Every app must use the same word-to-color mapping. Add a word to this table before using it in an app. A word that names an ongoing action (`running`, `sending`) is warning; the finished form of the same action (`succeeded`, `sent`) is success.
 
-**Tag** (`.vt-tag`): a neutral label for words that describe a thing instead of reporting its status, such as `keep`, `archive`, `active`, `inactive`, `deleted`, `suspended`, `not in Pulse`, `never matched`, evidence labels and bucket names. Same size as a pill, mono 12px/500, `--vt-text` on `--vt-surface-2` with a 1px `--vt-border` border, and it keeps the word's own case. Tags are never colored. If a tag starts to mean "this needs action", it is a status and goes in the table above.
+**Tag** (`.vt-tag`): a neutral label for words that describe a thing instead of reporting its status, such as `keep`, `archive`, `active`, `inactive`, `deleted`, `suspended`, `not in Pulse`, `never matched`, `permanent`, evidence labels, bucket names and kinds of finding (ConfigReport's reconciliation categories: `missing Datto agent`, `orphaned Datto device`, `archived in IT Glue`, `spec difference`, `stale agent`; whether one needs action goes in a separate status pill on the row). Same size as a pill, mono 12px/500, `--vt-text` on `--vt-surface-2` with a 1px `--vt-border` border, and it keeps the word's own case. Tags are never colored. If a tag starts to mean "this needs action", it is a status and goes in the table above.
 
 ### 7.4 Tables
 
@@ -673,6 +705,76 @@ For results of an action the user just took ("Job started", "Saved"). Bottom-rig
 - **Empty state** (`.vt-empty`): 1px dashed `--vt-border`, radius-lg, centered, optional 24px icon, a one-line title in `--vt-text` 600, one sentence of muted text saying why it is empty, and an optional button for the next step.
 - **Pager** (`.vt-pager`): under a table, inside its card. Mono range on the left (`1 to 50 of 312`), small Secondary "Previous" and "Next" buttons on the right. A disabled button gets `aria-disabled="true"`.
 
+### 7.15 Switch (`.vt-switch`)
+
+For on/off settings that save on their own (client active, job enabled, "write notes automatically"). A checkbox (7.6) stays for choices inside a form that is submitted.
+
+- A real `<button role="switch" aria-checked>` with a visible text label beside it (`.vt-switch-field`, label on the right). 36 by 20px, full radius. Off track: `--vt-text-muted` at 55% on surface. On track: `--vt-primary`. Knob: `--vt-surface` with `--vt-shadow-sm`. Disabled at 50% opacity.
+- shadcn, Radix and Base UI switches are covered through `data-state="checked"` and `data-checked`.
+
+### 7.16 More form fields
+
+- **Textarea** (`.vt-textarea`): the same border, fill, radius and focus as `.vt-input`, min-height 88px, padding 10px 12px, resizes vertically only. Add `.vt-mono` for line lists (one account per line).
+- **Date and time:** native `<input type="date">`, `time`, `datetime-local` with `.vt-input`, in mono. `color-scheme` from `data-mode` keeps the calendar icon readable in dark mode. Two date inputs side by side (`.vt-date-range`, "to" between them) make a range.
+- **Calendar** (`.vt-calendar` inside a `.vt-popover`): only when a field needs a range in one control or blocked days. Today has a 1.5px `--vt-primary` ring, selected days a `--vt-primary` fill with `--vt-on-primary` text, the days between `--vt-primary-soft`, other months muted. Apps on shadcn's Calendar (react-day-picker) map its day, today, selected, range_middle and outside parts to these classes.
+- **Color field** (`.vt-color-field`): a 38px swatch (`input type="color"`) and a mono hex input. The chrome uses tokens. The value is report data and keeps its own color in every theme.
+- **File upload** (`.vt-upload`): a dashed box with a 64px preview, file name, a help line with the allowed types and size, and Replace and Remove buttons. The real file input sits inside the Replace label. `data-dragover` while a file is held over it, `aria-invalid="true"` and a `.vt-error` line for a wrong type or a file that is too large.
+
+### 7.17 Sortable table headers
+
+- The header cell holds a `<button class="vt-sort">` with three Lucide icons: `arrow-up-down` (not sorted), `arrow-up`, `arrow-down`. CSS shows the right one from `aria-sort` on the `<th>`.
+- The sorted column has `aria-sort="ascending"` or `"descending"` and its header text in `--vt-text`. Other sortable columns have `aria-sort="none"`. Columns that cannot sort have no button and no `aria-sort`.
+- Numeric columns keep `.vt-num`, so the button and icon align right.
+
+### 7.18 Score ring and score bands
+
+For apps that grade something from 0 to 100 (Sec Audit's security score).
+
+| Band | Token | Pill | Meaning |
+|---|---|---|---|
+| Strong | `--vt-band-strong` (= success) | `.vt-pill--band-strong` | Meets the standard |
+| Good | `--vt-band-good` (teal, new) | `.vt-pill--band-good` | Acceptable, with room to improve |
+| Needs work | `--vt-band-needs-work` (= warning) | `.vt-pill--band-needs-work` | Below the standard |
+| At risk | `--vt-band-at-risk` (= danger) | `.vt-pill--band-at-risk` | Act now |
+| Not scored | `--vt-band-none` (= text-muted) | `.vt-pill--band-none` | No data yet |
+
+- Band colors depend on mode only, never on the theme, like status colors. `--vt-band-good` is `#0B6B78` in light mode and `#2DD4BF` in dark mode. It passes 4.5:1 on every surface and on its soft fill in all 12 themes. Each app sets its own band cut-offs and lists them in its `CLAUDE.md`.
+- **Ring** (`.vt-ring`): a donut with the arc in the band color (`.vt-band--<band>`) on a `--vt-surface-2` track, set with `style="--value:78"`. The number sits in the middle in mono. Sizes: `--sm` 32px (table cells), `--md` 64px, `--lg` 120px, `--xl` 160px.
+- **Projected score:** add `--proj` (for example 86). The part of the arc between the score and the projection is drawn in the band color at 35%. Say the projected number in text too (`.vt-ring-sub`).
+- The ring has `role="img"` and an `aria-label` with the score and band. The band word always shows next to or under the ring as a band pill, so the band never depends on color alone.
+- **Area meters:** a `.vt-progress` (7.19) with a band class becomes a 0 to 100 bar in the band color, with `role="meter"`.
+- In charts, a score line uses the series tokens like any other line (7.8), not band colors. Band zones behind a trend line may use the band colors at 9% (light) or 12% (dark).
+
+### 7.19 Loading and progress
+
+- **Busy button:** `aria-busy="true"` and `disabled`, with a `.vt-spinner` in place of the leading icon. Keep the label, or give the button a min-width, so its width does not change.
+- **Skeleton** (`.vt-skeleton`, `--title`, `--block`, `--circle`): `--vt-surface-2` blocks shaped like the content that is coming, with a slow shimmer that turns off under `prefers-reduced-motion`. The loading region gets `aria-busy="true"`. An empty state (7.14) is for "no data", never for "loading".
+- **Progress bar** (`.vt-progress`): 8px track in `--vt-surface-2`, fill in `--vt-primary`, a mono count beside it (`12 of 40`), and an optional stats line in mono 12px (`10 done` in success, `2 failed` in danger, `0 cancelled` muted). `role="progressbar"` with `aria-valuenow` and `aria-valuemax`. Indeterminate: `data-indeterminate` on the track and no `aria-valuenow`.
+
+### 7.20 Long-form text (`.vt-prose`)
+
+For user guides, "how to fix" steps and advisor answers rendered from Markdown. Max 72 characters wide, 14px/1.6. Headings use the type scale (h2 20px display, h3 15px, h4 14px/600). Inline `code` and `pre` sit on `--vt-surface-2` with a 1px border. Blockquotes have a 2px `--vt-border` left rule and muted text. Tables use the 7.4 header style. Links use `--vt-link`.
+
+### 7.21 Advisor thread (`.vt-thread`)
+
+- The user's question on the right on `--vt-primary-soft`, at most 80% wide. The answer full width on `--vt-surface` with a 1px border, its body in `.vt-prose`. Each turn ends with a mono 11px muted meta line (who or which model, and the time).
+- While an answer is written: a pending turn with a spinner, "Thinking" and a small Secondary "Stop" button. The thread has `aria-live="polite"`.
+- The composer (`.vt-composer`) is pinned under the thread: a textarea and one Primary button. Its background is `--vt-surface`. Set `--vt-composer-bg: var(--vt-bg)` when the thread sits straight on the page.
+
+### 7.22 List and detail (`.vt-split`)
+
+A list on the left and the selected item on the right (an alerts page). The detail column is 420px and sticks under the top bar on wide screens. Under 1100px the two stack. The selected row uses `tr[aria-selected="true"]` (7.4) or `.vt-list-item[aria-selected="true"]`, both on `--vt-primary-soft`. `.vt-grid-2` stays for dashboards with a main and a side panel.
+
+### 7.23 Document preview frame (`.vt-docframe`)
+
+For a client PDF, email or template shown inside the app. A bordered card with a toolbar strip (a mono label such as `CLIENT PREVIEW`, a muted note "Shown as the client sees it", and open and download icon buttons) and a `--vt-surface-2` stage. The iframe or image inside always renders on a light canvas (`color-scheme: light`) and keeps its own colors in every theme (14.3). Never put `data-mode` or `data-theme` on the document.
+
+### 7.24 Checklist, reorder list, folding panel
+
+- **Checklist** (`.vt-checklist`): numbered parts (`.vt-step-num`, a 22px mono circle) with a title and a mono count (`2 of 5`). Each item is a real checkbox label with the step text and muted `Where:` and `Done when:` lines. Checked items turn muted and stay readable.
+- **Reorder list** (`.vt-reorder`): rows with a grip handle (`.vt-drag-handle`, a button named "Move <item>"). Mouse: drag the handle, with a 2px `--vt-primary` line where the row will land (`data-drop="before"` or `"after"`) and `data-dragging` on the row being moved. Keyboard: Space picks the row up (`aria-pressed="true"`), arrow keys move it, Space drops it, Escape puts it back. Every move is announced in an `aria-live` region. dnd-kit apps keep its keyboard sensor and use these classes.
+- **Folding panel** (`details.vt-panel.vt-panel--fold`): a card whose body folds away, with the panel head as the `<summary>` and a chevron (`.vt-fold-chevron`) on the right. The disclosure (7.14) stays for fold-out text inside a page or panel.
+
 ---
 
 ## 8. Theme picker
@@ -695,7 +797,7 @@ An icon button (sun/moon) that opens a small menu:
 
 ## 9. Accessibility (required)
 
-- Every token pair already passes WCAG AA (4.5:1) for text: `text`/`text-muted`/`link` on `bg` and `surface`, `on-primary` on `primary`, every status color on `surface`. Do not create new pairings. If you need one, check it and add it to `tokens.css` for every theme.
+- Every token pair already passes WCAG AA (4.5:1) for text: `text`/`text-muted`/`link` on `bg` and `surface`, `on-primary` on `primary`, every status color on `surface`, and `--vt-band-good` on `surface` and on its soft fill. Do not create new pairings. If you need one, check it and add it to `tokens.css` for every theme.
 - `--vt-accent` and `--vt-series-*` are never used for text.
 - Status is never shown by color alone. Always include a word, an icon or both.
 - Visible focus on every interactive element (`:focus-visible` ring).
@@ -790,7 +892,7 @@ Migrate this app to the ViaTek design system.
 Do not edit any files until I approve the plan from 14.4.
 ```
 
-To use a specific release instead of the latest, replace step 1 with the tag (for example `v1.2.1`).
+To use a specific release instead of the latest, replace step 1 with the tag (for example `v1.3.0`).
 
 ### 14.2 Identify the app
 

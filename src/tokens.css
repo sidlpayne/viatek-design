@@ -63,6 +63,7 @@
   --vt-warning: #9A5800;
   --vt-danger:  #C0362C;
   --vt-info:    #1F5FD1;
+  --vt-band-good: #0B6B78;   /* score band "good" (v1.3.0), teal between success and info */
 
   /* Chart series: assign in this order, never cycle */
   --vt-series-1: #2a78d6; /* blue */
@@ -93,6 +94,7 @@
   --vt-warning: #FBBF24;
   --vt-danger:  #F87171;
   --vt-info:    #60A5FA;
+  --vt-band-good: #2DD4BF;   /* score band "good" (v1.3.0) */
 
   --vt-series-1: #3987e5;
   --vt-series-2: #d95926;
@@ -208,6 +210,13 @@
   --vt-warning-soft: color-mix(in srgb, var(--vt-warning) var(--vt-tint), var(--vt-surface));
   --vt-danger-soft:  color-mix(in srgb, var(--vt-danger)  var(--vt-tint), var(--vt-surface));
   --vt-info-soft:    color-mix(in srgb, var(--vt-info)    var(--vt-tint), var(--vt-surface));
+
+  /* Score bands (v1.3.0, SPEC 7.18): mode-only like status colors, never theme colors */
+  --vt-band-strong: var(--vt-success);
+  --vt-band-needs-work: var(--vt-warning);
+  --vt-band-at-risk: var(--vt-danger);
+  --vt-band-none: var(--vt-text-muted);
+  --vt-band-good-soft: color-mix(in srgb, var(--vt-band-good) var(--vt-tint), var(--vt-surface));
 
   /* 6.1 inactive nav text */
   --vt-nav-text: color-mix(in srgb, var(--vt-text) 78%, var(--vt-bg));

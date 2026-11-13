@@ -14,6 +14,10 @@ module.exports = {
         warning: { DEFAULT: v('warning'), soft: v('warning-soft') },
         danger:  { DEFAULT: v('danger'),  soft: v('danger-soft') },
         info:    { DEFAULT: v('info'),    soft: v('info-soft') },
+        band: {
+          strong: v('band-strong'), good: v('band-good'), 'good-soft': v('band-good-soft'),
+          'needs-work': v('band-needs-work'), 'at-risk': v('band-at-risk'), none: v('band-none'),
+        },
         series: Object.fromEntries([1,2,3,4,5,6,7,8].map(n => [n, v(`series-${n}`)])),
       },
       fontFamily: { display: v('font-display'), sans: v('font-sans'), mono: v('font-mono') },

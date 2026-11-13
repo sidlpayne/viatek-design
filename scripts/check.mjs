@@ -39,6 +39,8 @@ for (const id of themeIds) {
     pairs.push([s, m[s], `${s}-soft`, mix(m[s], t.surface, m.tint), 4.5, false]);
     pairs.push(['text', t.text, `${s}-soft (alert, v1.2.0)`, mix(m[s], t.surface, m.tint), 4.5, true]);
   }
+  pairs.push(['band-good', m['band-good'], 'surface (v1.3.0)', t.surface, 4.5, true]);
+  pairs.push(['band-good', m['band-good'], 'band-good-soft (v1.3.0)', mix(m['band-good'], t.surface, m.tint), 4.5, true]);
   pairs.push(['text', t.text, 'surface-2 (tag, v1.2.0)', t['surface-2'], 4.5, true]);
   pairs.push(['text-muted', t['text-muted'], 'surface (toast desc, v1.2.0)', t.surface, 4.5, true]);
   pairs.push(['text-muted', t['text-muted'], 'surface-2', t['surface-2'], 4.5, false]);

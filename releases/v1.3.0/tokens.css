@@ -1,0 +1,239 @@
+/*
+ * @viatek/design · tokens.css
+ * Source of truth: SPEC.md section 4.
+ *
+ * Usage: set data-mode ("light" | "dark") and data-theme (one of the 12 theme ids)
+ * on <html>. theme.js and the no-flash snippet do this for you.
+ *
+ * Theme, mode and derived tokens are scoped to [data-theme] / [data-mode] as well as
+ * :root, so any element can carry its own data-mode + data-theme pair (used by the
+ * /theme-preview palette matrix) and every derived color recomputes inside it.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 4.1 Foundations (same in every theme)                              */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Fonts */
+  --vt-font-display: 'Space Grotesk', Inter, Arial, sans-serif;
+  --vt-font-sans: Inter, 'Segoe UI', Arial, sans-serif;
+  --vt-font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+
+  /* Type scale (section 2): size / line-height */
+  --vt-text-title: 600 28px/1.15 var(--vt-font-display);
+  --vt-text-h2: 600 20px/1.25 var(--vt-font-display);
+  --vt-text-h3: 600 15px/1.4 var(--vt-font-sans);
+  --vt-text-body: 400 14px/1.5 var(--vt-font-sans);
+  --vt-text-small: 400 13px/1.45 var(--vt-font-sans);
+  --vt-text-label: 600 11px/1.3 var(--vt-font-mono);   /* + uppercase, letter-spacing .14em */
+  --vt-text-kpi: 500 32px/1.1 var(--vt-font-mono);     /* + letter-spacing -0.02em */
+  --vt-text-data: 400 13px/1.4 var(--vt-font-mono);
+
+  /* Spacing: 4px base */
+  --vt-space-1: 4px;  --vt-space-2: 8px;  --vt-space-3: 12px; --vt-space-4: 16px;
+  --vt-space-5: 20px; --vt-space-6: 24px; --vt-space-7: 28px; --vt-space-8: 32px;
+  --vt-space-10: 40px; --vt-space-12: 48px;
+
+  /* Radii */
+  --vt-radius-sm: 6px;    /* pills, small tags, icon buttons */
+  --vt-radius-md: 9px;    /* buttons, inputs, nav items */
+  --vt-radius-lg: 12px;   /* cards, panels, tables, KPI tiles */
+  --vt-radius-xl: 16px;   /* modals, large surfaces */
+  --vt-radius-full: 999px;
+
+  /* Sizes */
+  --vt-sidebar-w: 248px;
+  --vt-sidebar-w-collapsed: 64px;
+  --vt-topbar-h: 60px;
+  --vt-content-max: 1280px;
+  --vt-control-h: 38px;   /* buttons, inputs, selects */
+  --vt-hit-min: 36px;     /* minimum clickable height in dense UI; 44px on touch */
+
+  /* Motion */
+  --vt-ease: cubic-bezier(.2, .7, .2, 1);
+  --vt-dur: 160ms;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4.2 Mode tokens (status + chart colors; set by data-mode)          */
+/* ------------------------------------------------------------------ */
+[data-mode="light"] {
+  color-scheme: light;
+  --vt-success: #1E7B4A;
+  --vt-warning: #9A5800;
+  --vt-danger:  #C0362C;
+  --vt-info:    #1F5FD1;
+  --vt-band-good: #0B6B78;   /* score band "good" (v1.3.0), teal between success and info */
+
+  /* Chart series: assign in this order, never cycle */
+  --vt-series-1: #2a78d6; /* blue */
+  --vt-series-2: #eb6834; /* orange */
+  --vt-series-3: #1baf7a; /* aqua */
+  --vt-series-4: #eda100; /* yellow */
+  --vt-series-5: #e87ba4; /* magenta */
+  --vt-series-6: #008300; /* green */
+  --vt-series-7: #6250d6; /* violet */
+  --vt-series-8: #e34948; /* red */
+  --vt-chart-axis: #c3c2b7;
+
+  --vt-shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --vt-shadow-md: 0 1px 2px rgba(16,24,40,.06), 0 12px 32px rgba(16,24,40,.08);
+  --vt-shadow-lg: 0 2px 4px rgba(16,24,40,.08), 0 24px 56px rgba(16,24,40,.18);  /* dialogs, toasts (v1.2.0) */
+  --vt-scrim: rgba(16,24,40,.45);      /* dialog backdrop (v1.2.0) */
+  --vt-tint: 9%;   /* used for pill/alert backgrounds */
+
+  /* Mode-dependent component surfaces (spec 6.1, 7.1, 7.6) */
+  --vt-sidebar-bg: var(--vt-surface);  /* 6.1: surface in light mode */
+  --vt-input-bg: var(--vt-surface);    /* 7.6: surface in light mode */
+  --vt-on-danger: #FFFFFF;             /* 7.1: white in light mode */
+}
+
+[data-mode="dark"] {
+  color-scheme: dark;
+  --vt-success: #4ADE80;
+  --vt-warning: #FBBF24;
+  --vt-danger:  #F87171;
+  --vt-info:    #60A5FA;
+  --vt-band-good: #2DD4BF;   /* score band "good" (v1.3.0) */
+
+  --vt-series-1: #3987e5;
+  --vt-series-2: #d95926;
+  --vt-series-3: #199e70;
+  --vt-series-4: #c98500;
+  --vt-series-5: #d55181;
+  --vt-series-6: #008300;
+  --vt-series-7: #9085e9;
+  --vt-series-8: #e66767;
+  --vt-chart-axis: var(--vt-border);
+
+  --vt-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --vt-shadow-md: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.35);
+  --vt-shadow-lg: 0 2px 4px rgba(0,0,0,.5), 0 24px 64px rgba(0,0,0,.55);
+  --vt-scrim: rgba(0,0,0,.6);
+  --vt-tint: 12%;
+
+  /* Mode-dependent component surfaces (spec 6.1, 7.1, 7.6) */
+  --vt-sidebar-bg: var(--vt-bg);       /* 6.1: bg in dark mode */
+  --vt-input-bg: var(--vt-bg);         /* 7.6: bg in dark mode */
+  --vt-on-danger: var(--vt-bg);        /* 7.1: bg in dark mode */
+}
+
+/* ------------------------------------------------------------------ */
+/* 4.3 Theme tokens (set by data-theme)                               */
+/* ------------------------------------------------------------------ */
+
+/* ---------- LIGHT ---------- */
+[data-theme="basecamp"] {      /* ViaTek default light */
+  --vt-bg:#FAF8F5; --vt-surface:#FFFFFF; --vt-surface-2:#F3EFE9; --vt-border:#E4DED5;
+  --vt-text:#1A1A2E; --vt-text-muted:#5C5A6B;
+  --vt-primary:#FF8F0D; --vt-on-primary:#1A1A2E; --vt-primary-soft:#FFF0DC;
+  --vt-link:#A65200; --vt-accent:#2E5E8C;
+}
+[data-theme="glacier"] {
+  --vt-bg:#F5F8FC; --vt-surface:#FFFFFF; --vt-surface-2:#EBF1F8; --vt-border:#D6E0EC;
+  --vt-text:#0F1B2D; --vt-text-muted:#4F5E73;
+  --vt-primary:#1F5FD1; --vt-on-primary:#FFFFFF; --vt-primary-soft:#E3ECFB;
+  --vt-link:#1A52B8; --vt-accent:#FF8F0D;
+}
+[data-theme="aspen"] {
+  --vt-bg:#F4F6F1; --vt-surface:#FFFFFF; --vt-surface-2:#EAEFE5; --vt-border:#D5DDCD;
+  --vt-text:#1B2418; --vt-text-muted:#53604E;
+  --vt-primary:#2F6B3F; --vt-on-primary:#FFFFFF; --vt-primary-soft:#E1EDE2;
+  --vt-link:#2A5F38; --vt-accent:#B7791F;
+}
+[data-theme="mesa"] {
+  --vt-bg:#FBF6F0; --vt-surface:#FFFDFA; --vt-surface-2:#F3EADF; --vt-border:#E6D7C6;
+  --vt-text:#2A1A12; --vt-text-muted:#6B5446;
+  --vt-primary:#B5482A; --vt-on-primary:#FFFFFF; --vt-primary-soft:#F8E3DA;
+  --vt-link:#A03E23; --vt-accent:#2F6F73;
+}
+[data-theme="columbine"] {
+  --vt-bg:#F8F7FC; --vt-surface:#FFFFFF; --vt-surface-2:#EFEDF8; --vt-border:#DDD9EE;
+  --vt-text:#1E1A33; --vt-text-muted:#5A5570;
+  --vt-primary:#5B3FC4; --vt-on-primary:#FFFFFF; --vt-primary-soft:#ECE7FB;
+  --vt-link:#5136B3; --vt-accent:#D9508A;
+}
+[data-theme="slate-paper"] {
+  --vt-bg:#F3F4F6; --vt-surface:#FFFFFF; --vt-surface-2:#E9EBEF; --vt-border:#D3D7DE;
+  --vt-text:#111418; --vt-text-muted:#525A66;
+  --vt-primary:#0E7C7B; --vt-on-primary:#FFFFFF; --vt-primary-soft:#DDF0EF;
+  --vt-link:#0B6B6A; --vt-accent:#FF8F0D;
+}
+
+/* ---------- DARK ---------- */
+[data-theme="summit-night"] {  /* ViaTek default dark (closest to Envoy today) */
+  --vt-bg:#11111C; --vt-surface:#1A1A2E; --vt-surface-2:#23233A; --vt-border:#2F2F4A;
+  --vt-text:#ECEBF3; --vt-text-muted:#A3A1B8;
+  --vt-primary:#FF8F0D; --vt-on-primary:#1A1A2E; --vt-primary-soft:#3B2A14;
+  --vt-link:#FFA64D; --vt-accent:#7AA2F7;
+}
+[data-theme="timberline"] {
+  --vt-bg:#0D1411; --vt-surface:#141E19; --vt-surface-2:#1C2822; --vt-border:#29372F;
+  --vt-text:#E3ECE6; --vt-text-muted:#9DB0A4;
+  --vt-primary:#4CC38A; --vt-on-primary:#0D1411; --vt-primary-soft:#183326;
+  --vt-link:#6FD6A2; --vt-accent:#E0B34F;
+}
+[data-theme="midnight-range"] {
+  --vt-bg:#0A1120; --vt-surface:#111A2C; --vt-surface-2:#18233A; --vt-border:#25324D;
+  --vt-text:#E5EBF5; --vt-text-muted:#9AA8C0;
+  --vt-primary:#5B9BFF; --vt-on-primary:#0A1120; --vt-primary-soft:#16294A;
+  --vt-link:#85B5FF; --vt-accent:#FF8F0D;
+}
+[data-theme="ember"] {
+  --vt-bg:#16100D; --vt-surface:#201814; --vt-surface-2:#2B211B; --vt-border:#3A2D25;
+  --vt-text:#F3E8DF; --vt-text-muted:#B9A596;
+  --vt-primary:#FF7A45; --vt-on-primary:#16100D; --vt-primary-soft:#3A2116;
+  --vt-link:#FF9A70; --vt-accent:#F2C14E;
+}
+[data-theme="aurora"] {
+  --vt-bg:#0E0C19; --vt-surface:#171426; --vt-surface-2:#201C33; --vt-border:#2E2946;
+  --vt-text:#ECE8F8; --vt-text-muted:#A7A0C2;
+  --vt-primary:#A78BFA; --vt-on-primary:#0E0C19; --vt-primary-soft:#2A2350;
+  --vt-link:#C0AEFC; --vt-accent:#2DD4BF;
+}
+[data-theme="graphite"] {      /* closest to Insight / Reconciliator today */
+  --vt-bg:#0A0B0D; --vt-surface:#121417; --vt-surface-2:#1A1D21; --vt-border:#272B31;
+  --vt-text:#E7E9EC; --vt-text-muted:#9BA1AA;
+  --vt-primary:#4C8DFF; --vt-on-primary:#0A0B0D; --vt-primary-soft:#142440;
+  --vt-link:#7EAEFF; --vt-accent:#22D3EE;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4.4 Derived tokens (after the themes; works for all of them)       */
+/* Declared on every themed element so nested themes recompute them.  */
+/* ------------------------------------------------------------------ */
+:root, [data-theme], [data-mode] {
+  --vt-primary-hover: color-mix(in srgb, var(--vt-primary) 88%, var(--vt-text));
+  --vt-focus-ring: color-mix(in srgb, var(--vt-primary) 55%, transparent);
+  --vt-chart-grid: color-mix(in srgb, var(--vt-border) 75%, var(--vt-surface));
+  --vt-success-soft: color-mix(in srgb, var(--vt-success) var(--vt-tint), var(--vt-surface));
+  --vt-warning-soft: color-mix(in srgb, var(--vt-warning) var(--vt-tint), var(--vt-surface));
+  --vt-danger-soft:  color-mix(in srgb, var(--vt-danger)  var(--vt-tint), var(--vt-surface));
+  --vt-info-soft:    color-mix(in srgb, var(--vt-info)    var(--vt-tint), var(--vt-surface));
+
+  /* Score bands (v1.3.0, SPEC 7.18): mode-only like status colors, never theme colors */
+  --vt-band-strong: var(--vt-success);
+  --vt-band-needs-work: var(--vt-warning);
+  --vt-band-at-risk: var(--vt-danger);
+  --vt-band-none: var(--vt-text-muted);
+  --vt-band-good-soft: color-mix(in srgb, var(--vt-band-good) var(--vt-tint), var(--vt-surface));
+
+  /* 6.1 inactive nav text */
+  --vt-nav-text: color-mix(in srgb, var(--vt-text) 78%, var(--vt-bg));
+}
+body {
+  margin: 0;
+  background: var(--vt-bg);
+  color: var(--vt-text);
+  font-family: var(--vt-font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--vt-focus-ring); outline-offset: 2px; }
+a { color: var(--vt-link); }
+
+/* Section 9: respect reduced motion (disable transitions over 200ms; we disable all). */
+@media (prefers-reduced-motion: reduce) {
+  :root { --vt-dur: 0ms; }
+}

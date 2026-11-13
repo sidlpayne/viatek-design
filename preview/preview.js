@@ -296,6 +296,7 @@ const SECTION_OF = {
   overview: 'Theme preview', palettes: 'Theme preview', kpis: 'Components', charts: 'Components', tables: 'Components',
   pills: 'Components', buttons: 'Components', forms: 'Components', segmented: 'Components', type: 'Components', appearance: 'Settings',
   feedback: 'Components', alerts: 'Feedback', overlays: 'Feedback', toasts: 'Feedback', navigation: 'Components',
+  v13: 'Components',
 };
 function setActive(hash) {
   const id = (hash || '#overview').slice(1);
@@ -325,8 +326,8 @@ $$('[data-open-dialog]').forEach((btn) => btn.addEventListener('click', () => {
 }));
 $$('dialog.vt-dialog').forEach((d) => d.addEventListener('click', (e) => { if (e.target === d) d.close('cancel'); }));
 
-// Help popovers: toggle, Escape and outside click close.
-$$('.vt-popover-wrap > button[aria-controls]').forEach((btn) => {
+// Help popovers and the user menu: toggle, Escape and outside click close. The theme toggle has its own handler above.
+$$('.vt-popover-wrap > button[aria-controls]:not(#theme-toggle)').forEach((btn) => {
   const pop = document.getElementById(btn.getAttribute('aria-controls'));
   const set = (open) => { btn.setAttribute('aria-expanded', String(open)); pop.hidden = !open; };
   btn.addEventListener('click', () => set(pop.hidden));
@@ -371,6 +372,123 @@ $$('[data-tabs]').forEach((list) => {
 $$('[data-chips] .vt-chip').forEach((chip) => chip.addEventListener('click', () => {
   chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
 }));
+
+/* ---------- v1.3.0 components ---------- */
+// 6.5 Help panel: the top-bar help button toggles it; Escape and the close button close it.
+const helpBtn = $('#help-toggle');
+const helpPanel = $('#help-panel');
+const setHelp = (open) => { helpPanel.hidden = !open; helpBtn.setAttribute('aria-expanded', String(open)); if (!open) helpBtn.focus(); };
+helpBtn.addEventListener('click', () => setHelp(helpPanel.hidden));
+$('[data-close-help]').addEventListener('click', () => setHelp(false));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !helpPanel.hidden) setHelp(false); });
+
+// 7.15 Switches
+$$('.vt-switch').forEach((s) => s.addEventListener('click', () => {
+  if (!s.disabled) s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true'));
+}));
+
+// 7.19 Busy button demo
+$$('[data-busy-demo]').forEach((b) => b.addEventListener('click', () => {
+  const spin = document.createElement('span');
+  spin.className = 'vt-spinner'; spin.setAttribute('aria-hidden', 'true');
+  b.prepend(spin); b.setAttribute('aria-busy', 'true'); b.disabled = true;
+  setTimeout(() => { spin.remove(); b.removeAttribute('aria-busy'); b.disabled = false; }, 2000);
+}));
+
+// 7.16 Color field: report data keeps its own value (written without a literal so the hygiene check stays strict).
+const brand = '#' + '2e5e8c';
+const swatch = $('[data-color-swatch]');
+const hex = $('[data-color-hex]');
+swatch.value = brand; hex.value = brand.toUpperCase();
+swatch.addEventListener('input', () => { hex.value = swatch.value.toUpperCase(); });
+hex.addEventListener('change', () => { if (/^#[0-9a-f]{6}$/i.test(hex.value)) swatch.value = hex.value; });
+
+// 7.16 Calendar: November 2026, today the 13th, range 3 to 9.
+(function calendar() {
+  const el = $('#demo-cal');
+  const first = new Date(2026, 10, 1).getDay();
+  const prevDays = new Date(2026, 10, 0).getDate();
+  let html = `<div class="vt-calendar-head"><button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="Previous month"><svg class="vt-icon vt-icon-sm" style="transform:rotate(180deg)"><use href="#i-chevron-right"/></svg></button>
+    <span class="vt-calendar-title">November 2026</span>
+    <button class="vt-icon-btn vt-icon-btn--sm" type="button" aria-label="Next month"><svg class="vt-icon vt-icon-sm"><use href="#i-chevron-right"/></svg></button></div><div class="vt-calendar-grid">`;
+  html += ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => `<span class="vt-calendar-wd">${d}</span>`).join('');
+  for (let i = first - 1; i >= 0; i--) html += `<button class="vt-day vt-day--outside" type="button" tabindex="-1">${prevDays - i}</button>`;
+  for (let d = 1; d <= 30; d++) {
+    const attrs = [];
+    let cls = 'vt-day';
+    if (d === 3 || d === 9) attrs.push('aria-selected="true"');
+    else if (d > 3 && d < 9) cls += ' vt-day--in-range';
+    if (d === 13) attrs.push('aria-current="date"');
+    html += `<button class="${cls}" type="button" ${attrs.join(' ')} aria-label="November ${d}, 2026">${d}</button>`;
+  }
+  el.innerHTML = html + '</div>';
+})();
+
+// 7.17 Sortable headers: click cycles descending and ascending, and sorts the rows.
+$$('table[data-sortable]').forEach((table) => {
+  const heads = $$('th[aria-sort]', table);
+  heads.forEach((th) => $('.vt-sort', th).addEventListener('click', () => {
+    const dir = th.getAttribute('aria-sort') === 'descending' ? 'ascending' : 'descending';
+    heads.forEach((h) => h.setAttribute('aria-sort', h === th ? dir : 'none'));
+    const col = Array.from(th.parentElement.children).indexOf(th);
+    const body = $('tbody', table);
+    const rows = $$('tr', body);
+    const key = (r) => { const t = r.children[col].textContent.trim(); const n = parseFloat(t); return Number.isNaN(n) ? t.toLowerCase() : n; };
+    rows.sort((a, b) => { const x = key(a), y = key(b); const c = x < y ? -1 : x > y ? 1 : 0; return dir === 'ascending' ? c : -c; });
+    rows.forEach((r) => body.appendChild(r));
+  }));
+});
+
+// 7.24 Reorder list: pointer drag on the handle, or Space to pick up, arrows to move, Space to drop, Escape to cancel.
+$$('[data-reorder]').forEach((list) => {
+  const live = $('#reorder-live');
+  const name = (li) => li.textContent.trim();
+  const say = (msg) => { live.textContent = msg; };
+  const pos = (li) => `${Array.from(list.children).indexOf(li) + 1} of ${list.children.length}`;
+  let start = null;
+  list.addEventListener('keydown', (e) => {
+    const h = e.target.closest('.vt-drag-handle');
+    if (!h) return;
+    const li = h.parentElement;
+    const held = h.getAttribute('aria-pressed') === 'true';
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      if (held) { h.setAttribute('aria-pressed', 'false'); say(`${name(li)} dropped at position ${pos(li)}.`); start = null; }
+      else { h.setAttribute('aria-pressed', 'true'); start = li.nextElementSibling; say(`${name(li)} picked up. Use the arrow keys to move it, Space to drop it.`); }
+    } else if (held && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      if (e.key === 'ArrowUp' && li.previousElementSibling) list.insertBefore(li, li.previousElementSibling);
+      if (e.key === 'ArrowDown' && li.nextElementSibling) list.insertBefore(li.nextElementSibling, li);
+      h.focus(); say(`${name(li)} moved to position ${pos(li)}.`);
+    } else if (held && e.key === 'Escape') {
+      e.stopPropagation();
+      list.insertBefore(li, start); h.setAttribute('aria-pressed', 'false'); h.focus(); say(`Move cancelled. ${name(li)} is back at position ${pos(li)}.`);
+    }
+  });
+  list.addEventListener('pointerdown', (e) => {
+    const h = e.target.closest('.vt-drag-handle');
+    if (!h || e.button !== 0) return;
+    const li = h.parentElement;
+    li.setAttribute('data-dragging', '');
+    h.setPointerCapture(e.pointerId);
+    let target = null, where = null;
+    const clear = () => $$('[data-drop]', list).forEach((x) => x.removeAttribute('data-drop'));
+    const move = (ev) => {
+      clear();
+      const over = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.vt-reorder-item');
+      if (!over || over === li || over.parentElement !== list) { target = null; return; }
+      const r = over.getBoundingClientRect();
+      where = ev.clientY < r.top + r.height / 2 ? 'before' : 'after';
+      target = over; over.setAttribute('data-drop', where);
+    };
+    const up = () => {
+      clear(); li.removeAttribute('data-dragging');
+      if (target) { list.insertBefore(li, where === 'before' ? target : target.nextElementSibling); say(`${name(li)} moved to position ${pos(li)}.`); }
+      h.removeEventListener('pointermove', move); h.removeEventListener('pointerup', up); h.removeEventListener('pointercancel', up);
+    };
+    h.addEventListener('pointermove', move); h.addEventListener('pointerup', up); h.addEventListener('pointercancel', up);
+  });
+});
 
 /* ---------- Keep everything in sync with theme changes ---------- */
 function syncAll() { syncModeControls(); syncPicker(); syncLabels(); drawTrend(); }

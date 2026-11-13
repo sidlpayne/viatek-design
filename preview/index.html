@@ -54,7 +54,16 @@
   <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
   <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
   <symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
-  <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol>
+  <symbol id="i-arrow-up-down" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-log-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-inbox"viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
 </svg>
 
 <a class="vt-sr-only" href="#overview">Skip to content</a>
@@ -98,6 +107,7 @@
             <a class="vt-nav-item vt-nav-sub" href="#toasts"><span class="vt-nav-text">Toasts</span><span class="vt-nav-count">3</span></a>
           </div>
           <a class="vt-nav-item" href="#navigation"><svg class="vt-icon"><use href="#i-tabs"/></svg><span class="vt-nav-text">Tabs and chips</span></a>
+          <a class="vt-nav-item" href="#v13"><svg class="vt-icon"><use href="#i-shield"/></svg><span class="vt-nav-text">Added in v1.3.0</span></a>
           <a class="vt-nav-item" href="#type"><svg class="vt-icon"><use href="#i-type"/></svg><span class="vt-nav-text">Typography</span></a>
         </div>
       </div>
@@ -123,6 +133,7 @@
         </ol>
       </nav>
       <div class="vt-topbar-right">
+        <span class="vt-pill vt-pill--warning"><svg class="vt-icon vt-icon-sm"><use href="#i-flask"/></svg>sample data</span>
         <div class="vt-fresh-group" aria-label="Data freshness">
           <span class="vt-fresh"><span class="vt-dot vt-dot--success" aria-hidden="true"></span>Autotask 13m</span>
           <span class="vt-fresh"><span class="vt-dot vt-dot--warning" aria-hidden="true"></span>IT Glue 4h stale</span>
@@ -153,7 +164,19 @@
             <a class="vt-menu-link" href="#appearance" data-close-menu>Theme settings…</a>
           </div>
         </div>
-        <a class="vt-icon-btn" href="__VT_BASE__/SPEC.md" aria-label="Help: design spec"><svg class="vt-icon"><use href="#i-help"/></svg></a>
+        <button class="vt-icon-btn" type="button" id="help-toggle" aria-expanded="false" aria-controls="help-panel" aria-label="Help"><svg class="vt-icon"><use href="#i-help"/></svg></button>
+        <!-- 6.4 User menu (last on the right) -->
+        <div class="vt-popover-wrap">
+          <button class="vt-user-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="user-menu">
+            <span class="vt-avatar" aria-hidden="true">VT</span><span class="vt-user-name">Preview user</span>
+          </button>
+          <div class="vt-menu vt-menu--list" id="user-menu" role="menu" hidden>
+            <div class="vt-menu-head"><span class="vt-menu-head-name">Preview user <span class="vt-tag">admin</span></span><span class="vt-menu-head-sub">signed in with Microsoft</span></div>
+            <a class="vt-menu-item" role="menuitem" href="#appearance"><svg class="vt-icon"><use href="#i-settings"/></svg>Appearance</a>
+            <div class="vt-menu-sep" role="separator"></div>
+            <button class="vt-menu-item" type="button" role="menuitem"><svg class="vt-icon"><use href="#i-log-out"/></svg>Sign out</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -327,17 +350,18 @@
           <table class="vt-table vt-token-table">
             <thead><tr><th scope="col">Token</th><th scope="col">Words</th></tr></thead>
             <tbody>
-              <tr><td class="vt-data">success</td><td><div class="vt-pill-row" data-pills="success">finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online</div></td></tr>
-              <tr><td class="vt-data">warning</td><td><div class="vt-pill-row" data-pills="warning">in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working</div></td></tr>
-              <tr><td class="vt-data">danger</td><td><div class="vt-pill-row" data-pills="danger">failed, overdue, escalated, offline, agent failed</div></td></tr>
-              <tr><td class="vt-data">info</td><td><div class="vt-pill-row" data-pills="info">queued, new, info, scheduled, to do, ready to send</div></td></tr>
-              <tr><td class="vt-data">text-muted</td><td><div class="vt-pill-row" data-pills="muted">draft, skipped, n/a, cancelled, unknown, not a problem</div></td></tr>
-              <tr><td class="vt-data">severity</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--danger">critical</span><span class="vt-pill vt-pill--warning">high</span><span class="vt-pill vt-pill--info">medium</span><span class="vt-pill vt-pill--muted">low</span></div></td></tr>
+              <tr><td class="vt-data">success</td><td><div class="vt-pill-row" data-pills="success">finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online, reviewed, resolved, verified fixed, pass, read, improved, final, linked, matched, travelling now</div></td></tr>
+              <tr><td class="vt-data">warning</td><td><div class="vt-pill-row" data-pills="warning">in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working, started, review, needs client, waiting for audit, not confirmed yet, awaiting approval, partly succeeded, partly read, needs consent, off, name match, not configured</div></td></tr>
+              <tr><td class="vt-data">danger</td><td><div class="vt-pill-row" data-pills="danger">failed, overdue, escalated, offline, agent failed, error, fail, incident, didn't stick, came back, new failure, worsened, couldn't be read, rejected</div></td></tr>
+              <tr><td class="vt-data">info</td><td><div class="vt-pill-row" data-pills="info">queued, new, info, scheduled, to do, ready to send, ready, upcoming</div></td></tr>
+              <tr><td class="vt-data">text-muted</td><td><div class="vt-pill-row" data-pills="muted">draft, skipped, n/a, cancelled, unknown, not a problem, false positive, accepted risk, informational, bypassed, not licensed, not watched yet, not read yet, ended, removed, expired, revoked</div></td></tr>
+              <tr><td class="vt-data">severity</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--danger">critical</span><span class="vt-pill vt-pill--warning">high</span><span class="vt-pill vt-pill--info">medium</span><span class="vt-pill vt-pill--muted">low</span><span class="vt-pill vt-pill--muted">info</span></div></td></tr>
+              <tr><td class="vt-data">score band</td><td><div class="vt-pill-row"><span class="vt-pill vt-pill--band-strong">strong</span><span class="vt-pill vt-pill--band-good">good</span><span class="vt-pill vt-pill--band-needs-work">needs work</span><span class="vt-pill vt-pill--band-at-risk">at risk</span><span class="vt-pill vt-pill--band-none">not scored</span></div></td></tr>
             </tbody>
           </table>
           <div class="vt-label" style="margin:18px 0 8px">Tags · descriptive, never colored</div>
           <div class="vt-pill-row">
-            <span class="vt-tag">keep</span><span class="vt-tag">archive</span><span class="vt-tag">active</span><span class="vt-tag">inactive</span><span class="vt-tag">deleted</span><span class="vt-tag">suspended</span><span class="vt-tag">not in Pulse</span><span class="vt-tag">never matched</span><span class="vt-tag"><svg class="vt-icon"><use href="#i-monitor"/></svg>docks &amp; monitors</span>
+            <span class="vt-tag">keep</span><span class="vt-tag">archive</span><span class="vt-tag">active</span><span class="vt-tag">inactive</span><span class="vt-tag">deleted</span><span class="vt-tag">suspended</span><span class="vt-tag">not in Pulse</span><span class="vt-tag">never matched</span><span class="vt-tag">permanent</span><span class="vt-tag">missing Datto agent</span><span class="vt-tag">orphaned Datto device</span><span class="vt-tag">archived in IT Glue</span><span class="vt-tag">spec difference</span><span class="vt-tag">stale agent</span><span class="vt-tag"><svg class="vt-icon"><use href="#i-monitor"/></svg>docks &amp; monitors</span>
           </div>
         </article>
         <article class="vt-panel">
@@ -516,6 +540,207 @@
         </article>
       </section>
 
+      <!-- v1.3.0 components (7.15 to 7.24, 6.4 to 6.6) -->
+      <section class="vt-section" id="v13" aria-labelledby="v13-h">
+        <div class="vt-section-head"><h2 class="vt-h2" id="v13-h">Added in v1.3.0</h2><span class="vt-small">Score rings, form fields, loading, menus, long text and more, from the Sec Audit and ConfigReport migrations.</span></div>
+
+        <div class="vt-grid-even">
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Score ring and bands</h3><p class="vt-small">Band colors depend on mode only. The band word always shows next to the ring.</p></div></div>
+            <div class="vt-pill-row" style="gap:20px;align-items:flex-end">
+              <div class="vt-ring-wrap"><div class="vt-ring vt-ring--xl vt-band--good" style="--value:78;--proj:86" role="img" aria-label="Score 78 of 100, good. Projected 86."><span class="vt-ring-value" aria-hidden="true">78</span></div><span class="vt-pill vt-pill--band-good">good</span><span class="vt-ring-sub">86 projected</span></div>
+              <div class="vt-ring-wrap"><div class="vt-ring vt-ring--lg vt-band--strong" style="--value:91" role="img" aria-label="Score 91 of 100, strong"><span class="vt-ring-value" aria-hidden="true">91</span></div><span class="vt-pill vt-pill--band-strong">strong</span></div>
+              <div class="vt-ring-wrap"><div class="vt-ring vt-ring--md vt-band--needs-work" style="--value:58" role="img" aria-label="Score 58 of 100, needs work"><span class="vt-ring-value" aria-hidden="true">58</span></div><span class="vt-pill vt-pill--band-needs-work">needs work</span></div>
+              <div class="vt-ring-wrap"><div class="vt-ring vt-ring--md vt-band--at-risk" style="--value:34" role="img" aria-label="Score 34 of 100, at risk"><span class="vt-ring-value" aria-hidden="true">34</span></div><span class="vt-pill vt-pill--band-at-risk">at risk</span></div>
+            </div>
+            <div class="vt-label" style="margin:18px 0 8px">In a table row · area meters</div>
+            <div class="vt-section" style="gap:10px">
+              <div class="vt-ring-wrap vt-ring-wrap--row"><div class="vt-ring vt-ring--sm vt-band--good" style="--value:74" role="img" aria-label="Score 74, good"><span class="vt-ring-value" aria-hidden="true">74</span></div><span>Acme Corp</span><span class="vt-pill vt-pill--band-good">good</span></div>
+              <div class="vt-progress vt-band--strong"><div class="vt-progress-track" role="meter" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="Identity 88, strong"><div class="vt-progress-fill" style="--value:88"></div></div><span class="vt-progress-count">Identity 88</span></div>
+              <div class="vt-progress vt-band--needs-work"><div class="vt-progress-track" role="meter" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100" aria-label="Email 52, needs work"><div class="vt-progress-fill" style="--value:52"></div></div><span class="vt-progress-count">Email 52</span></div>
+            </div>
+          </article>
+
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Loading and progress</h3><p class="vt-small">Spinner in a busy button, skeletons while data loads, progress for batch jobs.</p></div></div>
+            <div class="vt-actions" style="margin-bottom:16px">
+              <button class="vt-btn vt-btn--primary" type="button" aria-busy="true" disabled><span class="vt-spinner" aria-hidden="true"></span>Generate reports</button>
+              <button class="vt-btn vt-btn--secondary" type="button" data-busy-demo><svg class="vt-icon"><use href="#i-refresh"/></svg>Sync now</button>
+            </div>
+            <div class="vt-progress" style="margin-bottom:16px">
+              <div class="vt-progress-track" role="progressbar" aria-valuenow="12" aria-valuemin="0" aria-valuemax="40" aria-label="Reports generated"><div class="vt-progress-fill" style="--value:30"></div></div>
+              <span class="vt-progress-count">12 of 40</span>
+              <div class="vt-progress-stats"><span class="vt-stat--success">10 done</span><span class="vt-stat--danger">2 failed</span><span>0 cancelled</span></div>
+            </div>
+            <div class="vt-progress" style="margin-bottom:16px">
+              <div class="vt-progress-track" role="progressbar" aria-label="Preparing batch" data-indeterminate><div class="vt-progress-fill"></div></div>
+              <span class="vt-progress-count">preparing</span>
+            </div>
+            <div aria-busy="true" aria-label="Loading" style="display:flex;flex-direction:column;gap:10px">
+              <span class="vt-skeleton vt-skeleton--title"></span>
+              <span class="vt-skeleton" style="width:90%"></span>
+              <span class="vt-skeleton" style="width:70%"></span>
+            </div>
+          </article>
+        </div>
+
+        <article class="vt-panel">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">More form fields</h3><p class="vt-small">Switch for settings that save on their own, textarea, native date and time, color field, file upload, calendar.</p></div></div>
+          <div class="vt-form-grid">
+            <div class="vt-field">
+              <span class="vt-field-label">Settings</span>
+              <div class="vt-switch-field"><button class="vt-switch" type="button" role="switch" aria-checked="true" aria-labelledby="sw1"></button><span id="sw1">AI advisor</span></div>
+              <div class="vt-switch-field"><button class="vt-switch" type="button" role="switch" aria-checked="false" aria-labelledby="sw2"></button><span id="sw2">Write notes automatically</span></div>
+              <div class="vt-switch-field"><button class="vt-switch" type="button" role="switch" aria-checked="false" aria-labelledby="sw3" disabled></button><span id="sw3" class="vt-muted">Client active (locked)</span></div>
+            </div>
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-notes">Review notes</label>
+              <textarea class="vt-textarea" id="f-notes" placeholder="What did you check?"></textarea>
+              <span class="vt-help">Saved with the alert.</span>
+            </div>
+            <div class="vt-field">
+              <label class="vt-field-label" for="f-accounts">Service accounts</label>
+              <textarea class="vt-textarea vt-mono" id="f-accounts">svc-backup
+svc-scanner</textarea>
+              <span class="vt-help">One per line.</span>
+            </div>
+            <div class="vt-field">
+              <span class="vt-field-label" id="f-range-l">Date range</span>
+              <div class="vt-date-range" role="group" aria-labelledby="f-range-l">
+                <input class="vt-input" type="date" value="2026-11-01" aria-label="Start date">
+                <span class="vt-muted">to</span>
+                <input class="vt-input" type="date" value="2026-11-13" aria-label="End date">
+              </div>
+              <label class="vt-field-label" for="f-time" style="margin-top:8px">Run at</label>
+              <input class="vt-input" id="f-time" type="time" value="06:30" style="width:auto">
+            </div>
+            <div class="vt-field">
+              <span class="vt-field-label">Brand color</span>
+              <div class="vt-color-field"><input type="color" aria-label="Brand color swatch" data-color-swatch><input class="vt-input vt-mono" aria-label="Brand color hex" data-color-hex></div>
+              <span class="vt-help">Report data: it keeps its own color in every theme.</span>
+            </div>
+            <div class="vt-field" style="grid-column:1/-1">
+              <span class="vt-field-label">Client logo</span>
+              <div class="vt-upload">
+                <div class="vt-upload-preview"><svg class="vt-icon"><use href="#i-image"/></svg></div>
+                <div class="vt-upload-body"><p class="vt-upload-title">acme-logo.svg</p><p class="vt-help">PNG, JPEG or SVG, 2 MB max.</p></div>
+                <div class="vt-upload-actions">
+                  <label class="vt-btn vt-btn--secondary vt-btn--sm">Replace<input class="vt-sr-only" type="file" accept="image/png,image/jpeg,image/svg+xml"></label>
+                  <button class="vt-btn vt-btn--ghost vt-btn--sm" type="button">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vt-label" style="margin:18px 0 8px">Calendar · for ranges, inside a popover</div>
+          <div class="vt-panel" style="display:inline-block;padding:12px 14px">
+            <div class="vt-calendar" id="demo-cal"></div>
+          </div>
+        </article>
+
+        <section class="vt-table-card" aria-labelledby="sort-h">
+          <div class="vt-table-strip"><h3 class="vt-label" id="sort-h" style="margin:0">Findings · sortable headers</h3></div>
+          <div class="vt-table-scroll">
+            <table class="vt-table" data-sortable>
+              <thead><tr>
+                <th scope="col" aria-sort="none"><button class="vt-sort" type="button">Check<svg class="vt-icon vt-sort-icon vt-sort-none"><use href="#i-arrow-up-down"/></svg><svg class="vt-icon vt-sort-icon vt-sort-asc"><use href="#i-arrow-up"/></svg><svg class="vt-icon vt-sort-icon vt-sort-desc"><use href="#i-arrow-down"/></svg></button></th>
+                <th scope="col">Severity</th>
+                <th scope="col">Result</th>
+                <th scope="col" class="vt-num" aria-sort="descending"><button class="vt-sort" type="button">Points<svg class="vt-icon vt-sort-icon vt-sort-none"><use href="#i-arrow-up-down"/></svg><svg class="vt-icon vt-sort-icon vt-sort-asc"><use href="#i-arrow-up"/></svg><svg class="vt-icon vt-sort-icon vt-sort-desc"><use href="#i-arrow-down"/></svg></button></th>
+              </tr></thead>
+              <tbody>
+                <tr><td>MFA for admins</td><td><span class="vt-pill vt-pill--danger">critical</span></td><td><span class="vt-pill vt-pill--danger">fail</span></td><td class="vt-num">12</td></tr>
+                <tr><td>Legacy auth blocked</td><td><span class="vt-pill vt-pill--warning">high</span></td><td><span class="vt-pill vt-pill--success">pass</span></td><td class="vt-num">8</td></tr>
+                <tr><td>Mailbox auditing</td><td><span class="vt-pill vt-pill--info">medium</span></td><td><span class="vt-pill vt-pill--muted">accepted risk</span></td><td class="vt-num">4</td></tr>
+                <tr><td>Guest access review</td><td><span class="vt-pill vt-pill--muted">low</span></td><td><span class="vt-pill vt-pill--warning">partly read</span></td><td class="vt-num">2</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="vt-grid-even">
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Long-form text</h3><p class="vt-small">Guides, how-to-fix steps and advisor answers use .vt-prose.</p></div></div>
+            <div class="vt-prose">
+              <h3>Turn on MFA for admins</h3>
+              <ol><li>Open <strong>Entra admin center</strong>, then Conditional Access.</li><li>Create a policy for the <code>Global Administrator</code> role.</li><li>Set it to report-only for a day, then turn it on.</li></ol>
+              <blockquote>Break-glass accounts stay excluded. Check them monthly.</blockquote>
+            </div>
+          </article>
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Advisor thread</h3><p class="vt-small">Question right, answer left, mono meta line, composer pinned under it.</p></div></div>
+            <div class="vt-thread">
+              <div class="vt-turn vt-turn--user"><p>Why did the score drop this week?</p><p class="vt-turn-meta">You · 2:14 PM MT</p></div>
+              <div class="vt-turn vt-turn--answer"><div class="vt-prose"><p>Two checks came back: <strong>legacy auth</strong> and <strong>guest review</strong>. Together they cost 10 points.</p></div><p class="vt-turn-meta">Advisor · 2:14 PM MT</p></div>
+              <div class="vt-turn vt-turn--answer vt-turn--pending"><span class="vt-spinner" aria-hidden="true"></span>Thinking<button class="vt-btn vt-btn--secondary vt-btn--sm" type="button">Stop</button></div>
+            </div>
+            <form class="vt-composer" onsubmit="return false"><label class="vt-sr-only" for="q">Question</label><textarea class="vt-textarea" id="q" placeholder="Ask about this client"></textarea><button class="vt-btn vt-btn--primary" type="submit">Ask</button></form>
+          </article>
+        </div>
+
+        <div class="vt-grid-even">
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Checklist</h3><p class="vt-small">Numbered parts, steps with where and done-when lines.</p></div></div>
+            <ol class="vt-checklist">
+              <li class="vt-checklist-part">
+                <div class="vt-checklist-head"><span class="vt-step-num">1</span><h4 class="vt-h3">Before the call</h4><span class="vt-checklist-count">1 of 2</span></div>
+                <ul class="vt-checklist-items">
+                  <li><label class="vt-checklist-item"><input type="checkbox" checked><span><span class="vt-checklist-text">Open last month's report</span><span class="vt-checklist-meta"><b>Where:</b> Clients, Reports</span></span></label></li>
+                  <li><label class="vt-checklist-item"><input type="checkbox"><span><span class="vt-checklist-text">Review open findings</span><span class="vt-checklist-meta"><b>Where:</b> Findings</span><span class="vt-checklist-meta"><b>Done when:</b> every critical item has an owner</span></span></label></li>
+                </ul>
+              </li>
+            </ol>
+          </article>
+          <article class="vt-panel">
+            <div class="vt-panel-head"><div><h3 class="vt-h3">Reorder list</h3><p class="vt-small">Drag the handle, or focus it and press Space, then arrow keys.</p></div></div>
+            <ul class="vt-reorder" data-reorder>
+              <li class="vt-reorder-item"><button class="vt-drag-handle" type="button" aria-pressed="false" aria-label="Move Summary"><svg class="vt-icon"><use href="#i-grip"/></svg></button>Summary</li>
+              <li class="vt-reorder-item"><button class="vt-drag-handle" type="button" aria-pressed="false" aria-label="Move Devices"><svg class="vt-icon"><use href="#i-grip"/></svg></button>Devices</li>
+              <li class="vt-reorder-item"><button class="vt-drag-handle" type="button" aria-pressed="false" aria-label="Move Tickets"><svg class="vt-icon"><use href="#i-grip"/></svg></button>Tickets</li>
+            </ul>
+            <p class="vt-sr-only" aria-live="assertive" id="reorder-live"></p>
+          </article>
+        </div>
+
+        <div class="vt-grid-even">
+          <details class="vt-panel vt-panel--fold" open>
+            <summary class="vt-panel-head"><div><h3 class="vt-h3">Folding panel</h3><p class="vt-small">A card whose body folds away. Disclosure stays for fold-out text.</p></div><svg class="vt-icon vt-fold-chevron"><use href="#i-chevron-down"/></svg></summary>
+            <div class="vt-list" role="listbox" aria-label="Alerts">
+              <button class="vt-list-item" type="button" role="option" aria-selected="true"><span class="vt-pill vt-pill--danger">incident</span>Impossible travel, Acme Corp</button>
+              <button class="vt-list-item" type="button" role="option" aria-selected="false"><span class="vt-pill vt-pill--success">reviewed</span>New inbox rule, Globex</button>
+            </div>
+          </details>
+          <figure class="vt-docframe">
+            <figcaption class="vt-docframe-bar"><span class="vt-label">Client preview</span><span class="vt-small">Shown as the client sees it</span>
+              <div class="vt-actions"><button class="vt-icon-btn" type="button" aria-label="Open in a new tab"><svg class="vt-icon"><use href="#i-external"/></svg></button><button class="vt-icon-btn" type="button" aria-label="Download"><svg class="vt-icon"><use href="#i-download"/></svg></button></div>
+            </figcaption>
+            <div class="vt-docframe-stage" style="--doc-h:200px"><iframe title="Report preview" srcdoc="<p style='font:14px Arial,sans-serif;margin:24px'><b>Acme Corp</b><br>Monthly security report. This document keeps its own colors in every theme.</p>"></iframe></div>
+          </figure>
+        </div>
+
+        <article class="vt-panel">
+          <div class="vt-panel-head"><div><h3 class="vt-h3">Pages without the shell</h3><p class="vt-small">.vt-auth for sign-in and error pages, .vt-bare for presentation views and pop-out windows.</p></div></div>
+          <div class="vt-grid-even">
+            <div style="background:var(--vt-bg);border:1px solid var(--vt-border);border-radius:var(--vt-radius-lg);padding:24px;display:grid;place-items:center">
+              <div class="vt-auth-card">
+                <div class="vt-identity"><span class="vt-app-tile" aria-hidden="true">S</span><span class="vt-identity-text"><span class="vt-app-name">Sec Audit</span><span class="vt-app-org">VIATEK</span></span></div>
+                <h4 class="vt-auth-title">Sign in</h4>
+                <p class="vt-small">Use your ViaTek Microsoft account.</p>
+                <button class="vt-btn vt-btn--primary vt-btn--block" type="button">Sign in with Microsoft</button>
+                <p class="vt-auth-foot">Trouble signing in? Ask in the IT channel.</p>
+              </div>
+            </div>
+            <div class="vt-bare" style="min-height:0;border:1px solid var(--vt-border);border-radius:var(--vt-radius-lg);overflow:hidden">
+              <div class="vt-bare-head" style="position:static">
+                <div class="vt-identity"><span class="vt-app-tile" aria-hidden="true">C</span></div>
+                <span class="vt-bare-title">CSM checklist</span>
+                <div class="vt-bare-actions"><button class="vt-icon-btn" type="button" aria-label="Close window"><svg class="vt-icon"><use href="#i-x"/></svg></button></div>
+              </div>
+              <div style="padding:20px" class="vt-small">Pop-out window content. No sidebar, no top bar.</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
       <!-- Type scale (section 2) -->
       <section class="vt-panel" id="type" aria-labelledby="type-h">
         <div class="vt-panel-head"><div><h3 class="vt-h3" id="type-h">Typography</h3><p class="vt-small">Space Grotesk for titles, Inter for UI, JetBrains Mono for data.</p></div></div>
@@ -581,6 +806,30 @@
       </footer>
     </main>
   </div>
+
+  <!-- 6.5 Docked help panel (v1.3.0) -->
+  <aside class="vt-helppanel" id="help-panel" aria-label="Help" hidden>
+    <header class="vt-helppanel-head">
+      <h2 class="vt-h3">Help</h2>
+      <div class="vt-actions">
+        <a class="vt-btn vt-btn--ghost vt-btn--sm" href="__VT_BASE__/SPEC.md">Full spec <svg class="vt-icon vt-icon-sm"><use href="#i-external"/></svg></a>
+        <button class="vt-icon-btn" type="button" data-close-help aria-label="Close help"><svg class="vt-icon"><use href="#i-x"/></svg></button>
+      </div>
+    </header>
+    <div class="vt-tabs vt-helppanel-tabs" role="tablist" aria-label="Help views" data-tabs>
+      <button class="vt-tab" type="button" role="tab" aria-selected="true">This page</button>
+      <button class="vt-tab" type="button" role="tab" aria-selected="false">Checklist</button>
+      <button class="vt-tab" type="button" role="tab" aria-selected="false">Search</button>
+    </div>
+    <div class="vt-helppanel-body">
+      <div class="vt-prose">
+        <h2>Theme preview</h2>
+        <p>Every component in the current theme. Switch themes from the sun and moon button or from <a href="#appearance">Appearance</a>.</p>
+        <h3>Docked or overlay</h3>
+        <p>At 1536px and wider this panel docks and the content area gets narrower. Below that it covers the page. Escape closes it.</p>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <template id="specimen-tpl">

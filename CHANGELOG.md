@@ -3,6 +3,15 @@
 All notable changes to `@viatek/design`. Versions follow semver (see SPEC.md 3.4):
 patch for fixes, minor for new components or themes, major when apps must change code.
 
+## v1.3.0 · Nov 13, 2026
+
+Gaps from the Sec Audit and ConfigReport gap briefs, in one release. Additive: apps on v1.2.x keep working unchanged.
+
+- **Shell:** user menu and environment badge in the top bar (6.4), with the new right-side order in 6.2 and a rule for which freshness feeds to show. Docked help panel (6.5): docks at 1536px and wider, overlays below. Pages without the shell (6.6): `.vt-auth` for sign-in and error pages, `.vt-bare` for presentation views and pop-out windows.
+- **New components:** switch (7.15); textarea, date and time inputs, calendar, color field and file upload (7.16); sortable table headers (7.17); score ring (7.18); spinner, busy button, skeleton and progress bar (7.19); long-form text `.vt-prose` (7.20); advisor thread (7.21); list and detail split (7.22); document preview frame (7.23); checklist, reorder list and folding panel (7.24). Also list menus, custom select lists and avatars (6.4).
+- **Score bands (7.18):** strong, good, needs work, at risk, not scored. New mode token `--vt-band-good` (teal, `#0B6B78` light, `#2DD4BF` dark), checked for contrast in all 12 themes. The other bands reuse the status colors. Tailwind preset adds `band.*` colors.
+- **Status words (7.3):** about 45 words added from both apps. Severity adds `info` (muted). Medium severity stays blue. ConfigReport's reconciliation categories are neutral tags.
+- `/theme-preview`: new "Added in v1.3.0" section, user menu, environment badge and help panel in the top bar. Fixed the quick theme menu, which closed as soon as it opened because a second click handler was attached to it.
 ## v1.2.1 · Nov 13, 2026
 
 Spec only. No changes to tokens.css, components.css, theme.js, sidebar.js, no-flash.js or the Tailwind preset, so apps on v1.2.0 keep working unchanged.

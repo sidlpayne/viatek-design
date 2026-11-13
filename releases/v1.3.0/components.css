@@ -1,0 +1,1188 @@
+/*
+ * @viatek/design · components.css (SPEC.md sections 6, 7 and 8)
+ * The app shell (sidebar, top bar, content), components and theme picker, built only from --vt-* tokens.
+ * Load after tokens.css. sidebar.js relies on the class and attribute names used here.
+ * Hard-coded colors are not allowed in this file (SPEC.md 3.6).
+ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--vt-topbar-h) + 16px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.vt-icon { width: 17px; height: 17px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vt-icon-sm { width: 14px; height: 14px; }
+.vt-mono { font-family: var(--vt-font-mono); font-variant-numeric: tabular-nums; }
+.vt-muted { color: var(--vt-text-muted); }
+.vt-label {
+  font: var(--vt-text-label); text-transform: uppercase; letter-spacing: .14em; color: var(--vt-text-muted);
+}
+.vt-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ------------------------------------------------------------------ */
+/* 6. App shell                                                        */
+/* ------------------------------------------------------------------ */
+.vt-app { display: flex; min-height: 100vh; }
+.vt-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+/* 6.1 Sidebar */
+.vt-sidebar {
+  position: sticky; top: 0; height: 100vh; flex: none;
+  width: var(--vt-sidebar-w);
+  background: var(--vt-sidebar-bg);
+  border-right: 1px solid var(--vt-border);
+  display: flex; flex-direction: column;
+  overflow: hidden auto;
+  transition: width var(--vt-dur) var(--vt-ease);
+  z-index: 30;
+}
+.vt-identity {
+  display: flex; align-items: center; gap: 10px;
+  min-height: var(--vt-topbar-h); padding: 0 16px;
+  border-bottom: 1px solid var(--vt-border);
+  text-decoration: none; color: inherit; flex: none;
+}
+.vt-app-tile {
+  width: 32px; height: 32px; border-radius: 8px; flex: none;
+  display: grid; place-items: center;
+  background: var(--vt-primary); color: var(--vt-on-primary);
+  font: 700 16px/1 var(--vt-font-display);
+}
+.vt-identity-text { display: flex; flex-direction: column; min-width: 0; white-space: nowrap; }
+.vt-app-name { font: 700 16px/1.2 var(--vt-font-sans); color: var(--vt-text); }
+.vt-app-org { font: 500 10px/1.3 var(--vt-font-mono); letter-spacing: .24em; color: var(--vt-text-muted); }
+
+.vt-nav { padding: 4px 12px 16px; display: flex; flex-direction: column; }
+.vt-nav-section { display: flex; flex-direction: column; gap: 2px; }
+.vt-nav-label {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; padding: 12px 10px 6px; margin: 0;
+  background: none; border: 0; border-radius: var(--vt-radius-sm);
+  font: 600 11px/1.3 var(--vt-font-mono); text-transform: uppercase; letter-spacing: .16em;
+  color: var(--vt-text-muted); text-align: left; white-space: nowrap;
+}
+button.vt-nav-label { cursor: pointer; }
+button.vt-nav-label:hover { color: var(--vt-text); }
+.vt-chevron { transition: transform var(--vt-dur) var(--vt-ease); }
+[aria-expanded="false"] > .vt-chevron { transform: rotate(-90deg); }
+.vt-nav-group { display: flex; flex-direction: column; gap: 2px; }
+.vt-nav-group[hidden], .vt-subnav[hidden] { display: none; }
+
+.vt-nav-item {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: 36px; padding: 0 10px; margin: 0;
+  border: 0; border-radius: var(--vt-radius-md); background: transparent;
+  font: 500 14px/1.2 var(--vt-font-sans); color: var(--vt-nav-text);
+  text-decoration: none; text-align: left; white-space: nowrap; cursor: pointer;
+  transition: background-color var(--vt-dur) var(--vt-ease);
+}
+.vt-nav-item:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-nav-item[aria-current="page"] {
+  background: var(--vt-primary-soft); color: var(--vt-text); font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--vt-primary);
+}
+.vt-nav-text { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.vt-nav-item > .vt-chevron { margin-left: auto; color: var(--vt-text-muted); width: 14px; height: 14px; }
+.vt-nav-item[aria-expanded="false"] > .vt-chevron { transform: rotate(0deg); }
+.vt-nav-item[aria-expanded="true"] > .vt-chevron { transform: rotate(90deg); }
+.vt-nav-badge {
+  margin-left: auto; min-width: 22px; height: 18px; padding: 0 6px;
+  display: inline-grid; place-items: center;
+  border-radius: var(--vt-radius-full);
+  background: var(--vt-primary); color: var(--vt-on-primary);
+  font: 600 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums;
+}
+/* Plain count (v1.2.0): for counts that are information, not a call to action. The solid badge above is for action counts. */
+.vt-nav-count {
+  margin-left: auto; padding-left: 8px;
+  font: 500 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted);
+}
+.vt-nav-item[aria-current="page"] .vt-nav-count { color: var(--vt-text); }
+.vt-subnav { display: flex; flex-direction: column; gap: 2px; }
+.vt-nav-sub { padding-left: 38px; min-height: 32px; font-size: 13.5px; }
+
+/* Split item (v1.2.0): the label is a link to the page, the chevron button opens its sub-items. */
+.vt-nav-split { position: relative; display: flex; align-items: center; }
+.vt-nav-split > .vt-nav-item { padding-right: 40px; }
+.vt-nav-expander {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  border: 0; border-radius: var(--vt-radius-sm); background: transparent;
+  color: var(--vt-text-muted); cursor: pointer;
+}
+.vt-nav-expander:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-nav-split > .vt-nav-item[aria-current="page"] ~ .vt-nav-expander:hover { background: color-mix(in srgb, var(--vt-primary) 14%, var(--vt-surface)); }
+.vt-nav-expander .vt-icon { width: 14px; height: 14px; transition: transform var(--vt-dur) var(--vt-ease); }
+.vt-nav-expander[aria-expanded="true"] .vt-icon { transform: rotate(90deg); }
+.vt-sidebar-foot { margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--vt-border); white-space: nowrap; }
+
+/* 6.1a Collapsed (desktop only; the drawer always shows the full sidebar) */
+@media (min-width: 900px) {
+  [data-sidebar="collapsed"] .vt-sidebar { width: var(--vt-sidebar-w-collapsed); }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-identity-text,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-label,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-text,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-item > .vt-chevron,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-subnav,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-expander,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-count,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-sidebar-foot,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-expander,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-count,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-identity-text,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-label,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-text,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-badge,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-nav-item > .vt-chevron,
+  [data-sidebar-anim="expanding"] .vt-sidebar .vt-sidebar-foot { display: none; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-identity { justify-content: center; padding: 0; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-group[hidden] { display: flex; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-section:not(:first-child)::before {
+    content: ""; display: block; height: 1px; background: var(--vt-border); margin: 10px 4px;
+  }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-section:first-child { padding-top: 10px; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-item,
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-split > .vt-nav-item { justify-content: center; min-height: 40px; padding: 0; }
+  [data-sidebar="collapsed"] .vt-sidebar .vt-nav-badge {
+    position: absolute; top: 9px; left: calc(50% + 5px);
+    width: 8px; height: 8px; min-width: 0; padding: 0; font-size: 0; color: transparent;
+    box-shadow: 0 0 0 2px var(--vt-sidebar-bg);
+  }
+}
+
+/* Drawer under 900px */
+.vt-sidebar-backdrop { display: none; }
+@media (max-width: 899px) {
+  .vt-sidebar {
+    position: fixed; inset: 0 auto 0 0; width: var(--vt-sidebar-w);
+    transform: translateX(-100%); visibility: hidden;
+    transition: transform var(--vt-dur) var(--vt-ease), visibility 0s linear var(--vt-dur);
+    box-shadow: var(--vt-shadow-md); z-index: 60;
+  }
+  [data-sidebar-drawer="open"] .vt-sidebar { transform: none; visibility: visible; transition: transform var(--vt-dur) var(--vt-ease); }
+  [data-sidebar-drawer="open"] .vt-sidebar-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: color-mix(in srgb, var(--vt-bg) 30%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  [data-sidebar-drawer="open"] body { overflow: hidden; }
+}
+
+/* Toggle icon swaps (panel-left-close when expanded, panel-left-open when collapsed) */
+.vt-sidebar-toggle .vt-i-open { display: none; }
+[data-sidebar="collapsed"] .vt-sidebar-toggle .vt-i-open { display: block; }
+[data-sidebar="collapsed"] .vt-sidebar-toggle .vt-i-close { display: none; }
+@media (max-width: 899px) {
+  .vt-sidebar-toggle .vt-i-open { display: block; }
+  .vt-sidebar-toggle .vt-i-close { display: none; }
+  [data-sidebar-drawer="open"] .vt-sidebar-toggle .vt-i-open { display: none; }
+  [data-sidebar-drawer="open"] .vt-sidebar-toggle .vt-i-close { display: block; }
+}
+
+/* Tooltip + flyout */
+.vt-tooltip {
+  position: fixed; z-index: 100; pointer-events: none;
+  padding: 5px 9px; border-radius: var(--vt-radius-sm);
+  background: var(--vt-text); color: var(--vt-bg);
+  font: 500 12px/1.3 var(--vt-font-sans); white-space: nowrap;
+  box-shadow: var(--vt-shadow-md);
+}
+.vt-tooltip[hidden] { display: none; }
+.vt-flyout {
+  position: fixed; z-index: 90; min-width: 200px; padding: 6px;
+  background: var(--vt-surface); border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-lg); box-shadow: var(--vt-shadow-md);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.vt-flyout-label { padding: 8px 10px 6px; font: 600 11px/1.3 var(--vt-font-mono); text-transform: uppercase; letter-spacing: .16em; color: var(--vt-text-muted); }
+.vt-flyout-item {
+  display: flex; align-items: center; min-height: 36px; padding: 0 10px;
+  border-radius: var(--vt-radius-md); color: var(--vt-nav-text); text-decoration: none;
+  font: 500 14px/1.2 var(--vt-font-sans);
+}
+.vt-flyout-item:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-flyout-item .vt-nav-text { flex: 1 1 auto; }
+.vt-flyout-item .vt-icon { margin-right: 10px; }
+.vt-flyout-item .vt-nav-badge, .vt-flyout-item .vt-nav-count { margin-left: auto; }
+.vt-flyout-item--parent { border-bottom: 1px solid var(--vt-border); border-radius: var(--vt-radius-md) var(--vt-radius-md) 0 0; margin-bottom: 4px; font-weight: 600; }
+.vt-flyout-item[aria-current="page"] { background: var(--vt-primary-soft); color: var(--vt-text); font-weight: 600; box-shadow: inset 3px 0 0 var(--vt-primary); }
+
+/* 6.2 Top bar */
+.vt-topbar {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--vt-topbar-h); flex: none;
+  display: flex; align-items: center; gap: 12px; padding: 0 20px 0 12px;
+  background: var(--vt-bg); border-bottom: 1px solid var(--vt-border);
+}
+.vt-breadcrumb { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 14px; white-space: nowrap; }
+.vt-breadcrumb ol { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.vt-breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.vt-breadcrumb li + li::before { content: "›"; color: var(--vt-text-muted); }
+.vt-breadcrumb a { color: var(--vt-text-muted); text-decoration: none; }
+.vt-breadcrumb a:hover { color: var(--vt-text); }
+.vt-breadcrumb [aria-current="page"] { color: var(--vt-text); font-weight: 600; }
+.vt-topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vt-fresh-group { display: flex; align-items: center; gap: 14px; }
+.vt-fresh {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font: 400 12px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted);
+}
+.vt-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--vt-text-muted); }
+.vt-dot--success { background: var(--vt-success); }
+.vt-dot--warning { background: var(--vt-warning); }
+.vt-dot--danger  { background: var(--vt-danger); }
+.vt-topbar-divider { width: 1px; height: 24px; background: var(--vt-border); }
+@media (max-width: 1100px) { .vt-fresh-group, .vt-topbar-divider { display: none; } }
+@media (max-width: 640px) { .vt-topbar-right .vt-segmented, .vt-topbar-right .vt-date { display: none; } }
+
+/* 6.3 Content area */
+.vt-content { padding: 28px; width: 100%; max-width: calc(var(--vt-content-max) + 56px); display: flex; flex-direction: column; gap: 24px; }
+@media (max-width: 640px) { .vt-content { padding: 20px 16px; } }
+.vt-page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.vt-page-title { margin: 0; font: var(--vt-text-title); color: var(--vt-text); letter-spacing: -0.01em; }
+.vt-page-meta { margin: 6px 0 0; font: var(--vt-text-small); color: var(--vt-text-muted); }
+.vt-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.vt-section { display: flex; flex-direction: column; gap: 14px; }
+.vt-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.vt-h2 { margin: 0; font: var(--vt-text-h2); color: var(--vt-text); }
+.vt-h3 { margin: 0; font: var(--vt-text-h3); color: var(--vt-text); }
+.vt-small { font: var(--vt-text-small); color: var(--vt-text-muted); margin: 0; }
+.vt-sync-strip {
+  display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center;
+  padding: 12px 16px; border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg);
+  font: 400 12px/1.4 var(--vt-font-mono); color: var(--vt-text-muted);
+}
+.vt-sync-strip .vt-sync-note { margin-left: auto; }
+
+/* ------------------------------------------------------------------ */
+/* 7.1 Buttons                                                         */
+/* ------------------------------------------------------------------ */
+.vt-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: var(--vt-control-h); padding: 0 16px;
+  border-radius: var(--vt-radius-md); border: 1px solid transparent;
+  font: 600 14px/1 var(--vt-font-sans); white-space: nowrap; text-decoration: none;
+  cursor: pointer; transition: background-color var(--vt-dur) var(--vt-ease), border-color var(--vt-dur) var(--vt-ease);
+}
+.vt-btn:disabled { opacity: .5; cursor: not-allowed; }
+.vt-btn--primary { background: var(--vt-primary); color: var(--vt-on-primary); }
+.vt-btn--primary:hover:not(:disabled) { background: var(--vt-primary-hover); }
+.vt-btn--secondary { background: var(--vt-surface); color: var(--vt-text); border-color: var(--vt-border); }
+.vt-btn--secondary:hover:not(:disabled) { background: var(--vt-surface-2); }
+.vt-btn--ghost { background: transparent; color: var(--vt-link); padding: 0 10px; }
+.vt-btn--ghost:hover:not(:disabled) { background: var(--vt-surface-2); }
+.vt-btn--danger { background: var(--vt-danger); color: var(--vt-on-danger); }
+.vt-btn--danger:hover:not(:disabled) { background: color-mix(in srgb, var(--vt-danger) 88%, var(--vt-text)); }
+.vt-btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+.vt-icon-btn {
+  display: inline-grid; place-items: center; flex: none;
+  width: 36px; height: 36px; padding: 0; border: 0;
+  border-radius: var(--vt-radius-sm); background: transparent; color: var(--vt-text-muted);
+  cursor: pointer; text-decoration: none;
+}
+.vt-icon-btn:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-icon-btn[aria-expanded="true"] { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-icon-btn--sm { width: 28px; height: 28px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.2 KPI tile                                                        */
+/* ------------------------------------------------------------------ */
+.vt-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.vt-kpi {
+  display: flex; flex-direction: column; gap: 6px; min-width: 0;
+  padding: 14px 16px; background: var(--vt-surface);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg);
+}
+.vt-kpi--success { box-shadow: inset 3px 0 0 var(--vt-success); }
+.vt-kpi--warning { box-shadow: inset 3px 0 0 var(--vt-warning); }
+.vt-kpi--danger  { box-shadow: inset 3px 0 0 var(--vt-danger); }
+.vt-kpi-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
+.vt-kpi-head .vt-label { letter-spacing: .14em; }
+.vt-kpi-head .vt-icon-btn { margin: -6px -8px -6px 0; }
+.vt-kpi-value { font: var(--vt-text-kpi); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--vt-text); }
+.vt-kpi-value small { font-size: 16px; color: var(--vt-text-muted); margin-left: 2px; letter-spacing: 0; }
+.vt-spark { display: block; width: 100%; height: 28px; overflow: visible; }
+.vt-spark path { fill: none; stroke: var(--vt-series-1); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.vt-delta { font: 600 13px/1.2 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); }
+.vt-delta--good { color: var(--vt-success); }
+.vt-delta--bad { color: var(--vt-danger); }
+.vt-kpi-cap { font-size: 12px; line-height: 1.3; color: var(--vt-text-muted); }
+.vt-kpi-target { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; color: var(--vt-text-muted); }
+
+/* ------------------------------------------------------------------ */
+/* 7.3 Status pill                                                     */
+/* ------------------------------------------------------------------ */
+.vt-pill {
+  --pill: var(--vt-text-muted);
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 8px; border-radius: var(--vt-radius-sm);
+  font: 500 12px/1 var(--vt-font-mono); text-transform: lowercase; white-space: nowrap;
+  color: var(--pill);
+  background: color-mix(in srgb, var(--pill) var(--vt-tint), var(--vt-surface));
+  border: 1px solid color-mix(in srgb, var(--pill) 40%, var(--vt-surface));
+}
+.vt-pill--success { --pill: var(--vt-success); background: var(--vt-success-soft); }
+.vt-pill--warning { --pill: var(--vt-warning); background: var(--vt-warning-soft); }
+.vt-pill--danger  { --pill: var(--vt-danger);  background: var(--vt-danger-soft); }
+.vt-pill--info    { --pill: var(--vt-info);    background: var(--vt-info-soft); }
+.vt-pill--muted   { --pill: var(--vt-text-muted); background: var(--vt-surface-2); }
+.vt-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Tag (v1.2.0): a neutral label for things that are not a status (keep, archive, active, bucket names).
+   Keeps the text's own case. Never colored. */
+.vt-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 8px; border-radius: var(--vt-radius-sm);
+  font: 500 12px/1 var(--vt-font-mono); white-space: nowrap;
+  color: var(--vt-text); background: var(--vt-surface-2); border: 1px solid var(--vt-border);
+}
+.vt-tag .vt-icon { width: 12px; height: 12px; color: var(--vt-text-muted); }
+
+/* Empty cell value (v1.2.0): a muted hyphen, never an em dash.
+   <span class="vt-null"><span aria-hidden="true">-</span><span class="vt-sr-only">none</span></span> */
+.vt-null { color: var(--vt-text-muted); }
+
+/* ------------------------------------------------------------------ */
+/* 7.4 Tables                                                          */
+/* ------------------------------------------------------------------ */
+.vt-table-card { background: var(--vt-surface); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); overflow: hidden; }
+.vt-table-strip { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--vt-border); min-height: 48px; }
+.vt-table-scroll { overflow-x: auto; }
+.vt-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.vt-table th {
+  background: var(--vt-surface-2); padding: 10px 12px; text-align: left; white-space: nowrap;
+  font: 600 11px/1.3 var(--vt-font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--vt-text-muted);
+}
+.vt-table td { padding: 12px; border-top: 1px solid var(--vt-border); color: var(--vt-text); vertical-align: middle; }
+.vt-table thead + tbody tr:first-child td { border-top: 0; }
+.vt-table tbody tr:hover td { background: var(--vt-surface-2); }
+.vt-table .vt-num, .vt-table .vt-data { font: var(--vt-text-data); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vt-table .vt-num { text-align: right; }
+.vt-table th.vt-num { text-align: right; }
+.vt-table tr.vt-attn--danger td:first-child { box-shadow: inset 3px 0 0 var(--vt-danger); }
+.vt-table tr.vt-attn--warning td:first-child { box-shadow: inset 3px 0 0 var(--vt-warning); }
+.vt-table tr[aria-selected="true"] td { background: var(--vt-primary-soft); }
+.vt-row-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.vt-cell-title { font-weight: 600; }
+.vt-cell-sub { display: block; font-size: 12px; color: var(--vt-text-muted); }
+
+/* ------------------------------------------------------------------ */
+/* 7.5 Panels                                                          */
+/* ------------------------------------------------------------------ */
+.vt-panel { background: var(--vt-surface); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); padding: 18px 20px; min-width: 0; }
+.vt-panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.vt-panel-head .vt-small { margin-top: 2px; }
+.vt-panel-head .vt-btn--ghost { margin: -8px -10px 0 0; }
+.vt-grid-2 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 16px; }
+.vt-grid-even { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .vt-grid-2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* ------------------------------------------------------------------ */
+/* 7.6 Forms                                                           */
+/* ------------------------------------------------------------------ */
+.vt-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.vt-field-label { font: 600 13px/1.3 var(--vt-font-sans); color: var(--vt-text); }
+.vt-help { font-size: 12px; line-height: 1.4; color: var(--vt-text-muted); }
+.vt-error { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 1.4; color: var(--vt-danger); }
+.vt-input, .vt-select {
+  height: var(--vt-control-h); width: 100%; padding: 0 12px;
+  border-radius: var(--vt-radius-md); border: 1px solid var(--vt-border);
+  background: var(--vt-input-bg); color: var(--vt-text);
+  font: 400 14px/1.2 var(--vt-font-sans);
+}
+.vt-input::placeholder { color: var(--vt-text-muted); opacity: 1; }
+.vt-input:focus-visible, .vt-select:focus-visible { outline: 2px solid var(--vt-focus-ring); outline-offset: 0; border-color: var(--vt-primary); }
+.vt-input[aria-invalid="true"] { border-color: var(--vt-danger); }
+.vt-input.vt-mono { font-family: var(--vt-font-mono); font-size: 13px; }
+.vt-check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--vt-text); cursor: pointer; min-height: 36px; }
+.vt-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--vt-primary); }
+.vt-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px 20px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.7 Segmented control                                               */
+/* ------------------------------------------------------------------ */
+.vt-segmented { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--vt-border); border-radius: var(--vt-radius-md); background: var(--vt-surface-2); }
+.vt-segmented button {
+  height: 28px; padding: 0 12px; border: 0; border-radius: calc(var(--vt-radius-md) - 3px);
+  background: transparent; color: var(--vt-text-muted);
+  font: 500 13px/1 var(--vt-font-sans); cursor: pointer; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.vt-segmented button:hover { color: var(--vt-text); }
+.vt-segmented button[aria-checked="true"], .vt-segmented button[aria-pressed="true"] {
+  background: var(--vt-primary-soft); color: var(--vt-text); font-weight: 600;
+}
+.vt-date { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; font: 500 12px/1 var(--vt-font-mono); }
+
+/* ------------------------------------------------------------------ */
+/* 7.8 Charts                                                          */
+/* ------------------------------------------------------------------ */
+.vt-chart { position: relative; width: 100%; height: 260px; }
+.vt-chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.vt-chart text { font: 400 11px var(--vt-font-mono); fill: var(--vt-text-muted); font-variant-numeric: tabular-nums; }
+.vt-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 13px; color: var(--vt-text); }
+.vt-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.vt-swatch { width: 12px; height: 3px; border-radius: 2px; flex: none; }
+.vt-swatch--box { width: 10px; height: 10px; border-radius: 3px; }
+.vt-swatch--dash { background: none !important; border-top: 2px dashed var(--vt-text-muted); height: 0; }
+.vt-chart-tip {
+  position: absolute; pointer-events: none; z-index: 5; min-width: 150px;
+  padding: 8px 10px; border-radius: var(--vt-radius-md);
+  background: var(--vt-surface); border: 1px solid var(--vt-border); box-shadow: var(--vt-shadow-md);
+  font: 400 12px/1.5 var(--vt-font-mono); color: var(--vt-text);
+}
+.vt-chart-tip[hidden] { display: none; }
+.vt-chart-tip b { font-weight: 600; }
+.vt-chart-tip .row { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.vt-chart-tip .row span:first-child { display: inline-flex; align-items: center; gap: 6px; color: var(--vt-text-muted); }
+.vt-bars { display: flex; flex-direction: column; gap: 12px; }
+.vt-bar-row { display: grid; grid-template-columns: 132px 1fr 48px; align-items: center; gap: 10px; font-size: 13px; }
+.vt-bar-track { display: flex; gap: 2px; height: 10px; }
+.vt-bar-seg { height: 100%; border-radius: 4px; }
+.vt-series-chips { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.vt-series-chip { height: 28px; border-radius: var(--vt-radius-sm); }
+
+/* ------------------------------------------------------------------ */
+/* 8. Theme picker                                                     */
+/* ------------------------------------------------------------------ */
+.vt-menu {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 50; width: 260px;
+  padding: 14px; display: flex; flex-direction: column; gap: 12px;
+  background: var(--vt-surface); border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-lg); box-shadow: var(--vt-shadow-md);
+}
+.vt-menu[hidden] { display: none; }
+.vt-menu .vt-segmented { display: flex; }
+.vt-menu .vt-segmented button { flex: 1; justify-content: center; padding: 0 8px; }
+.vt-menu-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; text-decoration: none; }
+.vt-menu-link:hover { text-decoration: underline; }
+.vt-popover-wrap { position: relative; }
+
+.vt-picker-group { display: flex; flex-direction: column; gap: 10px; }
+.vt-picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.vt-theme-card {
+  display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-align: left;
+  padding: 12px 14px; min-height: 96px;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg);
+  cursor: pointer; font: inherit;
+}
+.vt-theme-card:hover { background: var(--vt-surface-2); }
+.vt-theme-card[aria-checked="true"] { border: 2px solid var(--vt-primary); background: var(--vt-primary-soft); padding: 11px 13px; }
+.vt-swatches { display: flex; gap: 6px; }
+.vt-swatches span { width: 18px; height: 18px; border-radius: 5px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--vt-text) 18%, transparent); }
+.vt-theme-name { font: 600 15px/1.25 var(--vt-font-sans); }
+.vt-theme-note { font-size: 12px; line-height: 1.3; color: var(--vt-text-muted); }
+.vt-theme-name-row { display: flex; align-items: center; gap: 8px; width: 100%; }
+.vt-theme-name-row .vt-pill { margin-left: auto; }
+.vt-preview-note {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px; border-radius: var(--vt-radius-md);
+  background: var(--vt-info-soft); color: var(--vt-text);
+  border: 1px solid color-mix(in srgb, var(--vt-info) 40%, var(--vt-surface));
+  font-size: 13px;
+}
+.vt-preview-note[hidden] { display: none; }
+.vt-preview-note .vt-icon { color: var(--vt-info); }
+
+/* ------------------------------------------------------------------ */
+/* 7.9 Alert banner (v1.2.0)                                           */
+/* ------------------------------------------------------------------ */
+/* <div class="vt-alert vt-alert--warning" role="status">
+     <svg class="vt-icon">...</svg>
+     <div class="vt-alert-body"><p class="vt-alert-title">Stale data</p><p>Sync before acting.</p></div>
+     <div class="vt-alert-actions"><button class="vt-btn vt-btn--secondary vt-btn--sm">Sync now</button></div>
+   </div>
+   role="alert" only for errors that appear after a user action; role="status" otherwise. */
+.vt-alert {
+  --alert: var(--vt-info);
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border-radius: var(--vt-radius-md);
+  background: color-mix(in srgb, var(--alert) var(--vt-tint), var(--vt-surface));
+  border: 1px solid color-mix(in srgb, var(--alert) 40%, var(--vt-surface));
+  color: var(--vt-text); font-size: 14px; line-height: 1.45;
+}
+.vt-alert > .vt-icon { color: var(--alert); margin-top: 1px; }
+.vt-alert--success { --alert: var(--vt-success); }
+.vt-alert--warning { --alert: var(--vt-warning); }
+.vt-alert--danger  { --alert: var(--vt-danger); }
+.vt-alert--info    { --alert: var(--vt-info); }
+.vt-alert-body { flex: 1 1 auto; min-width: 0; }
+.vt-alert-body p { margin: 0; }
+.vt-alert-body p + p { margin-top: 2px; }
+.vt-alert-title { font-weight: 600; }
+.vt-alert-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: -4px 0; }
+.vt-alert[hidden] { display: none; }
+
+/* ------------------------------------------------------------------ */
+/* 7.10 Dialog (v1.2.0): native <dialog> opened with showModal()       */
+/* ------------------------------------------------------------------ */
+/* <dialog class="vt-dialog" aria-labelledby="d-title">
+     <form method="dialog">
+       <header class="vt-dialog-head"><h2 class="vt-dialog-title" id="d-title">Archive 12 devices?</h2>
+         <button class="vt-icon-btn" value="cancel" aria-label="Close">x icon</button></header>
+       <div class="vt-dialog-body">...</div>
+       <footer class="vt-dialog-foot"><button class="vt-btn vt-btn--secondary" value="cancel">Cancel</button>
+         <button class="vt-btn vt-btn--danger" value="confirm">Archive 12</button></footer>
+     </form>
+   </dialog>
+   Apps using Radix or shadcn put these classes on their Overlay (.vt-dialog-scrim) and Content (.vt-dialog). */
+.vt-dialog {
+  width: min(480px, calc(100vw - 32px)); max-height: calc(100vh - 64px);
+  margin: auto; padding: 0; overflow: auto;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-xl);
+  box-shadow: var(--vt-shadow-lg);
+}
+.vt-dialog--wide { width: min(720px, calc(100vw - 32px)); }
+.vt-dialog::backdrop { background: var(--vt-scrim); }
+.vt-dialog-scrim { position: fixed; inset: 0; z-index: 70; background: var(--vt-scrim); }
+.vt-dialog:not(dialog) { position: fixed; z-index: 71; inset: 0; height: fit-content; }
+.vt-dialog > form { display: contents; }
+.vt-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 0; }
+.vt-dialog-head .vt-icon-btn { margin: -6px -8px 0 0; }
+.vt-dialog-title { margin: 0; font: var(--vt-text-h3); color: var(--vt-text); }
+.vt-dialog-body { padding: 10px 20px 4px; font-size: 14px; line-height: 1.5; color: var(--vt-text); display: flex; flex-direction: column; gap: 12px; }
+.vt-dialog-body p { margin: 0; }
+.vt-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 16px 20px 18px; }
+@media (prefers-reduced-motion: no-preference) {
+  .vt-dialog[open] { animation: vt-dialog-in var(--vt-dur) var(--vt-ease); }
+  @keyframes vt-dialog-in { from { opacity: 0; transform: translateY(6px) scale(.98); } }
+}
+
+/* ------------------------------------------------------------------ */
+/* 7.11 Help popover (v1.2.0): the "?" next to a label                 */
+/* ------------------------------------------------------------------ */
+/* <span class="vt-popover-wrap">
+     <button class="vt-icon-btn vt-icon-btn--sm" aria-expanded="false" aria-controls="h1" aria-label="About match rules">?</button>
+     <div class="vt-popover" id="h1" role="dialog" aria-labelledby="h1-t" hidden>
+       <p class="vt-popover-title" id="h1-t">Match rules</p><p>...</p><a href="..." class="vt-menu-link">Read more</a>
+     </div>
+   </span>
+   Close on Escape and outside click. Apps with Radix or Floating UI keep it for positioning and add these classes. */
+.vt-popover {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 50;
+  width: max-content; max-width: 320px; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); box-shadow: var(--vt-shadow-md);
+  font-size: 13px; line-height: 1.45; text-align: left; white-space: normal;
+}
+.vt-popover[hidden] { display: none; }
+.vt-popover--end { left: auto; right: 0; }
+.vt-popover p { margin: 0; }
+.vt-popover-title { font-weight: 600; font-size: 13px; }
+.vt-popover .vt-menu-link { margin-top: 2px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.12 Toast (v1.2.0)                                                 */
+/* ------------------------------------------------------------------ */
+/* Bottom-right stack, 4s for success and info, errors stay until closed. Status is in the icon AND the words.
+   Sonner: <Toaster position="bottom-right" toastOptions={{ unstyled: true, classNames: {
+     toast: 'vt-toast', title: 'vt-toast-title', description: 'vt-toast-desc',
+     actionButton: 'vt-btn vt-btn--secondary vt-btn--sm', cancelButton: 'vt-btn vt-btn--ghost vt-btn--sm',
+     closeButton: 'vt-icon-btn vt-icon-btn--sm', icon: 'vt-toast-icon' } }} />
+   Sonner sets data-type="success|error|warning|info" on the toast; those map to status colors below. */
+.vt-toast-stack { position: fixed; right: 20px; bottom: 20px; z-index: 80; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.vt-toast {
+  --toast: var(--vt-text-muted);
+  display: flex; align-items: flex-start; gap: 10px;
+  width: min(380px, calc(100vw - 32px)); padding: 12px 14px;
+  background: var(--vt-surface); color: var(--vt-text);
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg);
+  box-shadow: var(--vt-shadow-lg), inset 3px 0 0 var(--toast);
+  font: 400 14px/1.4 var(--vt-font-sans);
+}
+.vt-toast--success, .vt-toast[data-type="success"] { --toast: var(--vt-success); }
+.vt-toast--warning, .vt-toast[data-type="warning"] { --toast: var(--vt-warning); }
+.vt-toast--danger,  .vt-toast[data-type="error"]   { --toast: var(--vt-danger); }
+.vt-toast--info,    .vt-toast[data-type="info"], .vt-toast[data-type="loading"] { --toast: var(--vt-info); }
+.vt-toast > .vt-icon, .vt-toast-icon { color: var(--toast); flex: none; margin-top: 1px; }
+.vt-toast-body { flex: 1 1 auto; min-width: 0; }
+.vt-toast-title { font-weight: 600; margin: 0; }
+.vt-toast-desc { margin: 2px 0 0; font-size: 13px; color: var(--vt-text-muted); }
+.vt-toast .vt-icon-btn { margin: -6px -8px -6px 0; }
+
+/* ------------------------------------------------------------------ */
+/* 7.13 Tabs and filter chips (v1.2.0)                                 */
+/* ------------------------------------------------------------------ */
+/* View tabs are navigation:
+   <nav class="vt-tabs" aria-label="Views"><a class="vt-tab" href="?view=all" aria-current="page">All <span class="vt-tab-count">312</span></a>...</nav>
+   For in-page panels use role="tablist" and role="tab" with aria-selected="true" instead of aria-current. */
+.vt-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--vt-border); overflow-x: auto; scrollbar-width: thin; }
+.vt-tab {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  height: 40px; padding: 0 12px; margin-bottom: -1px;
+  border: 0; border-bottom: 2px solid transparent; background: none;
+  font: 500 14px/1 var(--vt-font-sans); color: var(--vt-text-muted);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.vt-tab:hover { color: var(--vt-text); border-bottom-color: var(--vt-border); }
+.vt-tab[aria-current="page"], .vt-tab[aria-selected="true"] { color: var(--vt-text); font-weight: 600; border-bottom-color: var(--vt-primary); }
+.vt-tab-count {
+  min-width: 22px; height: 18px; padding: 0 6px; display: inline-grid; place-items: center;
+  border-radius: var(--vt-radius-full); background: var(--vt-surface-2);
+  font: 500 11px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted);
+}
+.vt-tab[aria-current="page"] .vt-tab-count, .vt-tab[aria-selected="true"] .vt-tab-count { background: var(--vt-primary-soft); color: var(--vt-text); }
+
+/* Filter chips toggle a filter or field on and off. Links use aria-current="true", buttons aria-pressed="true". */
+.vt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.vt-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 12px; border-radius: var(--vt-radius-full);
+  border: 1px solid var(--vt-border); background: var(--vt-surface);
+  font: 500 13px/1 var(--vt-font-sans); color: var(--vt-text);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.vt-chip:hover { background: var(--vt-surface-2); }
+.vt-chip .vt-icon { width: 14px; height: 14px; }
+.vt-chip .vt-chip-check { display: none; }
+.vt-chip[aria-pressed="true"], .vt-chip[aria-current="true"] {
+  background: var(--vt-primary-soft); border-color: var(--vt-primary); font-weight: 600;
+}
+.vt-chip[aria-pressed="true"] .vt-chip-check, .vt-chip[aria-current="true"] .vt-chip-check { display: block; }
+.vt-chip-count { font: 500 11px/1 var(--vt-font-mono); color: var(--vt-text-muted); font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------ */
+/* 7.14 Disclosure, empty state, pager (v1.2.0)                        */
+/* ------------------------------------------------------------------ */
+/* <details class="vt-disclosure"><summary>How this works</summary><div class="vt-disclosure-body">...</div></details> */
+.vt-disclosure { align-self: start; border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); background: var(--vt-surface); }
+.vt-disclosure > summary {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px;
+  font: 600 14px/1.3 var(--vt-font-sans); color: var(--vt-text); cursor: pointer; list-style: none;
+  border-radius: var(--vt-radius-lg);
+}
+.vt-disclosure > summary::-webkit-details-marker { display: none; }
+.vt-disclosure > summary::before {
+  content: ""; width: 7px; height: 7px; flex: none; margin: 0 2px;
+  border-right: 1.8px solid var(--vt-text-muted); border-bottom: 1.8px solid var(--vt-text-muted);
+  transform: rotate(-45deg); transition: transform var(--vt-dur) var(--vt-ease);
+}
+.vt-disclosure[open] > summary::before { transform: rotate(45deg); }
+.vt-disclosure > summary:hover { background: var(--vt-surface-2); }
+.vt-disclosure-body { padding: 4px 16px 16px 35px; font-size: 14px; line-height: 1.55; color: var(--vt-text); }
+.vt-disclosure-body > :first-child { margin-top: 0; }
+.vt-disclosure-body > :last-child { margin-bottom: 0; }
+.vt-disclosure--plain { border: 0; background: none; }
+.vt-disclosure--plain > summary { padding: 0 6px; min-height: 36px; }
+.vt-disclosure--plain .vt-disclosure-body { padding: 4px 6px 8px 25px; }
+
+/* <div class="vt-empty"><svg class="vt-icon">...</svg><p class="vt-empty-title">No duplicates found</p><p>...</p><button ...>Run a scan</button></div> */
+.vt-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  padding: 32px 20px; border: 1px dashed var(--vt-border); border-radius: var(--vt-radius-lg);
+  color: var(--vt-text-muted); font-size: 14px; line-height: 1.45;
+}
+.vt-empty > .vt-icon { width: 24px; height: 24px; margin-bottom: 4px; }
+.vt-empty p { margin: 0; max-width: 46ch; }
+.vt-empty-title { color: var(--vt-text); font-weight: 600; }
+.vt-empty .vt-btn { margin-top: 8px; }
+.vt-table-card .vt-empty { border: 0; border-radius: 0; }
+
+/* <nav class="vt-pager" aria-label="Pages"><span class="vt-pager-range">1 to 50 of 312</span>
+     <a class="vt-btn vt-btn--secondary vt-btn--sm" aria-disabled="true">Previous</a>
+     <a class="vt-btn vt-btn--secondary vt-btn--sm" href="?page=2">Next</a></nav> */
+.vt-pager { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 10px 12px; }
+.vt-table-card .vt-pager { border-top: 1px solid var(--vt-border); }
+.vt-pager-range { margin-right: auto; font: var(--vt-text-data); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); }
+.vt-pager [aria-disabled="true"] { opacity: .5; pointer-events: none; }
+
+/* ================================================================== */
+/* v1.3.0: gaps from Sec Audit and ConfigReport (SPEC.md 6.4 to 6.6, 7.15 to 7.24) */
+/* ================================================================== */
+
+/* ------------------------------------------------------------------ */
+/* 6.4 Top bar: account menu, environment badge, list menus (v1.3.0)   */
+/* ------------------------------------------------------------------ */
+/* Right side order: environment badge, freshness, context controls, quick theme toggle, help, user menu (last).
+   Environment badge: <span class="vt-pill vt-pill--warning"><svg class="vt-icon vt-icon-sm">flask icon</svg>sample data</span>
+   User menu:
+   <div class="vt-popover-wrap">
+     <button class="vt-user-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="um">
+       <span class="vt-avatar" aria-hidden="true">SP</span><span class="vt-user-name">Sid Payne</span></button>
+     <div class="vt-menu vt-menu--list" id="um" role="menu" hidden>
+       <div class="vt-menu-head"><span class="vt-menu-head-name">Sid Payne <span class="vt-tag">admin</span></span><span class="vt-menu-head-sub">signed-in email</span></div>
+       <a class="vt-menu-item" role="menuitem" href="/settings">Settings</a>
+       <div class="vt-menu-sep" role="separator"></div>
+       <button class="vt-menu-item" role="menuitem">Sign out</button>
+     </div>
+   </div> */
+.vt-user-btn {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px 0 4px;
+  border: 0; border-radius: var(--vt-radius-full); background: transparent; color: var(--vt-text);
+  font: 500 13px/1 var(--vt-font-sans); white-space: nowrap; cursor: pointer;
+}
+.vt-user-btn:hover, .vt-user-btn[aria-expanded="true"] { background: var(--vt-surface-2); }
+@media (max-width: 1100px) { .vt-user-name { display: none; } .vt-user-btn { padding: 0 4px; } }
+
+/* List menus: account menu, row "more" menus. The theme menu (8.1) stays the plain .vt-menu. */
+.vt-menu--list { width: auto; min-width: 220px; max-width: 320px; padding: 6px; gap: 2px; }
+.vt-menu--start { right: auto; left: 0; }
+.vt-menu-head { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px 10px; margin-bottom: 4px; border-bottom: 1px solid var(--vt-border); }
+.vt-menu-head-name { display: flex; align-items: center; gap: 8px; font: 600 14px/1.3 var(--vt-font-sans); color: var(--vt-text); }
+.vt-menu-head-sub { font-size: 12px; line-height: 1.3; color: var(--vt-text-muted); overflow-wrap: anywhere; }
+.vt-menu-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 36px; padding: 0 10px; margin: 0;
+  border: 0; border-radius: var(--vt-radius-md); background: transparent; color: var(--vt-text);
+  font: 500 14px/1.2 var(--vt-font-sans); text-align: left; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.vt-menu-item:hover, .vt-menu-item:focus-visible, .vt-menu-item[data-highlighted] { background: var(--vt-surface-2); }
+.vt-menu-item .vt-icon { color: var(--vt-text-muted); }
+.vt-menu-item--danger, .vt-menu-item--danger .vt-icon { color: var(--vt-danger); }
+.vt-menu-item[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.vt-menu-sep { height: 1px; margin: 4px -6px; background: var(--vt-border); }
+
+/* Custom select list (combobox, shadcn Select). Native .vt-select stays the default.
+   <div class="vt-menu vt-menu--list vt-listbox" role="listbox"><div class="vt-option" role="option" aria-selected="true">
+     <svg class="vt-icon vt-option-check">check</svg>Acme Corp</div></div> */
+.vt-listbox { max-height: 300px; overflow-y: auto; }
+.vt-option {
+  display: flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 10px;
+  border-radius: var(--vt-radius-md); color: var(--vt-text); font: 400 14px/1.2 var(--vt-font-sans); cursor: pointer;
+}
+.vt-option:hover, .vt-option[data-highlighted], .vt-option[data-focused] { background: var(--vt-surface-2); }
+.vt-option .vt-option-check { visibility: hidden; color: var(--vt-text); width: 14px; height: 14px; }
+.vt-option[aria-selected="true"] { font-weight: 600; }
+.vt-option[aria-selected="true"] .vt-option-check { visibility: visible; }
+.vt-option[aria-disabled="true"], .vt-option[data-disabled] { opacity: .5; cursor: not-allowed; }
+
+/* Avatar: initials or a photo. */
+.vt-avatar {
+  display: inline-grid; place-items: center; flex: none; overflow: hidden;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--vt-surface-2); border: 1px solid var(--vt-border); color: var(--vt-text);
+  font: 600 12px/1 var(--vt-font-sans); text-transform: uppercase;
+}
+.vt-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.vt-avatar--sm { width: 22px; height: 22px; font-size: 10px; }
+.vt-avatar--lg { width: 36px; height: 36px; font-size: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* 6.5 Docked help panel (v1.3.0)                                      */
+/* ------------------------------------------------------------------ */
+/* Last child of .vt-app, after .vt-main. The top-bar help button (icon button, aria-expanded, aria-controls)
+   opens it. 1536px and wider: it docks and the content area shrinks. Narrower: it overlays the page.
+   <aside class="vt-helppanel" id="help" aria-label="Help" hidden>
+     <header class="vt-helppanel-head"><h2 class="vt-h3">Help</h2>
+       <div class="vt-actions"><a class="vt-btn vt-btn--ghost vt-btn--sm" href="/guide">Full guide</a>
+       <button class="vt-icon-btn" aria-label="Close help">x</button></div></header>
+     <div class="vt-tabs vt-helppanel-tabs" role="tablist">...</div>
+     <div class="vt-helppanel-body"><div class="vt-prose">...</div></div>
+   </aside> */
+.vt-helppanel {
+  position: sticky; top: 0; height: 100vh; flex: none; width: 440px;
+  display: flex; flex-direction: column; min-width: 0;
+  background: var(--vt-surface); border-left: 1px solid var(--vt-border); z-index: 25;
+}
+.vt-helppanel[hidden] { display: none; }
+.vt-helppanel-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none;
+  min-height: var(--vt-topbar-h); padding: 0 12px 0 20px; border-bottom: 1px solid var(--vt-border);
+}
+.vt-helppanel-tabs { padding: 0 12px; flex: none; }
+.vt-helppanel-search { padding: 12px 20px 0; flex: none; }
+.vt-helppanel-body { flex: 1 1 auto; overflow-y: auto; padding: 16px 20px 24px; }
+@media (max-width: 1535px) {
+  .vt-helppanel { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); z-index: 65; box-shadow: var(--vt-shadow-lg); }
+}
+
+/* ------------------------------------------------------------------ */
+/* 6.6 Pages without the shell (v1.3.0)                                */
+/* ------------------------------------------------------------------ */
+/* Sign-in, not authorized, auth error, 404:
+   <main class="vt-auth"><div class="vt-auth-card">
+     <div class="vt-identity">tile + name + VIATEK</div><h1 class="vt-auth-title">Sign in</h1>
+     <p class="vt-small">...</p><div class="vt-alert vt-alert--danger">...</div>
+     <a class="vt-btn vt-btn--primary vt-btn--block">Sign in with Microsoft</a></div></main>
+   Presentation views and pop-out windows:
+   <div class="vt-bare"><header class="vt-bare-head"><div class="vt-identity">...</div><span class="vt-bare-title">...</span>
+     <div class="vt-bare-actions">theme toggle, close link</div></header><main class="vt-content">...</main></div> */
+.vt-auth { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--vt-bg); }
+.vt-auth-card {
+  width: min(400px, 100%); display: flex; flex-direction: column; gap: 16px;
+  padding: 28px; background: var(--vt-surface); border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-xl); box-shadow: var(--vt-shadow-sm);
+}
+.vt-auth-card .vt-identity, .vt-bare-head .vt-identity { border: 0; padding: 0; min-height: 0; }
+.vt-auth-title { margin: 0; font: var(--vt-text-h2); color: var(--vt-text); }
+.vt-auth-card p { margin: 0; }
+.vt-auth-foot { font-size: 12px; color: var(--vt-text-muted); text-align: center; }
+.vt-btn--block { width: 100%; }
+.vt-bare { min-height: 100vh; display: flex; flex-direction: column; background: var(--vt-bg); }
+.vt-bare-head {
+  position: sticky; top: 0; z-index: 20; flex: none;
+  display: flex; align-items: center; gap: 14px; height: var(--vt-topbar-h); padding: 0 16px;
+  background: var(--vt-bg); border-bottom: 1px solid var(--vt-border);
+}
+.vt-bare-title { font: 600 14px/1.2 var(--vt-font-sans); color: var(--vt-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vt-bare-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.vt-bare > .vt-content { margin: 0 auto; }
+
+/* ------------------------------------------------------------------ */
+/* 7.15 Switch (v1.3.0)                                                */
+/* ------------------------------------------------------------------ */
+/* For settings that save on their own. A checkbox stays for choices inside a form that is submitted.
+   <div class="vt-switch-field"><button class="vt-switch" type="button" role="switch" aria-checked="true" aria-labelledby="s1-l"></button>
+     <span id="s1-l">Write notes automatically</span></div>
+   shadcn / Radix / Base UI switches set data-state or data-checked; both are covered. */
+.vt-switch-field { display: inline-flex; align-items: center; gap: 10px; min-height: 36px; font-size: 14px; color: var(--vt-text); }
+.vt-switch {
+  position: relative; flex: none; width: 36px; height: 20px; padding: 0; margin: 0;
+  border: 0; border-radius: var(--vt-radius-full); cursor: pointer;
+  background: color-mix(in srgb, var(--vt-text-muted) 55%, var(--vt-surface));
+  transition: background-color var(--vt-dur) var(--vt-ease);
+}
+.vt-switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--vt-surface); box-shadow: var(--vt-shadow-sm);
+  transition: transform var(--vt-dur) var(--vt-ease);
+}
+.vt-switch[aria-checked="true"], .vt-switch[data-state="checked"], .vt-switch[data-checked] { background: var(--vt-primary); }
+.vt-switch[aria-checked="true"]::after, .vt-switch[data-state="checked"]::after, .vt-switch[data-checked]::after { transform: translateX(16px); }
+.vt-switch:disabled, .vt-switch[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+
+/* ------------------------------------------------------------------ */
+/* 7.16 More form fields (v1.3.0): textarea, date and time, color, file */
+/* ------------------------------------------------------------------ */
+.vt-textarea {
+  display: block; width: 100%; min-height: 88px; padding: 10px 12px; resize: vertical;
+  border-radius: var(--vt-radius-md); border: 1px solid var(--vt-border);
+  background: var(--vt-input-bg); color: var(--vt-text);
+  font: 400 14px/1.5 var(--vt-font-sans);
+}
+.vt-textarea::placeholder { color: var(--vt-text-muted); opacity: 1; }
+.vt-textarea:focus-visible { outline: 2px solid var(--vt-focus-ring); outline-offset: 0; border-color: var(--vt-primary); }
+.vt-textarea[aria-invalid="true"] { border-color: var(--vt-danger); }
+.vt-textarea.vt-mono { font: 400 13px/1.55 var(--vt-font-mono); }
+.vt-textarea:disabled, .vt-input:disabled, .vt-select:disabled { opacity: .6; cursor: not-allowed; }
+
+/* Native date and time inputs. color-scheme from data-mode makes the calendar icon readable in dark mode. */
+.vt-input[type="date"], .vt-input[type="time"], .vt-input[type="datetime-local"], .vt-input[type="month"] {
+  font: 400 13px/1.2 var(--vt-font-mono); font-variant-numeric: tabular-nums;
+}
+.vt-input::-webkit-calendar-picker-indicator { opacity: .75; cursor: pointer; }
+.vt-input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+.vt-date-range { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vt-date-range .vt-input { width: auto; min-width: 150px; }
+
+/* Calendar grid for range pickers inside a .vt-popover (react-day-picker in shadcn: map day, today, selected,
+   range_middle and outside to the classes below). Use native date inputs unless the field needs a range or blocked days. */
+.vt-calendar { width: 280px; display: flex; flex-direction: column; gap: 8px; }
+.vt-calendar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.vt-calendar-title { font: 600 14px/1.2 var(--vt-font-sans); color: var(--vt-text); }
+.vt-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px 0; }
+.vt-calendar-wd { height: 28px; display: grid; place-items: center; font: 500 11px/1 var(--vt-font-mono); text-transform: uppercase; color: var(--vt-text-muted); }
+.vt-day {
+  height: 36px; padding: 0; border: 0; border-radius: var(--vt-radius-md); background: transparent;
+  font: 400 13px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text); cursor: pointer;
+}
+.vt-day:hover { background: var(--vt-surface-2); }
+.vt-day--outside { color: var(--vt-text-muted); }
+.vt-day[aria-current="date"] { box-shadow: inset 0 0 0 1.5px var(--vt-primary); }
+.vt-day--in-range { background: var(--vt-primary-soft); border-radius: 0; }
+.vt-day[aria-selected="true"] { background: var(--vt-primary); color: var(--vt-on-primary); font-weight: 600; }
+.vt-day:disabled { opacity: .4; cursor: not-allowed; background: transparent; }
+
+/* Color field: the chrome uses tokens, the value is report data and keeps its own color.
+   <div class="vt-color-field"><input type="color" aria-label="Brand color swatch"><input class="vt-input vt-mono" aria-label="Brand color hex"></div> */
+.vt-color-field { display: flex; gap: 8px; align-items: center; }
+.vt-color-field input[type="color"] {
+  flex: none; width: var(--vt-control-h); height: var(--vt-control-h); padding: 4px; cursor: pointer;
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-md); background: var(--vt-input-bg);
+}
+.vt-color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.vt-color-field input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 5px; }
+.vt-color-field input[type="color"]::-moz-color-swatch { border: 0; border-radius: 5px; }
+.vt-color-field .vt-input { width: 130px; text-transform: uppercase; }
+
+/* File upload (client logo). The real <input type="file"> is .vt-sr-only inside a label styled as a button.
+   <div class="vt-upload"><div class="vt-upload-preview"><img alt="Current logo"></div>
+     <div class="vt-upload-body"><p class="vt-upload-title">Client logo</p><p class="vt-help">PNG, JPEG or SVG, 2 MB max.</p></div>
+     <div class="vt-upload-actions"><label class="vt-btn vt-btn--secondary vt-btn--sm">Replace<input class="vt-sr-only" type="file"></label>
+       <button class="vt-btn vt-btn--ghost vt-btn--sm">Remove</button></div></div>
+   Add data-dragover while a file is held over it, aria-invalid="true" plus a .vt-error line for a wrong file. */
+.vt-upload {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 16px;
+  border: 1px dashed var(--vt-border); border-radius: var(--vt-radius-lg); background: var(--vt-surface);
+}
+.vt-upload[data-dragover] { border-color: var(--vt-primary); background: var(--vt-primary-soft); }
+.vt-upload[aria-invalid="true"] { border-color: var(--vt-danger); }
+.vt-upload-preview {
+  flex: none; width: 64px; height: 64px; display: grid; place-items: center; overflow: hidden;
+  border: 1px solid var(--vt-border); border-radius: var(--vt-radius-md); background: var(--vt-surface-2); color: var(--vt-text-muted);
+}
+.vt-upload-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.vt-upload-body { flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.vt-upload-body p { margin: 0; }
+.vt-upload-title { font: 600 14px/1.3 var(--vt-font-sans); color: var(--vt-text); }
+.vt-upload-actions { display: flex; gap: 8px; align-items: center; }
+.vt-upload-actions label { position: relative; }
+.vt-upload-actions label:focus-within { outline: 2px solid var(--vt-focus-ring); outline-offset: 2px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.17 Sortable table header (v1.3.0)                                 */
+/* ------------------------------------------------------------------ */
+/* <th aria-sort="descending"><button class="vt-sort" type="button">Score
+     <svg class="vt-icon vt-sort-icon vt-sort-none">arrow-up-down</svg>
+     <svg class="vt-icon vt-sort-icon vt-sort-asc">arrow-up</svg>
+     <svg class="vt-icon vt-sort-icon vt-sort-desc">arrow-down</svg></button></th>
+   The sorted column gets aria-sort="ascending" or "descending"; other sortable columns get aria-sort="none". */
+.vt-table th[aria-sort] { padding: 0; }
+.vt-sort {
+  display: flex; align-items: center; gap: 6px; width: 100%; padding: 10px 12px; margin: 0;
+  border: 0; background: none; cursor: pointer;
+  font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; text-align: inherit; white-space: nowrap;
+}
+.vt-table th.vt-num .vt-sort { justify-content: flex-end; }
+.vt-sort:hover { color: var(--vt-text); }
+.vt-sort:focus-visible { outline-offset: -2px; }
+.vt-sort-icon { width: 12px; height: 12px; display: none; }
+th[aria-sort="none"] .vt-sort-none { display: block; opacity: .55; }
+th[aria-sort="ascending"] .vt-sort-asc, th[aria-sort="descending"] .vt-sort-desc { display: block; }
+th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--vt-text); }
+
+/* ------------------------------------------------------------------ */
+/* 7.18 Score ring and score bands (v1.3.0)                            */
+/* ------------------------------------------------------------------ */
+/* Bands: strong, good, needs-work, at-risk, none (not scored). Band colors depend on mode only, like status.
+   <div class="vt-ring vt-ring--md vt-band--good" style="--value:78" role="img" aria-label="Score 78 of 100, good">
+     <span class="vt-ring-value" aria-hidden="true">78</span></div>
+   Projected score: add --proj (for example style="--value:78;--proj:86"); the part between them is drawn lighter.
+   Always show the band word beside or under the ring (.vt-pill--band-*): color is never the only signal. */
+.vt-band--strong     { --ring: var(--vt-band-strong); }
+.vt-band--good       { --ring: var(--vt-band-good); }
+.vt-band--needs-work { --ring: var(--vt-band-needs-work); }
+.vt-band--at-risk    { --ring: var(--vt-band-at-risk); }
+.vt-band--none       { --ring: var(--vt-band-none); }
+.vt-ring {
+  --value: 0; --size: 64px; --thick: 6px;
+  position: relative; flex: none; width: var(--size); height: var(--size); border-radius: 50%;
+}
+.vt-ring::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(
+    var(--ring, var(--vt-band-none)) 0 calc(var(--value) * 1%),
+    color-mix(in srgb, var(--ring, var(--vt-band-none)) 35%, var(--vt-surface-2)) 0 calc(var(--proj, var(--value)) * 1%),
+    var(--vt-surface-2) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thick) - .5px), black calc(100% - var(--thick)));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--thick) - .5px), black calc(100% - var(--thick)));
+}
+.vt-ring-value {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: 500 calc(var(--size) * .3)/1 var(--vt-font-mono); font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em; color: var(--vt-text);
+}
+.vt-ring--sm { --size: 32px; --thick: 4px; }
+.vt-ring--sm .vt-ring-value { font-size: 11px; letter-spacing: 0; }
+.vt-ring--md { --size: 64px; --thick: 6px; }
+.vt-ring--lg { --size: 120px; --thick: 10px; }
+.vt-ring--xl { --size: 160px; --thick: 12px; }
+.vt-ring-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
+.vt-ring-wrap--row { flex-direction: row; gap: 12px; }
+.vt-ring-sub { font: 400 12px/1.3 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); }
+.vt-pill--band-strong     { --pill: var(--vt-band-strong); background: var(--vt-success-soft); }
+.vt-pill--band-good       { --pill: var(--vt-band-good); background: var(--vt-band-good-soft); }
+.vt-pill--band-needs-work { --pill: var(--vt-band-needs-work); background: var(--vt-warning-soft); }
+.vt-pill--band-at-risk    { --pill: var(--vt-band-at-risk); background: var(--vt-danger-soft); }
+.vt-pill--band-none       { --pill: var(--vt-band-none); background: var(--vt-surface-2); }
+
+/* ------------------------------------------------------------------ */
+/* 7.19 Loading and progress (v1.3.0)                                  */
+/* ------------------------------------------------------------------ */
+/* Button busy: <button class="vt-btn vt-btn--primary" aria-busy="true" disabled><span class="vt-spinner" aria-hidden="true"></span>Generate</button>
+   Keep the label (or set a min-width) so the button does not change width. The spinner replaces the leading icon. */
+.vt-spinner {
+  display: inline-block; flex: none; width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent); border-top-color: currentColor;
+  animation: vt-spin .8s linear infinite;
+}
+.vt-spinner--sm { width: 12px; height: 12px; }
+.vt-btn[aria-busy="true"] { cursor: progress; }
+.vt-btn[aria-busy="true"]:disabled { opacity: .8; }
+.vt-btn[aria-busy="true"] > .vt-icon { display: none; }
+@keyframes vt-spin { to { transform: rotate(360deg); } }
+
+/* Skeleton: <div aria-busy="true"><span class="vt-skeleton" style="width:60%"></span></div> */
+.vt-skeleton {
+  display: block; position: relative; overflow: hidden; height: 12px; width: 100%;
+  border-radius: var(--vt-radius-sm); background: var(--vt-surface-2);
+}
+.vt-skeleton--title { height: 18px; width: 40%; }
+.vt-skeleton--block { height: 100%; min-height: 64px; border-radius: var(--vt-radius-lg); }
+.vt-skeleton--circle { border-radius: 50%; width: 32px; height: 32px; }
+.vt-skeleton::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--vt-surface) 55%, transparent), transparent);
+  animation: vt-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes vt-shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .vt-skeleton::after { animation: none; display: none; }
+  .vt-spinner { animation-duration: 2.4s; }
+}
+
+/* Progress bar: <div class="vt-progress"><div class="vt-progress-track" role="progressbar" aria-valuenow="12" aria-valuemax="40" aria-label="Reports generated">
+     <div class="vt-progress-fill" style="--value:30"></div></div><span class="vt-progress-count">12 of 40</span>
+     <div class="vt-progress-stats"><span class="vt-stat--success">10 done</span><span class="vt-stat--danger">2 failed</span></div></div>
+   Indeterminate: data-indeterminate on the track and no aria-valuenow. A band class (7.18) on .vt-progress turns it into a 0 to 100 meter. */
+.vt-progress { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 12px; }
+.vt-progress-track { position: relative; height: 8px; border-radius: var(--vt-radius-full); background: var(--vt-surface-2); overflow: hidden; }
+.vt-progress-fill {
+  --value: 0; height: 100%; width: calc(var(--value) * 1%);
+  border-radius: var(--vt-radius-full); background: var(--ring, var(--vt-primary));
+  transition: width var(--vt-dur) var(--vt-ease);
+}
+.vt-progress-track[data-indeterminate] .vt-progress-fill { position: absolute; width: 35%; animation: vt-indeterminate 1.4s var(--vt-ease) infinite; }
+@keyframes vt-indeterminate { from { left: -35%; } to { left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .vt-progress-track[data-indeterminate] .vt-progress-fill { animation: none; left: 0; width: 100%; opacity: .5; } }
+.vt-progress-count { font: 500 13px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text); white-space: nowrap; }
+.vt-progress-stats { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 16px; font: 400 12px/1.3 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); }
+.vt-stat--success { color: var(--vt-success); }
+.vt-stat--warning { color: var(--vt-warning); }
+.vt-stat--danger  { color: var(--vt-danger); }
+
+/* ------------------------------------------------------------------ */
+/* 7.20 Long-form text (v1.3.0): guides, how-to-fix steps, AI answers   */
+/* ------------------------------------------------------------------ */
+.vt-prose { max-width: 72ch; font: 400 14px/1.6 var(--vt-font-sans); color: var(--vt-text); overflow-wrap: break-word; }
+.vt-prose > :first-child { margin-top: 0; }
+.vt-prose > :last-child { margin-bottom: 0; }
+.vt-prose h1 { font: var(--vt-text-title); margin: 0 0 16px; }
+.vt-prose h2 { font: var(--vt-text-h2); margin: 28px 0 10px; }
+.vt-prose h3 { font: var(--vt-text-h3); margin: 22px 0 8px; }
+.vt-prose h4 { font: 600 14px/1.4 var(--vt-font-sans); margin: 18px 0 6px; }
+.vt-prose p, .vt-prose ul, .vt-prose ol, .vt-prose pre, .vt-prose blockquote, .vt-prose table { margin: 0 0 12px; }
+.vt-prose ul, .vt-prose ol { padding-left: 22px; }
+.vt-prose li + li { margin-top: 4px; }
+.vt-prose li > ul, .vt-prose li > ol { margin: 4px 0 0; }
+.vt-prose strong { font-weight: 600; }
+.vt-prose code {
+  font: 400 12.5px/1.4 var(--vt-font-mono); padding: 1px 5px;
+  background: var(--vt-surface-2); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-sm);
+}
+.vt-prose pre { padding: 12px 14px; overflow-x: auto; background: var(--vt-surface-2); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-md); }
+.vt-prose pre code { padding: 0; border: 0; background: none; font-size: 12.5px; }
+.vt-prose blockquote { padding: 2px 0 2px 14px; border-left: 2px solid var(--vt-border); color: var(--vt-text-muted); }
+.vt-prose hr { border: 0; border-top: 1px solid var(--vt-border); margin: 20px 0; }
+.vt-prose img { max-width: 100%; border-radius: var(--vt-radius-md); }
+.vt-prose table { width: 100%; border-collapse: collapse; font-size: 13px; display: block; overflow-x: auto; }
+.vt-prose th { text-align: left; padding: 8px 10px; background: var(--vt-surface-2); font: 600 11px/1.3 var(--vt-font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--vt-text-muted); }
+.vt-prose td { padding: 8px 10px; border-top: 1px solid var(--vt-border); }
+
+/* ------------------------------------------------------------------ */
+/* 7.21 Advisor thread (v1.3.0)                                        */
+/* ------------------------------------------------------------------ */
+/* <div class="vt-thread" aria-live="polite">
+     <div class="vt-turn vt-turn--user"><p>Why did the score drop?</p><p class="vt-turn-meta">Sid · 2:14 PM MT</p></div>
+     <div class="vt-turn vt-turn--answer"><div class="vt-prose">...</div><p class="vt-turn-meta">model · 2:14 PM MT</p></div>
+     <div class="vt-turn vt-turn--answer vt-turn--pending"><span class="vt-spinner"></span>Thinking<button class="vt-btn vt-btn--secondary vt-btn--sm">Stop</button></div>
+   </div>
+   <form class="vt-composer"><label class="vt-sr-only" for="q">Question</label><textarea class="vt-textarea" id="q"></textarea><button class="vt-btn vt-btn--primary">Ask</button></form> */
+.vt-thread { display: flex; flex-direction: column; gap: 14px; }
+.vt-turn { max-width: 100%; padding: 14px 16px; border-radius: var(--vt-radius-lg); font-size: 14px; line-height: 1.55; color: var(--vt-text); }
+.vt-turn > p { margin: 0; }
+.vt-turn--user { align-self: flex-end; max-width: min(80%, 640px); padding: 10px 14px; background: var(--vt-primary-soft); }
+.vt-turn--answer { align-self: stretch; background: var(--vt-surface); border: 1px solid var(--vt-border); }
+.vt-turn--pending { display: flex; align-items: center; gap: 10px; color: var(--vt-text-muted); }
+.vt-turn--pending .vt-btn { margin-left: auto; }
+.vt-turn > .vt-turn-meta { margin-top: 8px; font: 400 11px/1.3 var(--vt-font-mono); color: var(--vt-text-muted); }
+.vt-composer {
+  position: sticky; bottom: 0; display: flex; align-items: flex-end; gap: 8px;
+  padding: 12px 0 4px; background: var(--vt-composer-bg, var(--vt-surface)); border-top: 1px solid var(--vt-border);
+}
+.vt-composer .vt-textarea { flex: 1 1 auto; min-height: 44px; max-height: 200px; }
+
+/* ------------------------------------------------------------------ */
+/* 7.22 List and detail (v1.3.0)                                       */
+/* ------------------------------------------------------------------ */
+/* <div class="vt-split"><div class="vt-table-card">list (rows with aria-selected)</div><aside class="vt-split-detail vt-panel">...</aside></div>
+   The selected row uses tr[aria-selected="true"] (7.4) or .vt-list-item[aria-selected="true"]. */
+.vt-split { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 16px; align-items: start; }
+.vt-split-detail { position: sticky; top: calc(var(--vt-topbar-h) + 16px); max-height: calc(100vh - var(--vt-topbar-h) - 32px); overflow-y: auto; }
+@media (max-width: 1100px) { .vt-split { grid-template-columns: minmax(0, 1fr); } .vt-split-detail { position: static; max-height: none; } }
+.vt-list { margin: 0; padding: 0; list-style: none; }
+.vt-list-item {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px; margin: 0;
+  border: 0; border-top: 1px solid var(--vt-border); background: transparent; color: var(--vt-text);
+  font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+}
+.vt-list > li:first-child > .vt-list-item, .vt-list > .vt-list-item:first-child { border-top: 0; }
+.vt-list-item:hover { background: var(--vt-surface-2); }
+.vt-list-item[aria-selected="true"], .vt-list-item[aria-current="true"] { background: var(--vt-primary-soft); }
+
+/* ------------------------------------------------------------------ */
+/* 7.23 Document preview frame (v1.3.0)                                */
+/* ------------------------------------------------------------------ */
+/* For client PDFs, emails and templates shown inside the app. The frame uses tokens; the document keeps its
+   own colors in every theme (14.3), on a light canvas.
+   <figure class="vt-docframe"><figcaption class="vt-docframe-bar"><span class="vt-label">Client preview</span>
+     <span class="vt-small">Shown as the client sees it</span><div class="vt-actions">open, download</div></figcaption>
+     <div class="vt-docframe-stage"><iframe title="Report preview" src="..."></iframe></div></figure> */
+.vt-docframe { margin: 0; display: flex; flex-direction: column; overflow: hidden; background: var(--vt-surface); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); }
+.vt-docframe-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-height: 48px; padding: 6px 8px 6px 16px; border-bottom: 1px solid var(--vt-border); }
+.vt-docframe-bar .vt-actions { margin-left: auto; }
+.vt-docframe-stage { padding: 16px; background: var(--vt-surface-2); display: grid; }
+.vt-docframe-stage iframe, .vt-docframe-stage img, .vt-docframe-doc {
+  display: block; width: 100%; height: var(--doc-h, 70vh); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-sm);
+  color-scheme: light; background: Canvas; box-shadow: var(--vt-shadow-sm);
+}
+.vt-docframe-stage img { height: auto; }
+
+/* ------------------------------------------------------------------ */
+/* 7.24 Checklist, reorder list, folding panel (v1.3.0)                */
+/* ------------------------------------------------------------------ */
+/* <ol class="vt-checklist"><li class="vt-checklist-part">
+     <div class="vt-checklist-head"><span class="vt-step-num">1</span><h3 class="vt-h3">Before the call</h3><span class="vt-checklist-count">2 of 5</span></div>
+     <ul class="vt-checklist-items"><li><label class="vt-checklist-item"><input type="checkbox">
+       <span><span class="vt-checklist-text">Open the last report</span>
+       <span class="vt-checklist-meta"><b>Where:</b> Clients, Reports</span><span class="vt-checklist-meta"><b>Done when:</b> ...</span></span></label></li></ul>
+   </li></ol> */
+.vt-checklist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.vt-checklist-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.vt-checklist-count { margin-left: auto; font: 500 12px/1 var(--vt-font-mono); font-variant-numeric: tabular-nums; color: var(--vt-text-muted); white-space: nowrap; }
+.vt-step-num {
+  display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--vt-surface-2); border: 1px solid var(--vt-border);
+  font: 600 11px/1 var(--vt-font-mono); color: var(--vt-text);
+}
+.vt-checklist-items { margin: 0; padding: 0; list-style: none; }
+.vt-checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-top: 1px solid var(--vt-border); cursor: pointer; font-size: 14px; line-height: 1.45; color: var(--vt-text); }
+.vt-checklist-item input { flex: none; width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--vt-primary); }
+.vt-checklist-item > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vt-checklist-meta { font-size: 12px; line-height: 1.4; color: var(--vt-text-muted); }
+.vt-checklist-meta b { font-weight: 600; }
+.vt-checklist-item:has(input:checked) .vt-checklist-text { color: var(--vt-text-muted); }
+
+/* Reorder list. Mouse: drag the handle. Keyboard: focus the handle, Space picks up (aria-pressed="true"),
+   arrow keys move, Space drops, Escape cancels; announce each move in an aria-live region.
+   dnd-kit apps keep its keyboard sensor and add these classes.
+   <ul class="vt-reorder"><li class="vt-reorder-item"><button class="vt-drag-handle" aria-label="Move Summary" aria-pressed="false">grip icon</button>Summary</li></ul> */
+.vt-reorder { margin: 0; padding: 0; list-style: none; background: var(--vt-surface); border: 1px solid var(--vt-border); border-radius: var(--vt-radius-lg); overflow: hidden; }
+.vt-reorder-item { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px 0 6px; border-top: 1px solid var(--vt-border); background: var(--vt-surface); font-size: 14px; color: var(--vt-text); }
+.vt-reorder-item:first-child { border-top: 0; }
+.vt-reorder-item .vt-actions { margin-left: auto; }
+.vt-drag-handle {
+  display: inline-grid; place-items: center; flex: none; width: 28px; height: 32px; padding: 0;
+  border: 0; border-radius: var(--vt-radius-sm); background: transparent; color: var(--vt-text-muted); cursor: grab; touch-action: none;
+}
+.vt-drag-handle:hover { background: var(--vt-surface-2); color: var(--vt-text); }
+.vt-drag-handle[aria-pressed="true"] { background: var(--vt-primary-soft); color: var(--vt-text); }
+.vt-reorder-item[data-dragging] { background: var(--vt-surface-2); box-shadow: var(--vt-shadow-md); position: relative; z-index: 1; }
+.vt-reorder-item[data-dragging] .vt-drag-handle { cursor: grabbing; }
+.vt-reorder-item:has(.vt-drag-handle[aria-pressed="true"]) { background: var(--vt-primary-soft); }
+.vt-reorder-item[data-drop="before"] { box-shadow: inset 0 2px 0 var(--vt-primary); }
+.vt-reorder-item[data-drop="after"] { box-shadow: inset 0 -2px 0 var(--vt-primary); }
+
+/* Folding panel: a card whose body folds away, chevron in the header. (.vt-disclosure stays for fold-out text.)
+   <details class="vt-panel vt-panel--fold" open><summary class="vt-panel-head"><div><h3 class="vt-h3">Sections</h3><p class="vt-small">...</p></div>
+     <svg class="vt-icon vt-fold-chevron">chevron-down</svg></summary><div>body</div></details> */
+details.vt-panel--fold > summary {
+  list-style: none; cursor: pointer; margin: -18px -20px 0; padding: 18px 20px; border-radius: var(--vt-radius-lg);
+}
+details.vt-panel--fold[open] > summary { padding-bottom: 14px; margin-bottom: 0; }
+details.vt-panel--fold > summary::-webkit-details-marker { display: none; }
+details.vt-panel--fold > summary:hover .vt-fold-chevron { color: var(--vt-text); }
+.vt-fold-chevron { color: var(--vt-text-muted); transform: rotate(-90deg); transition: transform var(--vt-dur) var(--vt-ease); }
+details.vt-panel--fold[open] .vt-fold-chevron { transform: none; }
