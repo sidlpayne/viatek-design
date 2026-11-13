@@ -3,6 +3,16 @@
 All notable changes to `@viatek/design`. Versions follow semver (see SPEC.md 3.4):
 patch for fixes, minor for new components or themes, major when apps must change code.
 
+## v1.2.1 · Nov 13, 2026
+
+Spec only. No changes to tokens.css, components.css, theme.js, sidebar.js, no-flash.js or the Tailwind preset, so apps on v1.2.0 keep working unchanged.
+
+- **New SPEC.md section 14:** one migration prompt that works in every app. Claude Code now finds the app id, repo, stack and host itself (14.2) instead of having them written into the prompt.
+- **Scope (14.3):** client PDFs, emails, exports, client logos and client colors stay as they are. Only the frame around an in-app document preview is restyled.
+- **Gap brief (14.4):** before editing, Claude lists missing components, shell needs, status words and colors with no token, saves the list as `design-gaps-<app-id>.md` and waits for a release that covers them.
+- **Preview (14.6):** use the host the app already ships on (Vercel preview, or a spare port on a self-hosted server such as Auto2). No new hosting projects or copied secrets.
+- Sections 11 to 13 point to section 14. The checklist adds the scope and preview items. The SPEC.md header shows the real version.
+
 ## v1.2.0 · Nov 12, 2026
 
 Gaps found while migrating Reconciliator. Additive: apps on v1.1.0 keep working unchanged.

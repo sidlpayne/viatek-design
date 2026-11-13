@@ -1,8 +1,9 @@
 # ViaTek App Design System: Implementation Spec for Claude Code
 
-**Version:** 1.0 · November 11, 2026
+**Version:** 1.2.1 · November 13, 2026
 **Owner:** Sid Payne
-**Applies to:** every internal ViaTek app (Insight, Reconciliator, Envoy, Site Ranger, Keystone, and anything new)
+**Applies to:** every internal ViaTek app (Insight, Reconciliator, Envoy, Site Ranger, Keystone, Sec Audit, ConfigReport, and anything new)
+**To migrate an app:** use the prompt in section 14.1. It is the same for every app.
 **Visual reference:** the "ViaTek App Themes" design canvas (Theme Explorer + All 12 Palettes)
 
 ---
@@ -91,7 +92,7 @@ viatek-design/
 Install from a version tag, never from a branch:
 
 ```bash
-npm install github:sidlpayne/viatek-design#v1.2.0
+npm install github:sidlpayne/viatek-design#v1.2.1
 ```
 
 Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`. Tailwind v4 has no JS config by default: add a `tailwind.config.js` that holds only that preset line and point to it from the global stylesheet with `@config "../tailwind.config.js";`.
@@ -110,11 +111,11 @@ If a component is missing, add it to the viatek-design repo first, then upgrade 
 `viatek-design` is deployed to the Vercel project `viatek-design` and serves versioned files from its production URL:
 
 ```
-https://viatek-design.vercel.app/v1.2.0/tokens.css
-https://viatek-design.vercel.app/v1.2.0/components.css
-https://viatek-design.vercel.app/v1.2.0/theme.js
-https://viatek-design.vercel.app/v1.2.0/sidebar.js
-https://viatek-design.vercel.app/v1.2.0/no-flash.js
+https://viatek-design.vercel.app/v1.2.1/tokens.css
+https://viatek-design.vercel.app/v1.2.1/components.css
+https://viatek-design.vercel.app/v1.2.1/theme.js
+https://viatek-design.vercel.app/v1.2.1/sidebar.js
+https://viatek-design.vercel.app/v1.2.1/no-flash.js
 https://viatek-design.vercel.app/theme-preview
 ```
 
@@ -715,7 +716,7 @@ An icon button (sun/moon) that opens a small menu:
 
 ## 11. Migration plan
 
-Do one app per session. At the end of each, run the checklist in section 12 and show Sid screenshots of 3 key pages in both Basecamp and Summit Night.
+Do one app per session, following the procedure in section 14. At the end of each, run the checklist in section 12 and show Sid screenshots of 3 key pages in both Basecamp and Summit Night. The notes below are extra steps for specific apps, on top of section 14.
 
 1. **Build the `viatek-design` repo** (sections 3 to 6.1a), including the `/theme-preview` page, deploy it to Vercel, and tag `v1.0.0`.
 2. **Reconciliator** (already a sidebar app, simplest migration). Swap colors for tokens, fix the white-on-blue primary button, set pills to section 7.3, add the theme picker.
@@ -745,6 +746,8 @@ Do one app per session. At the end of each, run the checklist in section 12 and 
 - [ ] Charts use series tokens in order and repaint on theme change
 - [ ] Keyboard: everything reachable with Tab, visible focus ring
 - [ ] No em dashes in UI copy
+- [ ] Out-of-scope outputs (14.3) are unchanged: client PDFs, emails, exports, client colors
+- [ ] Preview running the way 14.6 describes for this app's host, link sent to Sid
 - [ ] Screenshots of 3 pages in Basecamp + Summit Night sent to Sid
 
 ---
@@ -759,11 +762,86 @@ Do one app per session. At the end of each, run the checklist in section 12 and 
 **MCP servers**
 - **Playwright MCP**: drive each app, switch themes, capture before/after screenshots
 - **Supabase MCP**: create the `user_preferences` table, apply the RLS policies and confirm them with a test read/write
-- **Vercel MCP**: deploy preview builds per app so Sid can click through before merging
-- **n8n MCP** (optional): if any app has n8n-generated HTML (reports, emails), point those templates at the same tokens. Email HTML cannot use CSS variables, so inline the Basecamp hex values there.
+- **Vercel MCP**: preview builds, only for apps that already deploy on Vercel (14.6)
+- **n8n MCP** (optional): n8n-generated HTML that is app UI can point at the same tokens. Reports and emails sent to clients are out of scope (14.3) unless Sid asks. If Sid does, email HTML cannot use CSS variables, so inline the Basecamp hex values there.
 - **Context7 MCP** (optional): current docs for Tailwind, Chart.js/Recharts theming
 
 **Working rules**
-- One app per session, on its own branch (`theme/<app-name>`), with a preview deploy before merging.
+- One app per session, on its own branch (`theme/<app-id>`), with a preview (14.6) before merging.
 - Do not change app behavior or data logic during the migration. Visual changes only.
-- If an app needs a component this spec does not cover, build it from the tokens, then add it to the `viatek-design` repo and `SPEC.md` first, release a new version, then upgrade the app.
+- If an app needs a component this spec does not cover, do not build it in the app. List it in the gap brief (14.4). It is added to the `viatek-design` repo and `SPEC.md` and released first, then the app upgrades to that release.
+
+---
+
+## 14. Migrating an app: procedure for Claude Code
+
+Every app gets the same prompt. Nothing app-specific goes in the prompt: the app id, name, stack, host and gaps all come from the repo in 14.2 and 14.4.
+
+### 14.1 The prompt
+
+Open Claude Code in the app's folder and paste:
+
+```
+Migrate this app to the ViaTek design system.
+1. Find the latest release: run `git ls-remote --tags https://github.com/sidlpayne/viatek-design`
+   and take the highest vX.Y.Z tag.
+2. Read https://viatek-design.vercel.app/<that tag>/SPEC.md in full.
+3. Follow section 14 of the spec step by step.
+Do not edit any files until I approve the plan from 14.4.
+```
+
+To use a specific release instead of the latest, replace step 1 with the tag (for example `v1.2.1`).
+
+### 14.2 Identify the app
+
+1. **Find the repo.** The session may open in a parent folder. Find the git repo that holds the app (for example `web/`). Folders that are not git repos, or that hold copies of other apps (for example `reference/insight/`), are read-only reference: read them for ideas, never migrate them. If the folder holds no app or more than one app, stop and ask which one.
+2. **Name it.** App id: lowercase letters and digits from the app's name (repo or `package.json` name), such as `insight`, `reconciliator`, `envoy`, `secaudit`, `configreport`. Display name: the name users see today. Branch: `theme/<app-id>` in that repo. If the app id is unclear, propose one in the plan.
+3. **Stack.** A JavaScript build (Next.js, Vite, Astro, anything with a bundler) installs the package (3.2). Anything else (Streamlit, server-rendered templates, plain HTML, n8n pages) links the hosted files (3.3). Note the Tailwind version, if any, and the UI libraries in use (Radix, shadcn, Sonner, a chart library).
+4. **Host.** Find out how the app ships today: `vercel.json` or `.vercel/`, extra git remotes (for example `auto2`), a Dockerfile, CI workflows, a deploy script or the README. This decides the preview in 14.6.
+5. **Existing rules.** If the app's `CLAUDE.md` or memory already has design-system rules (scope, exceptions), follow them and mention them in the plan.
+
+### 14.3 Scope
+
+- **In scope:** every screen of the app's own UI, including sign-in, settings, error pages and pop-out windows.
+- **Out of scope, leave unchanged:** anything the app produces for clients or other systems, such as generated PDFs, emails, Excel and CSV exports, client logos, client-chosen colors and saved templates. When the app shows one of these inside its UI (a PDF or email preview), the frame around it is in scope and the document inside keeps its own colors.
+- Never change behavior, routes, data logic, auth or the backend.
+
+### 14.4 Inventory and plan (before any edit)
+
+Go through every screen and match each piece of UI to a spec section or a `vt-*` class in `components.css`. Then report:
+
+**The plan:** app id, display name, repo and branch, stack, install method (3.2 or 3.3), host and preview method (14.6), the screens in the order you will migrate them, and any app-specific steps from section 11.
+
+**The gap brief:** everything the release does not cover, in four groups:
+1. **Components** with no match (for example a toggle switch, progress bar, file upload or sortable header).
+2. **Shell needs** that section 6 does not cover (for example a user menu, sign-in page, warning banner in the shell, or a window with no sidebar).
+3. **Status words** that are not in the 7.3 table, each with a suggested color using the 7.3 rules.
+4. **Colors with no token** (for example a purple label), with the token or tag you suggest instead.
+
+For each gap, say where the app uses it, the closest existing component, and your suggestion. Save the brief as `design-gaps-<app-id>.md` in the session scratchpad and give Sid the full path. It is written so it can be pasted into Claude Design or into a `viatek-design` session as it is.
+
+Then stop and wait:
+- **No gaps:** wait for Sid to approve the plan, then go to 14.5.
+- **Gaps:** they are added to `viatek-design` and released first. Sid gives you the new tag, you re-read that release's SPEC.md and continue on it. Only if Sid says to go ahead without waiting: migrate everything that is covered, leave each gap piece exactly as it is, and list those pieces in the final report as open.
+
+### 14.5 Migrate
+
+1. Create the branch `theme/<app-id>`.
+2. Install or link the release (3.2 or 3.3) and add the "Design system" block (3.2) to the app's `CLAUDE.md`.
+3. Load the fonts (2), inline the no-flash snippet with this app id (5.1), and load `tokens.css` and then `components.css`. Call `initTheme()` and `initSidebar('<app-id>')`. Tailwind apps add the preset (4.5) and remove every `dark:` class.
+4. Move the app onto the shell (6), then migrate each screen to the components (7), one screen at a time. Add the quick toggle and the Settings › Appearance picker (8). If the app has Supabase auth, ask Sid before adding the `user_preferences` table (5.3).
+5. Replace every hard-coded color with a token (3.6) and remove em dashes from UI copy (10).
+6. Commit in small steps on the branch. Never push to the production remote or branch.
+
+### 14.6 Preview
+
+Use the way the app already ships. Do not set up new hosting.
+
+- **On Vercel:** push the branch and use its Vercel preview deployment.
+- **Self-hosted** (for example Auto2 through `git push auto2 main`): do not push to that remote's deploy branch. Ask Sid for a spare port, then run the branch there next to production, or run it locally.
+- **Anything else, or no host found:** run it locally.
+- Never create a hosting project, or copy sign-in or database secrets to a new place, just to get a preview, unless Sid says to.
+
+### 14.7 Finish
+
+Report each item of the section 12 checklist as pass or fail. Add screenshots of 3 key pages in Basecamp and Summit Night, the preview link or the command to run it, and the open gap pieces if there are any. Do not merge. Sid merges after clicking through the preview.
