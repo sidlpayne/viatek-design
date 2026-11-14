@@ -3,6 +3,13 @@
 All notable changes to `@viatek/design`. Versions follow semver (see SPEC.md 3.4):
 patch for fixes, minor for new components or themes, major when apps must change code.
 
+## v1.3.1 · Nov 14, 2026
+
+Docs only, from the ConfigReport migration. No CSS or token changes.
+
+- **Status words (7.3):** `generated` is info, like `ready`, because `sent` is the finished state.
+- **Internal-only card (7.5):** standard panel with a lock icon and a neutral `internal` tag, no colored border.
+
 ## v1.3.0 · Nov 13, 2026
 
 Gaps from the Sec Audit and ConfigReport gap briefs, in one release. Additive: apps on v1.2.x keep working unchanged.

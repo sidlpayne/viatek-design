@@ -1,6 +1,6 @@
 # ViaTek App Design System: Implementation Spec for Claude Code
 
-**Version:** 1.3.0 · November 13, 2026
+**Version:** 1.3.1 · November 14, 2026
 **Owner:** Sid Payne
 **Applies to:** every internal ViaTek app (Insight, Reconciliator, Envoy, Site Ranger, Keystone, Sec Audit, ConfigReport, and anything new)
 **To migrate an app:** use the prompt in section 14.1. It is the same for every app.
@@ -92,7 +92,7 @@ viatek-design/
 Install from a version tag, never from a branch:
 
 ```bash
-npm install github:sidlpayne/viatek-design#v1.3.0
+npm install github:sidlpayne/viatek-design#v1.3.1
 ```
 
 Then import `@viatek/design/tokens.css` and then `@viatek/design/components.css` once in the root layout, call `initTheme()` and `initSidebar('<app-id>')` from `@viatek/design/theme.js` and `@viatek/design/sidebar.js`, and inline `no-flash.js` in `<head>`. Tailwind apps add `presets: [require('@viatek/design/tailwind-preset.js')]`. Tailwind v4 has no JS config by default: add a `tailwind.config.js` that holds only that preset line and point to it from the global stylesheet with `@config "../tailwind.config.js";`.
@@ -111,11 +111,11 @@ If a component is missing, add it to the viatek-design repo first, then upgrade 
 `viatek-design` is deployed to the Vercel project `viatek-design` and serves versioned files from its production URL:
 
 ```
-https://viatek-design.vercel.app/v1.3.0/tokens.css
-https://viatek-design.vercel.app/v1.3.0/components.css
-https://viatek-design.vercel.app/v1.3.0/theme.js
-https://viatek-design.vercel.app/v1.3.0/sidebar.js
-https://viatek-design.vercel.app/v1.3.0/no-flash.js
+https://viatek-design.vercel.app/v1.3.1/tokens.css
+https://viatek-design.vercel.app/v1.3.1/components.css
+https://viatek-design.vercel.app/v1.3.1/theme.js
+https://viatek-design.vercel.app/v1.3.1/sidebar.js
+https://viatek-design.vercel.app/v1.3.1/no-flash.js
 https://viatek-design.vercel.app/theme-preview
 ```
 
@@ -615,10 +615,10 @@ Envoy's orange "Go" and "Touch" buttons become standard Primary buttons. The "Lo
 | Done, good | success | finished, healthy, done, synced, succeeded, ok, complete, sent, undone, fixed by agent, online, reviewed, resolved, verified fixed, pass, read, improved, final, linked, matched, travelling now |
 | Working or needs a look | warning | in progress, waiting, stale, due soon, running, pending, partial, incomplete, preparing, generating, sending, undoing, agent working, started, review, needs client, waiting for audit, not confirmed yet, awaiting approval, partly succeeded, partly read, needs consent, off, name match, not configured |
 | Failed or overdue | danger | failed, overdue, escalated, offline, agent failed, error, fail, incident, didn't stick, came back, new failure, worsened, couldn't be read, rejected |
-| Not started yet | info | queued, new, info, scheduled, to do, ready to send, ready, upcoming |
+| Not started yet | info | queued, new, info, scheduled, to do, ready to send, ready, generated, upcoming |
 | Not applicable | `--vt-text-muted` (`.vt-pill--muted`) | draft, skipped, n/a, cancelled, unknown, not a problem, false positive, accepted risk, informational, bypassed, not licensed, not watched yet, not read yet, ended, removed, expired, revoked |
 
-Words added in v1.3.0, with the reason where it is not obvious: `accepted risk` and `false positive` are decisions, not problems, so muted. `off` is warning because it means a watcher that should be running is not. `came back` and `didn't stick` mean a fix failed, so danger. `ready` (generated, waiting for review) is info, like `ready to send`. `review` (has items to check before sending) is warning.
+Words added in v1.3.0, with the reason where it is not obvious: `accepted risk` and `false positive` are decisions, not problems, so muted. `off` is warning because it means a watcher that should be running is not. `came back` and `didn't stick` mean a fix failed, so danger. `ready` (generated, waiting for review) is info, like `ready to send`. `review` (has items to check before sending) is warning. Added in v1.3.1: `generated` (a report or document that still has to be reviewed or sent) is info, like `ready`; it is not success, because `sent` is the finished state. An app where nothing follows generation uses `done` instead.
 
 **Severity** uses the same pill: `critical` danger, `high` warning, `medium` info, `low` muted, `info` muted. Medium is blue on purpose so every level looks different. Apps that show medium in yellow today change it.
 
@@ -643,6 +643,8 @@ Every app must use the same word-to-color mapping. Add a word to this table befo
 ### 7.5 Panels / cards
 
 `--vt-surface`, 1px `--vt-border`, radius-lg, padding 18px 20px. Header: h3 title, small muted description under it, optional ghost link top-right (`Utilization ↗`). No gradients, no colored left borders on cards (the edge is only for status, see 7.2 and 7.4).
+
+**Internal-only card** (content staff see but clients never do, such as internal notes on a client report): a standard panel with a `lock` icon before the h3 title and a `.vt-tag` reading `internal` at the right of the header. No colored border or fill. The icon and the word carry the meaning, so it never depends on color.
 
 ### 7.6 Forms
 
